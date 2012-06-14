@@ -1,0 +1,218 @@
+
+/* -----------------------------------
+Site:       Max Design
+CSS author: Russ Weakley
+Updated:   	Today is 30/01/10. It is now 6:30 AM
+Updated by: Russ Weakley
+----------------------------------- */
+
+#navigation,
+#banner-container,
+#extras-about,
+#extras-services,
+.post-navigation,
+#sidebar,
+#footer-contact,
+#footer-follow,
+#cformsform,
+.says,
+#commentform,
+.venue-details,
+#skiplinks a,
+#home-workshop-container img,
+#home-news-container img,
+.workshop-image,
+#footer-general,
+.comment-author img,
+#respond { display: none; }
+
+body
+{
+	margin: 10px;
+	padding: 0;
+	font: 100%/1.4 helvetica, arial, sans-serif;
+	color: #000;
+	background: #fff;
+}
+
+img { border: none; }
+a:link { color: #000; }
+a:visited { color: #000; }
+h1, h2, h3, h4, h5, h6, p, ul { clear: left; }
+
+table
+{
+	margin: 1em 0;
+	border-collapse: collapse;
+	width: 100%;
+}
+
+table caption
+{
+	text-align: left;
+	font-weight: bold;
+	padding: 0 0 5px;
+	text-transform: uppercase;
+	color: #000;
+}
+
+table td, table th
+{
+	text-align: left;
+	border: 1px solid #ddd;
+	padding: 5px 10px;
+	vertical-align: top;
+}
+
+table th { background: #eee; }
+
+blockquote
+{
+	background: #eee;
+	margin: 1em 0;
+	padding: 1.5em;
+}
+
+blockquote p { margin: 0; }
+
+blockquote p.source
+{
+	margin: 1em 0 0;
+	font-size: 87.5%;
+}
+
+code
+{
+	background: #eee;
+	font: 115% courier, monaco, monospace;
+	margin: 0 .3em;
+}
+
+abbr, acronym
+{
+	border-bottom: .1em dotted;
+}
+
+.structural
+{
+	position: absolute;
+	left: -500em;
+	color: #000;
+	background: #fff;
+}
+
+.date
+{
+	margin: 0 0 1em;
+	font-style: normal;
+	color: #444;
+	font-size: 87.5%;
+}
+
+p.date { margin: 2em 0; }
+
+p.intro
+{
+	font-size: 112.5%;
+	padding: 15px 0 0;
+}
+
+pre.codesample
+{
+	background: #444;
+	color: #fff;
+	margin: 1em 0;
+	padding: 1.5em;
+	overflow: auto;
+}
+
+.codesample code
+{
+	background: none;
+	line-height: 1;
+	margin: 0;
+}
+
+#header-container
+{
+	width: 700px;
+}
+
+#header-container h1 { margin: 0; }
+#home-workshop-container { width: 700px; }
+#home-news-container { width: 700px; }
+#content-container { width: 700px; }
+
+#content dl
+{
+	float: left;
+	width: 648px;
+	margin: 0;
+	padding: 0 0 2em;
+}
+
+#content dl dt
+{
+	float: left;
+	clear: left;
+	width: 180px;
+	margin: 0 15px 0 0;
+	padding: 3px 0 0;
+	text-align: right;
+}
+
+#content dl dd
+{
+	margin: 0 0 0 195px;
+	padding: 3px 0 0;
+}
+
+.workshop-day, .screenshot
+{
+	border-top: 3px solid #ccc;
+	margin: 3em 0 0;
+	padding: 1.5em 0 0;
+}
+
+.workshop-presenter { float: right; }
+
+#footer-container
+{
+	clear: both;
+	width: 680px;
+	color: #000;
+	padding: 10px;
+	font-size: 81.25%;
+}
+
+ol.commentlist
+{
+	margin: 0;
+	padding: 0;
+}
+
+ol.commentlist li
+{
+	margin: 0 0 2px;
+	padding: 1.5em;
+	list-style-type: none;
+	background: #eee;
+}
+
+ol.commentlist li.odd { background: #fff; }
+.comment-author cite { font-style: normal; }
+.comment-author, .commentmetadata { font-size: 81.25%; }
+
+.comment-author, .commentmetadata, .comment-author a, .commentmetadata a
+{
+	text-decoration: none;
+	color: #444;
+}
+
+.commentmetadata { margin: 0 0 20px; }
+
+#main ol.commentlist li p
+{
+	margin: 1em 0 0;
+	padding: 0;
+}
