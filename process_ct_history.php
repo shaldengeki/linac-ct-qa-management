@@ -1,7 +1,7 @@
 <?php
 include_once("global/includes.php");
-if(!session_is_registered(username)){
-header("location:login.html");
+if(!isset($_SESSION['username'])){
+header("location:login.php");
 }
 start_html();
 ?>
@@ -64,7 +64,7 @@ echo $_SESSION["username"];
 <?PHP   
 
   // register_action.php  
-  	include("dbconnect.php");
+  	  
 	$myusername=$_SESSION["username"];
 	//echo $myusername;
    // echo "\n";
@@ -73,7 +73,7 @@ echo $_SESSION["username"];
 	$year=$_POST["year"];
 	$machine=$_POST["machine"];
 	
-	$result = mysql_query("SELECT * FROM CT_monthly where name='$machine' and month_number='$month' and year_number='$year'");
+	$result = $database->stdQuery("SELECT * FROM CT_monthly where name='$machine' and month_number='$month' and year_number='$year'");
 	$row = mysql_fetch_array($result);
 	//echo $row['name'];
 	?>

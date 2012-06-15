@@ -1,7 +1,7 @@
 <? 
 include_once("global/includes.php");
-if(!session_is_registered(username)){
-header("location:login.html");
+if(!isset($_SESSION['username'])){
+header("location:login.php");
 }
 start_html();
 ?>
@@ -48,9 +48,9 @@ echo $_SESSION["username"];
    <p>&nbsp;</p>
 <?php   
 
-include("dbconnect.php");
+  
 $sql="select * from CT_monthly order by year_number desc, month_number desc";
-$result=mysql_query($sql);
+$result=$database->stdQuery($sql);
 while($row=mysql_fetch_array($result)){
    ?>
 	

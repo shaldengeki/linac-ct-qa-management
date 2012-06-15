@@ -14,7 +14,7 @@ $password = mysql_real_escape_string($password);
 //echo $selected;
 if($selected=="user"){
 	$sql="SELECT * FROM $tbl_name WHERE user_name='$username' and user_password='$password'";
-	$result=mysql_query($sql);
+	$result=$database->stdQuery($sql);
 
 	// Mysql_num_row is counting table row
 	$count=mysql_num_rows($result);
@@ -34,7 +34,7 @@ if($selected=="user"){
 if($selected=="admin"){
 
 	$sql="SELECT * FROM $tb2_name WHERE admin_name='$username' and admin_password='$password'";
-	$result2=mysql_query($sql);
+	$result2=$database->stdQuery($sql);
 
 	// Mysql_num_row is counting table row
 	$count=mysql_num_rows($result2);

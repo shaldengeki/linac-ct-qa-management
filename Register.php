@@ -1,4 +1,4 @@
-<? 
+<?php
 include_once("global/includes.php");
 start_html();
 ?>

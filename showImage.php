@@ -1,7 +1,7 @@
 <?php
 include_once("global/includes.php");
-if(!session_is_registered(username)){
-header("location:login.html");
+if(!isset($_SESSION['username'])){
+header("location:login.php");
 }
 start_html();
 if(empty($_GET[submit])) 
@@ -55,8 +55,8 @@ if(empty($_GET[submit]))
 $month=(int)$_GET["month"];
 $year=(int)$_GET["year"];
 $query_image ="select pathName from CT_image where year='$year' and month='$month'";
-$resultimage =mysql_query($query_image)
-or die(mysql_error());
+$resultimage =$database->stdQuery($query_image);
+
 $result_image=mysql_fetch_row($resultimage);
 }
 ?>

@@ -1,7 +1,7 @@
 <?php
 include_once("global/includes.php");
-if(!session_is_registered(username)){
-header("location:login.html");
+if(!isset($_SESSION['username'])){
+header("location:login.php");
 }
 start_html();
 ?>
@@ -63,7 +63,7 @@ echo $_SESSION["username"];
  <?PHP   
 
   // register_action.php  
-  	include("dbconnect.php");
+  	  
 	$myusername=$_SESSION["username"];
 	//echo $myusername;
    // echo "\n";
@@ -72,8 +72,8 @@ echo $_SESSION["username"];
 	$year=$_POST["year"];
 	$machine=$_POST["machine"];
 	
-	$result = mysql_query("SELECT * FROM linac_monthly where name='$machine' and month='$month' and year='$year'");
-	$imageResult=mysql_query("SELECT * FROM linac_image where machine='$machine' and month='$month' and year='$year'");
+	$result = $database->stdQuery("SELECT * FROM linac_monthly where name='$machine' and month='$month' and year='$year'");
+	$imageResult=$database->stdQuery("SELECT * FROM linac_image where machine='$machine' and month='$month' and year='$year'");
 	$row = mysql_fetch_array($result);
 	$imageRow=mysql_fetch_array($imageResult);
 	//echo $row['name'];

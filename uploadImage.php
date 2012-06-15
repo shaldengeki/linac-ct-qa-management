@@ -1,7 +1,7 @@
 <?php
 include_once("global/includes.php");
-if(!session_is_registered(username)){
-header("location:login.html");
+if(!isset($_SESSION['username'])){
+header("location:login.php");
 }
 start_html();
 ?>
@@ -42,7 +42,7 @@ echo $_SESSION["username"];
 <h2></h2>
 <?php 
 
-include("dbconnect.php");
+  
 
 if(empty($_GET[submit])) 
 
@@ -137,7 +137,7 @@ echo "uploaded successfully!".$file2;
 echo $year;
 echo $month;
 $sql_2="insert into linac_image values('$machine','$month','$year','$file2')";
-mysql_query($sql_2) or die(mysql_error());
+$database->stdQuery($sql_2);
 echo "<script language='javascript'>"; 
 echo "alert(\"upload successfully!\");"; 
 echo "</script>"; 

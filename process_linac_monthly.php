@@ -1,7 +1,7 @@
 <?php
 include_once("global/includes.php");
-if(!session_is_registered(username)){
-header("location:login.html");
+if(!isset($_SESSION['username'])){
+header("location:login.php");
 }
 start_html();
 
@@ -196,7 +196,7 @@ start_html();
 
 		$sql_1="insert into linac_monthly values ('$name','$month','$year',CURDATE(),
 				'$myusername',0,'$temperature','$pressure','$chamber','$electrometer','$q1_1','$q1_2','$q2_1','$q2_2','$q3_1','$q3_2','$aq1_1','$aq1_2','$aq2_1','$aq2_2','$aq3_1','$aq3_2','$bq1_1','$bq1_2','$bq2_1',		'$bq2_2','$bq3_1','$bq3_2','$gating_1','$gating_2','$gating_3','$edw_q1_1','$edw_q1_2','$edw_q2_1','$edw_q2_2','$edw_q3_1','$edw_q3_2','$a_q1_1','$a_q1_2','$a_q1_3','$a_q1_4','$a_q1_5','$a_q2_1','$a_q2_2','$a_q2_3','$a_q2_4','$a_q2_5','$a_q3_1','$a_q3_2','$a_q3_3','$a_q3_4','$a_q3_5','$b_q1_1','$b_q1_2','$b_q1_3','$b_q1_4','$b_q1_5','$b_q2_1','$b_q2_2','$b_q2_3','$b_q2_4','$b_q2_5','$b_q3_1','$b_q3_2','$b_q3_3','$b_q3_4','$b_q3_5','$c_q1_1','$c_q1_2','$c_q1_3','$c_q1_4','$c_q1_5','$c_q2_1','$c_q2_2','$c_q2_3','$c_q2_4','$c_q2_5','$c_q3_1','$c_q3_2','$c_q3_3','$c_q3_4','$c_q3_5','$lwv','$rwv','$lwh','$rwh','$sagittal','$odi1','$oid2','$odi3','$distance1','$distance2','$distance3','$dr1','$dr2','$dr3','$dr4','$dr5','$dr6','$x1a','$x1b','$x1c','$x2a','$x2b','$x2c','$y1a','$y1b','$y1c','$y2a','$y2b','$y2c','$doorStatus','$keyStatus','$wedge','$cone','$block','$crossLine','$inLine','$psa1','$psa2','$psa3','$comment','$file2')";
-		mysql_query($sql_1) or die(mysql_error()); 
+		$database->stdQuery($sql_1);
 
     	echo "Save Edited QA Form Successfully!";
 		

@@ -24,7 +24,7 @@ include_once("global/includes.php");
 	$myemail=mysql_real_escape_string($myemail);
 
     $sql="SELECT * FROM CT_user WHERE user_name='$myusername'";
-  	$result=mysql_query($sql);
+  	$result=$database->stdQuery($sql);
 
 	// Mysql_num_row is counting table row
 	$count=mysql_num_rows($result);
@@ -37,7 +37,7 @@ include_once("global/includes.php");
 	}
 	else {
 	    $sql_1="INSERT INTO CT_user VALUES('$myusername','$mypassword')";
-		mysql_query($sql_1) or die(mysql_error()); 
+		$database->stdQuery($sql_1);
     	
 		if(!session_is_registered("myusername"))
 			session_unregister("myusername");

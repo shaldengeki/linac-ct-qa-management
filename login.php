@@ -1,8 +1,5 @@
-<? 
+<?php
 include_once("global/includes.php");
-if(!session_is_registered(username)){
-header("location:login.html");
-}
 start_html();
 ?>
 <div id="sample-container">

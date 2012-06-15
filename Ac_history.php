@@ -1,7 +1,7 @@
-<? 
+<?php
 include_once("global/includes.php");
-if(!session_is_registered(username)){
-header("location:re_login.html");
+if(!isset($_SESSION['username'])){
+header("location:re_login.php");
 }
 
 start_html();

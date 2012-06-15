@@ -1,11 +1,11 @@
-<? 
+<?php
 include_once("global/includes.php");
-if(!session_is_registered(username)){
-header("location:login.html");
+if(!isset($_SESSION['username'])){
+header("location:login.php");
 }
 start_html();
   // register_action.php  
-  	include("dbconnect.php");
+  	  
 	$myusername=$_SESSION["username"];
 	echo $myusername;
     echo "\n";
@@ -63,7 +63,7 @@ start_html();
 		'$myusername',0,'$cs1','$cs2','$cs3','$cs4','$cs5','$n1','$n2','$n3','$n4','$n5','$lp1',
 		'$lp2','$lp3','$lcd1','$ti1','$rd1','$spa1','$ll1','$hcr1','$st1','$fu1','$fu2','$fu3','$fu4','$fu5',
 		'$n1','$n2','$n3','$n4','$n5')";
-		mysql_query($sql_1) or die(mysql_error()); 
+		$database->stdQuery($sql_1);
 
     	echo "Save Edited CT Form Successfully!";
 		
