@@ -1,13 +1,9 @@
-<? 
-session_start();
+<?php
+include_once("global/includes.php");
 if(!session_is_registered(username)){
 header("location:login.html");
 }
-?>
-<?php 
-
-include("dbconnect.php");
-
+start_html();
 if(empty($_GET[submit])) 
 
 { 
@@ -70,3 +66,6 @@ $result_image=mysql_fetch_row($resultimage);
 <p>
 <a href="main.php">return to Main Page</a>
 </p>
+<?php
+display_footer();
+?>

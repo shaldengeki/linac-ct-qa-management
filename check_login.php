@@ -1,18 +1,5 @@
 <?php
-session_start();
-?>
-<?php
-$host="cspp53001.cs.uchicago.edu"; // Host name 
-$hostusername="xiaobing"; // Mysql username 
-$password="123"; // Mysql password 
-$db_name="xiaobingDB"; // Database name 
-$tbl_name="CT_user"; // Table name
-$tb2_name="CT_admin";// Table Name
-
-// Connect to server and select databse.
-mysql_connect("$host", "$hostusername", "$password")or die("cannot connect"); 
-mysql_select_db("$db_name")or die("cannot select DB");
-//echo "what's up!";
+include_once("global/includes.php");
 
 $selected=$_POST['user_selection'];
 // username and password sent from form 

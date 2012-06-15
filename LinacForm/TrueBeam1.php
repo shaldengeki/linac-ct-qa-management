@@ -1,73 +1,10 @@
-<? 
-session_start();
+<?php
+include_once("global/includes.php");
 if(!session_is_registered(username)){
 header("location:login.html");
 }
-?>	
-
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
-        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-	
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
-<head>
-	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
-	<title>Hosital of University of Chiago</title>
-	<meta name="Description" content="Max Design - standards based web design, development and training" />
-	<meta name="robots" content="all, index, follow" />
-	<meta name="distribution" content="global" />
-	<link rel="shortcut icon" href="/favicon.ico" />
-	<link rel="stylesheet" href="css/sample.css" type="text/css" media="screen" />
-	<link rel="stylesheet" href="css/print.css" type="text/css" media="print" />
-	<link rel="stylesheet" href="css/style.css" type="text/css" media="screen, projection"/>
-	<script type="text/javascript" src="js/jquery-1.3.1.min.js"></script>	
-	<script type="text/javascript" language="javascript" src="js/jquery.dropdownPlain.js"></script>
-	<script type="text/javascript" language="javascript" src="js/calculate.linac.js"></script>
-<!--
-.STYLE2 {color: #0033FF}
-.STYLE4 {font-size: 24px}
-.STYLE5 {font-size: 36px}
-.STYLE6 {font-size: 9px}
-.STYLE7 {font-size: 14px}
-.STYLE8 {font-size: 10px}
-.STYLE9 {font-size: 10}
-.STYLE10 {
-	font-size: 18px;
-	color: #0033FF;
-}
-.STYLE11 {color: #FF0000}
-.STYLE12 {
-	color: #990000;
-	font-size: 24px;
-}
-.STYLE13 {color: #0000FF}
--->
-    </style>
-    <style type="text/css">
-<!--
-.STYLE1 {color: #0033FF}
-.STYLE2 {color: #FF0000}
-.STYLE3 {color: #000000}
--->
-    </style>
-</head>
-<!--
-.STYLE1 {
-	font-family: Arial, Helvetica, sans-serif;
-	font-size: 18px;
-}
-.STYLE2 {
-	font-size: 18px;
-	font-family: "Times New Roman", Times, serif;
-}
-.STYLE4 {font-size: 16px; font-family: "Times New Roman", Times, serif; }
-.STYLE5 {
-	font-family: "Times New Roman", Times, serif;
-	font-size: 16;
-}
-.STYLE6 {font-size: 16px}
-.STYLE7 {font-size: 18}
--->
-<body>
+start_html();
+?>
 <div id="sample-container">
 		 <img src="images/title.gif"  />
 <form id="form1" action="logout.php" name="form1" method="post" >
@@ -1351,12 +1288,6 @@ echo $_SESSION["username"];
   <p>&nbsp;</p>
 
 </form>
-
-
-<div id="footer-container">
-<div id="footer"></div>
-</div>
-</div>
-</div>
-</body>
-</html>
+<?php
+display_footer();
+?>

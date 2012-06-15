@@ -1,7 +1,6 @@
-<?PHP   
-
+<?php
+include_once("global/includes.php");
   // register_action.php  
-  	include("dbconnect.php");
   // username and password sent from form 
 	$errors = "";  
   if ($_POST['myusername']=="")  
@@ -49,5 +48,4 @@
   }else {
 		echo $errors;
 	}
-    
 ?> 
