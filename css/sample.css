@@ -1485,13 +1485,6 @@ layout-one-fixed
 	padding: 0 0 20px;
 }
 
-#layout-one-fixed #container
-{
-	margin: 0 auto;
-	width: 600px;
-	background: #fff;
-}
-
 #layout-one-fixed #header
 {
 	background: #ccc;

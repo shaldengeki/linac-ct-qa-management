@@ -1,12 +1,12 @@
 <?php
 include_once("global/includes.php");
-if(!isset($_SESSION['username'])){
-header("location:login.php");
+if (!$user->loggedIn($database)) {
+header("location:index.php");
 }
-start_html();
+start_html($user, $database, "UCMC Radiation Oncology QA", "", $_REQUEST['status']);
 
   // register_action.php  
-	$myusername=$_SESSION["username"];
+	$myusername=$_SESSION['name'];
 	echo $myusername;
     echo "\n";
   // username and password sent from form

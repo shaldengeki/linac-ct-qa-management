@@ -22,7 +22,7 @@ if($selected=="user"){
 	if($count==1){
 	// Register $myusername, $mypassword and redirect to file "main.php"
 	//session_start();
-	$_SESSION['username']=$username;
+	$_SESSION['name']=$username;
 	$_SESSION['password']=$password; 
 	header("location:index.html");
 	}
@@ -42,7 +42,7 @@ if($selected=="admin"){
 	if($count==1){
 	// Register $myusername, $mypassword and redirect to file "login_success.php"
 	
-	$_SESSION['username']=$username;
+	$_SESSION['name']=$username;
 	$_SESSION['password']=$password;  
 	header("location:index.php");
 	}

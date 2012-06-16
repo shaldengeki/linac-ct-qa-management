@@ -1,20 +1,16 @@
 <?php
 include_once("global/includes.php");
-if(!isset($_SESSION['username'])){
-header("location:login.php");
+if (!$user->loggedIn($database)) {
+header("location:index.php");
 }
-start_html();
+start_html($user, $database, "UCMC Radiation Oncology QA", "", $_REQUEST['status']);
 ?>
 <div id="sample-container">
 		 <img src="images/title.gif"  />
- <form id="form1" action="logout.php" name="form1" method="post" >
-<p align="right">
-    <input type="submit" value="LOGOUT"  style="width:25%; float: right;"/>
-</p>
-<p align="right">
+ <p align="right">
 </p>
 Welcome,<?php
-echo $_SESSION["username"];
+echo $user->name;
 ?>!
 <p>&nbsp;</p>
 
@@ -103,7 +99,7 @@ UPLOAD IMAGE
 <?php 
 }else{ 
 $path="uploadImage/"; // 
-$user = $_SESSION["username"];
+$user = $_SESSION['name'];
 $machine=$_POST["machine"];
 //echo $_FILES["filename"]["type"]; 
 $month=(int)$_POST["month"];

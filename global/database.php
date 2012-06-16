@@ -36,10 +36,26 @@ class DbConn extends mysqli {
     //executes a query with standardized error message
     $result = $this->query($query)
       or die("Could not query MySQL database in ".$_SERVER['PHP_SELF'].".<br />
-          ".$this->error."<br />
-          Query: ".htmlentities($query)."<br />
           Time: ".time());
     return $result;
+  }
+  public function queryFirstRow($query) {
+    $result = $this->stdQuery($query);
+    if ($result->num_rows < 1) {
+      return false;
+    }
+    $returnValue = $result->fetch_assoc();
+    $result->free();
+    return $returnValue;
+  }
+  public function queryAssoc($query) {
+    $result = $this->stdQuery($query);
+    if ($result->num_rows < 1) {
+      return false;
+    }
+    $returnValue = $result->fetch_all();
+    $result->free();
+    return $returnValue;
   }
 }
 

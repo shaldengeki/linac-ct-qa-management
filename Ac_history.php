@@ -1,21 +1,17 @@
 <?php
 include_once("global/includes.php");
-if(!isset($_SESSION['username'])){
+if (!$user->loggedIn($database)) {
 header("location:re_login.php");
 }
 
-start_html();
+start_html($user, $database, "UCMC Radiation Oncology QA", "", $_REQUEST['status']);
 ?>	
 <div id="sample-container">
 		 <img src="images/title.gif"  />
-<form id="form1" action="logout.php" name="form1" method="post" >
-<p align="right">
-    <input type="submit" value="LOGOUT"  style="width:25%; float: right;"/>
-</p>
 <p align="right">
 </p>
 Welcome,<?php
-echo $_SESSION["username"];
+echo $user->name;
 ?>!
 <p>&nbsp;</p>
 

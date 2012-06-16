@@ -1,9 +1,9 @@
 <?php
 include_once("global/includes.php");
-if(!isset($_SESSION['username'])){
-header("location:login.php");
+if (!$user->loggedIn($database)) {
+header("location:index.php");
 }
-start_html();
+start_html($user, $database, "UCMC Radiation Oncology QA", "", $_REQUEST['status']);
 ?>
 <div id="container" style="width: 800px; height: 400px; margin: 0 auto"></div>
 <?php

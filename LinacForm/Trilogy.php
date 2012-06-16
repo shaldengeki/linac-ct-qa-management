@@ -1,9 +1,9 @@
 <?php
 include_once("global/includes.php");
-if(!isset($_SESSION['username'])){
-header("location:login.php");
+if (!$user->loggedIn($database)) {
+header("location:index.php");
 }
-start_html();
+start_html($user, $database, "UCMC Radiation Oncology QA", "", $_REQUEST['status']);
 ?>
 <div id="sample-container">
 		 <img src="images/title.gif"  />
@@ -14,7 +14,7 @@ start_html();
 <p align="right">
 </p>
 Welcome,<?php
-echo $_SESSION["username"];
+echo $user->name;
 ?>!
 <p>&nbsp;</p>
 

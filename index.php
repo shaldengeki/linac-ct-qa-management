@@ -1,51 +1,18 @@
 <?php
 include_once("global/includes.php");
-if(!isset($_SESSION['username'])){
-header("location:login.php");
+if ($user->loggedIn($database)) {
+  header("Location: main.php");
 }
-start_html();
+start_html($user, $database, "UCMC Radiation Oncology QA", "", $_REQUEST['status']);
 ?>
-<div id="sample-container">
-		 <img src="images/title.gif"  />
- <form id="form1" action="logout.php" name="form1" method="post" >
-<p align="right">
-    <input type="submit" value="LOGOUT"  style="width:25%; float: right;"/>
-</p>
-<p align="right">
-</p>
-Welcome,<?php
-echo $_SESSION["username"];
-?>!
-<p>&nbsp;</p>
-
-</form>
-
-<div id="layout-two-fixed-spread">
-<div id="head-container">
-<div id="header">
-<h1>Machine QA Management</h1>
-</div>
-</div>
-<div id="navigation-container">
-<div id="navigation">
-
-<ul>
-<li><a href="Linac_index.php">LINAC</a></li>	
-<li><a href="CT.php">CT</a></li>
-</ul>
-</div>
-</div>
-<div id="content-container">
-<div id="content-container2">
-<div id="content-container3">
-<div id="content">
-<h2>Page heading</h2>
-
-</div>
-<div id="aside">
-<h3>Aside heading</h3>
-</div>
-</div>
+<div class="hero-unit">
+  <h1>Welcome!</h1>
+  <p>This is the QA tracking system for the University of Chicago Medical Center's Radiation Oncology department.</p>
+  <p>
+    <a href="/register.php" class="btn btn-primary btn-large">
+      Sign up
+    </a>
+  </p>
 </div>
 <?php
 display_footer();

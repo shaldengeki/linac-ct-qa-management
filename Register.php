@@ -1,6 +1,6 @@
 <?php
 include_once("global/includes.php");
-start_html();
+start_html($user, $database, "UCMC Radiation Oncology QA", "", $_REQUEST['status']);
 ?>
 <div id="sample-container">
 		 <img src="images/title.gif"  />
