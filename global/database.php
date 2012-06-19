@@ -33,9 +33,10 @@ class DbConn extends mysqli {
     }
   }
   public function stdQuery($query) {
-    //executes a query with standardized error message
+    //executes a query with standardized error message.
     $result = $this->query($query)
       or die("Could not query MySQL database in ".$_SERVER['PHP_SELF'].".<br />
+          ".$this->error."<br />
           Time: ".time());
     return $result;
   }
@@ -48,12 +49,29 @@ class DbConn extends mysqli {
     $result->free();
     return $returnValue;
   }
+  public function queryFirstValue($query) {
+    $result = $this->queryFirstRow($query);
+    if (!$result || count($result) != 1) {
+      return false;
+    }
+    $resultKeys = array_keys($result);
+    return $result[$resultKeys[0]];
+  }
   public function queryAssoc($query) {
     $result = $this->stdQuery($query);
     if ($result->num_rows < 1) {
       return false;
     }
     $returnValue = $result->fetch_all();
+    $result->free();
+    return $returnValue;
+  }
+  public function queryCount($query, $column="*") {
+    $result = $this->queryFirstRow($query);
+    if (!$result) {
+      return false;
+    }
+    $returnValue = intval($result['COUNT('.$column.')']);
     $result->free();
     return $returnValue;
   }

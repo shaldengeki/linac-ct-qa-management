@@ -5,17 +5,6 @@ header("location:index.php");
 }
 start_html($user, $database, "UCMC Radiation Oncology QA", "", $_REQUEST['status']);
 ?>
-<div id="sample-container">
-		 <img src="images/title.gif"  />
-<p align="right">
-</p>
-Welcome,<?php
-echo $user->name;
-?>!
-<p>&nbsp;</p>
-
-</form>
-
 <div id="layout-two-fixed-spread">
 <div id="head-container">
 <div id="header">
@@ -102,13 +91,13 @@ echo $user->name;
    </select>
    </label>
   </p>
-  <table width="269" height="67" border="1" align="center">
+  <table width="269"  border="1" align="center">
     <tr>
       <td align="center"><span class="STYLE12">Photon Dosimetry </span></td>
     </tr>
   </table>
   <p>&nbsp;</p>
-  <table width="426" height="151" border="1" align="center">
+  <table width="426"  border="1" align="center">
     <tr>
       <td colspan="2" align="center"><span class="STYLE2">Measurement Parameters </span></td>
       </tr>
@@ -126,7 +115,7 @@ echo $user->name;
     </tr>
   </table>
   <p>&nbsp;</p>
-  <table width="534" height="122" border="1" align="center">
+  <table width="534"  border="1" align="center">
     <tr>
       <td colspan="2" align="center"><span class="STYLE2">Equipment Used For This Measurement</span></td>
     </tr>
@@ -151,7 +140,7 @@ echo $user->name;
   <p>&nbsp;</p>
   <p>&nbsp;</p>
   <p>&nbsp;</p>
-  <table width="429" height="292" border="1" align="center">
+  <table width="429"  border="1" align="center">
     <tr>
       <td colspan="3" align="center"><span class="STYLE2">Constants for Electrons obtained from TG-51</span></td>
       </tr>
@@ -195,7 +184,7 @@ echo $user->name;
       </tr>
   </table>
   <p>&nbsp;</p>
-  <table width="433" height="1121" border="1" align="center">
+  <table width="433"  border="1" align="center">
     <tr>
       <td colspan="3" align="center"><span class="STYLE2">Output Calibration </span></td>
       </tr>
@@ -223,124 +212,124 @@ echo $user->name;
       <td>-300MV</td>
     </tr>
     <tr>
-      <td height="51" colspan="3">Output Calibration </td>
+      <td  colspan="3">Output Calibration </td>
       </tr>
     <tr>
-      <td width="127" height="38" align="center">Photon Enegey </td>
+      <td width="127"  align="center">Photon Enegey </td>
       <td width="146" align="center">6MV</td>
-      <td height="38" align="center">18MV</td>
+      <td  align="center">18MV</td>
     </tr>
     <tr>
-      <td height="38" align="center">Q1</td>
+      <td  align="center">Q1</td>
       <td align="center"><label>
         <input type="text" name="q1_1" />
       </label></td>
-      <td height="38" align="center"><input type="text" name="q1_2" /></td>
+      <td  align="center"><input type="text" name="q1_2" /></td>
     </tr>
     <tr>
-      <td height="38" align="center">Q2</td>
+      <td  align="center">Q2</td>
       <td align="center"><input type="text" name="q2_1" /></td>
-      <td height="38" align="center"><input type="text" name="q2_2" /></td>
+      <td  align="center"><input type="text" name="q2_2" /></td>
     </tr>
     <tr>
-      <td height="38" align="center">Q3</td>
+      <td  align="center">Q3</td>
       <td align="center"><input type="text" name="q3_1" /></td>
-      <td height="38" align="center"><input type="text" name="q3_2" /></td>
+      <td  align="center"><input type="text" name="q3_2" /></td>
     </tr>
     <tr>
-      <td height="51" align="center">average</td>
+      <td  align="center">average</td>
       <td align="center"><label>
 	  	<br />
 	  	<input type="text" name="avg1" />
 	  	<br />
       </label></td>
-      <td height="51" align="center"><input type="text" name="avg2" /></td>
+      <td  align="center"><input type="text" name="avg2" /></td>
     </tr>
     <tr>
-      <td height="38" align="center">M</td>
+      <td  align="center">M</td>
       <td align="center"><input type="text" name="m1" /></td>
-      <td height="38" align="center"><input type="text" name="m2" /></td>
+      <td  align="center"><input type="text" name="m2" /></td>
     </tr>
     <tr>
-      <td height="38" align="center">Dw(TG-51)</td>
+      <td  align="center">Dw(TG-51)</td>
       <td align="center"><label>
         <input type="text" name="dw1" />
       </label></td>
-      <td height="38" align="center"><input type="text" name="dw2" /></td>
+      <td  align="center"><input type="text" name="dw2" /></td>
     </tr>
     <tr>
-      <td height="38" align="center">Dw(abs)</td>
+      <td  align="center">Dw(abs)</td>
       <td align="center"><input type="text" name="dwa1" /></td>
-      <td height="38" align="center"><input type="text" name="dwa2" /></td>
+      <td  align="center"><input type="text" name="dwa2" /></td>
     </tr>
     <tr>
-      <td height="38" align="center">%diff</td>
+      <td  align="center">%diff</td>
       <td align="center" ><input type="text" name="dif1" /></td>
-      <td height="38" align="center" ><input type="text" name="dif2" /></td>
+      <td  align="center" ><input type="text" name="dif2" /></td>
     </tr>
     <tr>
-      <td height="58" colspan="3" align="left"><span class="STYLE9">Adjusted Output Calibration </span></td>
+      <td  colspan="3" align="left"><span class="STYLE9">Adjusted Output Calibration </span></td>
       </tr>
     <tr>
-      <td height="38" colspan="3" align="center"><span class="STYLE2">Charge (x10^-8 C) </span></td>
+      <td  colspan="3" align="center"><span class="STYLE2">Charge (x10^-8 C) </span></td>
       </tr>
     <tr>
-      <td height="38" align="center">Photon Enegey </td>
+      <td  align="center">Photon Enegey </td>
       <td align="center">6MV</td>
-      <td height="38" align="center">18MV</td>
+      <td  align="center">18MV</td>
     </tr>
     <tr>
-      <td height="38" align="center">Bias</td>
+      <td  align="center">Bias</td>
       <td align="center">-300</td>
-      <td height="38" align="center">-300</td>
+      <td  align="center">-300</td>
     </tr>
     <tr>
-      <td height="38" align="center">Q1</td>
+      <td  align="center">Q1</td>
       <td align="center"><label>
         <input type="text" name="aq1_1" />
       </label></td>
-      <td height="38" align="center"><input type="text" name="aq1_2" /></td>
+      <td  align="center"><input type="text" name="aq1_2" /></td>
     </tr>
     <tr>
-      <td height="38" align="center">Q2</td>
+      <td  align="center">Q2</td>
       <td align="center"><input type="text" name="aq2_1" /></td>
-      <td height="38" align="center"><input type="text" name="aq2_2" /></td>
+      <td  align="center"><input type="text" name="aq2_2" /></td>
     </tr>
     <tr>
-      <td height="38" align="center">Q3</td>
+      <td  align="center">Q3</td>
       <td align="center"><input type="text" name="aq3_1" /></td>
-      <td height="38" align="center"><input type="text" name="aq3_2" /></td>
+      <td  align="center"><input type="text" name="aq3_2" /></td>
     </tr>
     <tr>
-      <td height="38" align="center">average</td>
+      <td  align="center">average</td>
       <td align="center"><label>
         <input type="text" name="avg3" />
       </label></td>
-      <td height="38" align="center"><input type="text" name="avg4" /></td>
+      <td  align="center"><input type="text" name="avg4" /></td>
     </tr>
     <tr>
-      <td height="38" align="center">M</td>
+      <td  align="center">M</td>
       <td align="center"><input type="text" name="m3" /></td>
-      <td height="38" align="center"><input type="text" name="m4" /></td>
+      <td  align="center"><input type="text" name="m4" /></td>
     </tr>
     <tr>
-      <td height="38" align="center">Dw(TG-51)</td>
+      <td  align="center">Dw(TG-51)</td>
       <td align="center"><input type="text" name="dw3" /></td>
-      <td height="38" align="center"><input type="text" name="dw4" /></td>
+      <td  align="center"><input type="text" name="dw4" /></td>
     </tr>
     <tr>
-      <td height="38" align="center">Dw(abs)</td>
+      <td  align="center">Dw(abs)</td>
       <td align="center"><input type="text" name="dwa3" /></td>
-      <td height="38" align="center"><input type="text" name="dwa4" /></td>
+      <td  align="center"><input type="text" name="dwa4" /></td>
     </tr>
     <tr>
-      <td height="38" align="center">%diff</td>
+      <td  align="center">%diff</td>
       <td align="center" ><input type="text" name="dif3" /></td>
-      <td height="38" align="center" ><input type="text" name="dif4" /></td>
+      <td  align="center" ><input type="text" name="dif4" /></td>
     </tr>
   </table>
   <p>&nbsp;</p>
-  <table width="432" height="295" border="1" align="center">
+  <table width="432"  border="1" align="center">
     <tr>
       <td colspan="2" align="center"><span class="STYLE10">TPR Check </span></td>
     </tr>
@@ -371,60 +360,60 @@ echo $user->name;
       <td colspan="2" align="center">&nbsp;</td>
     </tr>
   </table>
-  <table width="431" height="404" border="1" align="center">
+  <table width="431"  border="1" align="center">
     <tr>
-      <td height="38" colspan="3" align="center"><span class="STYLE2">Charge (x10^-8 C) </span></td>
+      <td  colspan="3" align="center"><span class="STYLE2">Charge (x10^-8 C) </span></td>
     </tr>
     <tr>
-      <td width="73" height="38" align="center">Photon Enegey </td>
+      <td width="73"  align="center">Photon Enegey </td>
       <td width="168" align="center">6MV</td>
-      <td width="168" height="38" align="center">18MV</td>
+      <td width="168"  align="center">18MV</td>
     </tr>
     <tr>
-      <td height="38" align="center">Bias</td>
+      <td  align="center">Bias</td>
       <td align="center">-300</td>
-      <td height="38" align="center">-300</td>
+      <td  align="center">-300</td>
     </tr>
     <tr>
-      <td height="38" align="center">Q1</td>
+      <td  align="center">Q1</td>
       <td align="center"><label>
         <input type="text" name="bq1_1" />
       </label></td>
-      <td height="38" align="center"><input type="text" name="bq1_2" /></td>
+      <td  align="center"><input type="text" name="bq1_2" /></td>
     </tr>
     <tr>
-      <td height="38" align="center">Q2</td>
+      <td  align="center">Q2</td>
       <td align="center"><input type="text" name="bq2_1" /></td>
-      <td height="38" align="center"><input type="text" name="bq2_2" /></td>
+      <td  align="center"><input type="text" name="bq2_2" /></td>
     </tr>
     <tr>
-      <td height="38" align="center">Q3</td>
+      <td  align="center">Q3</td>
       <td align="center"><input type="text" name="bq3_1" /></td>
-      <td height="38" align="center"><input type="text" name="bq3_2" /></td>
+      <td  align="center"><input type="text" name="bq3_2" /></td>
     </tr>
     <tr>
-      <td height="38" align="center">average</td>
+      <td  align="center">average</td>
       <td align="center"><input type="text" name="avg5" /></td>
-      <td height="38" align="center"><input type="text" name="avg6" /></td>
+      <td  align="center"><input type="text" name="avg6" /></td>
     </tr>
     <tr>
-      <td height="38" align="center">Measured TPR(s) </td>
+      <td  align="center">Measured TPR(s) </td>
       <td align="center"><input type="text" name="measured5" /></td>
-      <td height="38" align="center"><input type="text" name="measured6" /></td>
+      <td  align="center"><input type="text" name="measured6" /></td>
     </tr>
     <tr>
-      <td height="38" align="center">Reference TPR(s) </td>
+      <td  align="center">Reference TPR(s) </td>
       <td align="center"><input type="text" name="reference5" value="1.183" /></td>
-      <td height="38" align="center"><input type="text" name="reference6" value="1.110" /></td>
+      <td  align="center"><input type="text" name="reference6" value="1.110" /></td>
     </tr>
     <tr>
-      <td height="38" align="center">%diff</td>
+      <td  align="center">%diff</td>
       <td align="center" ><input type="text" name="dif5" /></td>
-      <td height="38" align="center" ><input type="text" name="dif6" /></td>
+      <td  align="center" ><input type="text" name="dif6" /></td>
     </tr>
   </table>
   <p>&nbsp;</p>
-  <table width="432" height="295" border="1" align="center">
+  <table width="432"  border="1" align="center">
     <tr>
       <td colspan="2" align="center"><span class="STYLE10">Gating &amp; EDW Check </span></td>
     </tr>
@@ -457,7 +446,7 @@ echo $user->name;
     </tr>
   </table>
   <p>&nbsp;</p>
-  <table width="475" height="401" border="1" align="center">
+  <table width="475"  border="1" align="center">
     <tr>
       <td colspan="2" align="center"><span class="STYLE2">Gating</span></td>
       </tr>
@@ -508,7 +497,7 @@ echo $user->name;
     </tr>
   </table>
   <p>&nbsp;</p>
-  <table width="474" height="447" border="1" align="center">
+  <table width="474"  border="1" align="center">
     <tr>
       <td colspan="3" align="center"><span class="STYLE2">EDW Check </span></td>
       </tr>
@@ -561,19 +550,19 @@ echo $user->name;
       <td><input type="text" name="reference9" value="0.719" /></td>
     </tr>
     <tr>
-      <td height="32">%diff</td>
+      <td >%diff</td>
       <td><input type="text" name="dif8" /></td>
       <td><input type="text" name="dif9" /></td>
     </tr>
   </table>
   <p>&nbsp;</p>
-  <table width="324" height="67" border="1" align="center">
+  <table width="324"  border="1" align="center">
     <tr>
       <td align="center"><span class="STYLE12">Electron Dosimetry </span></td>
     </tr>
   </table>
   <p>&nbsp;</p>
-  <table width="795" height="165" border="1" align="center">
+  <table width="795"  border="1" align="center">
     <tr>
       <td colspan="3" align="center"><span class="STYLE2">Available Chambers</span></td>
       <td colspan="5" align="center"><span class="STYLE13">Mc (nC) for MeV beam </span></td>
@@ -617,84 +606,84 @@ echo $user->name;
     <col width="171" />
     <col width="75" span="5" />
     <col width="74" />
-    <tr align="center" bordercolor="#000066" height="21">
-      <td height="21" colspan="7">Constants for Electrons obtained from TG-51</td>
+    <tr align="center" bordercolor="#000066" >
+      <td  colspan="7">Constants for Electrons obtained from TG-51</td>
       </tr>
-    <tr align="center" bordercolor="#000066" height="21">
-      <td width="396" height="21">&nbsp;</td>
+    <tr align="center" bordercolor="#000066" >
+      <td width="396" >&nbsp;</td>
       <td colspan="5">Electron Energy (MeV)</td>
       <td width="36" rowspan="12"></td>
     </tr>
-    <tr align="center" bordercolor="#000066" height="21">
-      <td height="21">&nbsp;</td>
+    <tr align="center" bordercolor="#000066" >
+      <td >&nbsp;</td>
       <td width="36">6</td>
       <td width="36">9</td>
       <td width="36">12</td>
       <td width="75">16</td>
       <td width="148">20</td>
       </tr>
-    <tr align="center" bordercolor="#000066" height="25">
-      <td height="25">dmax(cm)</td>
+    <tr align="center" bordercolor="#000066" >
+      <td >dmax(cm)</td>
       <td>1.40</td>
       <td>2.00</td>
       <td>2.50</td>
       <td>2.50</td>
       <td>2.00</td>
       </tr>
-    <tr align="center" bordercolor="#000066" height="25">
-      <td height="25">R50(cm)</td>
+    <tr align="center" bordercolor="#000066" >
+      <td >R50(cm)</td>
       <td>2.40</td>
       <td>3.70</td>
       <td>5.10</td>
       <td>6.80</td>
       <td>8.50</td>
       </tr>
-    <tr align="center" bordercolor="#000066" height="25">
-      <td height="25">dref(cm)</td>
+    <tr align="center" bordercolor="#000066" >
+      <td >dref(cm)</td>
       <td>1.30</td>
       <td>2.10</td>
       <td>3.00</td>
       <td>4.00</td>
       <td>5.00</td>
       </tr>
-    <tr align="center" bordercolor="#000066" height="25">
-      <td height="25">dmeas (cm)</td>
+    <tr align="center" bordercolor="#000066" >
+      <td >dmeas (cm)</td>
       <td>1.50</td>
       <td>2.50</td>
       <td>2.50</td>
       <td>2.50</td>
       <td>2.50</td>
       </tr>
-    <tr align="center" bordercolor="#000066" height="25">
-      <td height="25">Pion</td>
+    <tr align="center" bordercolor="#000066" >
+      <td >Pion</td>
       <td colspan="5">1.010</td>
       </tr>
-    <tr align="center" bordercolor="#000066" height="25">
-      <td height="26">kR50'</td>
+    <tr align="center" bordercolor="#000066" >
+      <td >kR50'</td>
       <td>1.027</td>
       <td>1.016</td>
       <td>1.008</td>
       <td>1.002</td>
       <td>0.998</td>
       </tr>
-    <tr align="center" bordercolor="#000066" height="25">
-      <td height="25">kecal</td>
+    <tr align="center" bordercolor="#000066" >
+      <td >kecal</td>
       <td colspan="5">0.897</td>
       </tr>
-    <tr align="center" bordercolor="#000066" height="25">
-      <td height="25">ND,SW(60Co) (Gy/C)</td>
+    <tr align="center" bordercolor="#000066" >
+      <td >ND,SW(60Co) (Gy/C)</td>
       <td colspan="5">5.18E+07</td>
       </tr>
-    <tr align="center" bordercolor="#000066" height="25">
-      <td height="25">PDD(dref)</td>
+    <tr align="center" bordercolor="#000066" >
+      <td >PDD(dref)</td>
       <td>99.5</td>
       <td>100</td>
       <td>100</td>
       <td>98.9</td>
       <td>95.5</td>
       </tr>
-    <tr align="center" bordercolor="#000066" height="25">
-      <td height="25">kelec</td>
+    <tr align="center" bordercolor="#000066" >
+      <td >kelec</td>
       <td colspan="5">0.995</td>
       </tr>
   </table>
@@ -704,7 +693,7 @@ echo $user->name;
       <td><span class="STYLE1">Output Calibration </span></td>
     </tr>
   </table>
-  <table width="728" height="334" border="1" align="center">
+  <table width="728"  border="1" align="center">
     <tr>
       <td width="96">&nbsp;</td>
       <td colspan="5" align="center">Charge(x10^~8C)</td>
@@ -785,12 +774,12 @@ echo $user->name;
     </tr>
   </table>
   <p>&nbsp;</p>
-  <table width="364" height="47" border="1" align="center">
+  <table width="364"  border="1" align="center">
     <tr>
       <td width="375" align="center"><span class="STYLE13">Adjusted Output Calibration </span></td>
       </tr>
   </table>
-  <table width="728" height="334" border="1" align="center">
+  <table width="728"  border="1" align="center">
     <tr>
       <td width="96">&nbsp;</td>
       <td colspan="5" align="center">Charge(x10^~8C)</td>
@@ -871,12 +860,12 @@ echo $user->name;
     </tr>
   </table>
   <p>&nbsp;</p>
-  <table width="231" height="70" border="1" align="center">
+  <table width="231"  border="1" align="center">
     <tr>
       <td width="221" align="center" class="STYLE10">Energy Ratio Check </td>
     </tr>
   </table>
-  <table width="728" height="334" border="1" align="center">
+  <table width="728"  border="1" align="center">
     <tr>
       <td width="96">&nbsp;</td>
       <td colspan="5" align="center">Charge(x10^~8C)</td>
@@ -949,27 +938,27 @@ echo $user->name;
   </table>
   <p>&nbsp;</p>
   <p>&nbsp;</p>
-  <table width="344" height="77" border="1" align="center">
+  <table width="344"  border="1" align="center">
     <tr>
       <td align="center"><span class="STYLE10 STYLE2">Manchanical QA </span></td>
     </tr>
   </table>
   <p>&nbsp;</p>
-  <table width="426" height="370" border="1" align="center">
+  <table width="426"  border="1" align="center">
     <tr>
-      <td height="93" colspan="2" align="left"><div align="center">
+      <td  colspan="2" align="left"><div align="center">
         <p align="left" class="STYLE2">Laser Position </p>
         <p align="center" class="STYLE2"> <span class="STYLE3">Gantry=0 Coll=0 </span></p>
       </div></td>
     </tr>
     <tr>
-      <td width="206" height="43" align="center"><div align="center">Left Wall<span class="STYLE5"> <span class="STYLE6">Vertical</span> </span></div></td>
+      <td width="206"  align="center"><div align="center">Left Wall<span class="STYLE5"> <span class="STYLE6">Vertical</span> </span></div></td>
       <td width="204"><label>
         <input type="text" name="lwv" />
       </label></td>
     </tr>
     <tr>
-      <td height="51"><div align="center">Right Wall Vertical</div></td>
+      <td ><div align="center">Right Wall Vertical</div></td>
       <td><label>
         <input type="text" name="rwv" />
       </label></td>
@@ -981,7 +970,7 @@ echo $user->name;
       </label></td>
     </tr>
     <tr>
-      <td height="71"><div align="center">Right Wall Horizona<span class="STYLE4">l </span></div></td>
+      <td ><div align="center">Right Wall Horizona<span class="STYLE4">l </span></div></td>
       <td>        <label>
         <div align="left">
           <input type="text" name="rwh" />
@@ -996,7 +985,7 @@ echo $user->name;
     </tr>
   </table>
   <p>&nbsp;</p>
-  <table width="418" height="364" border="1" align="center">
+  <table width="418"  border="1" align="center">
     <tr>
       <td colspan="2"><span class="STYLE2">ODI vs Light Field Isocenter </span></td>
     </tr>
@@ -1025,7 +1014,7 @@ echo $user->name;
   </table>
   <p>&nbsp;</p>
   <p>&nbsp;</p>
-  <table width="445" height="433" border="1" align="center">
+  <table width="445"  border="1" align="center">
     <tr>
       <td colspan="2" align="center"><span class="STYLE2">Centering of Light Field Cross-Hair </span></td>
     </tr>
@@ -1046,14 +1035,14 @@ echo $user->name;
       </label></td>
     </tr>
     <tr>
-      <td height="69">270</td>
+      <td >270</td>
       <td><label>
         <input type="text" name="distance3" />
       </label></td>
     </tr>
   </table>
   <p>&nbsp;</p>
-  <table width="606" height="438" border="1" align="center">
+  <table width="606"  border="1" align="center">
     <tr>
       <td colspan="2"><div align="center" class="STYLE2">
         <div align="left">Gantry and Collimator Angles vs Readout </div>
@@ -1101,7 +1090,7 @@ echo $user->name;
     </tr>
   </table>
   <p>&nbsp;</p>
-  <table width="832" height="433" border="1" align="center">
+  <table width="832"  border="1" align="center">
     <tr>
       <td colspan="3" align="center"><div align="center" class="STYLE2">
         <div align="left">Optical Field Size vs Digital Readout </div>
@@ -1156,7 +1145,7 @@ echo $user->name;
     </tr>
   </table>
   <p>&nbsp;</p>
-  <table width="453" height="205" border="1" align="center">
+  <table width="453"  border="1" align="center">
     <tr>
       <td colspan="2" align="center"><span class="STYLE2">Door and Key Interlock </span></td>
     </tr>
@@ -1183,7 +1172,7 @@ echo $user->name;
     </tr>
   </table>
   <p>&nbsp;</p>
-  <table width="452" height="149" border="1" align="center">
+  <table width="452"  border="1" align="center">
     <tr>
       <td colspan="2" align="center"><span class="STYLE2">Accessory Position and Latching </span></td>
     </tr>
@@ -1224,9 +1213,9 @@ echo $user->name;
     </tr>
   </table>
   <p>&nbsp;</p>
-  <table width="473" height="211" border="1" align="center">
+  <table width="473"  border="1" align="center">
     <tr>
-      <td height="99" colspan="2" align="center"><p class="STYLE2">BB Tray Alignment</p>
+      <td  colspan="2" align="center"><p class="STYLE2">BB Tray Alignment</p>
       <p class="STYLE2">(Distance off relative to wires) </p></td>
     </tr>
     <tr>
@@ -1243,7 +1232,7 @@ echo $user->name;
     </tr>
   </table>
        <p>&nbsp;</p>
-       <table width="474" height="183" border="1" align="center">
+       <table width="474"  border="1" align="center">
          <tr>
            <td colspan="2" align="center" valign="middle" class="STYLE2">PSA Position Indicator (Digital Readout vs Floor) </td>
          </tr>
@@ -1270,7 +1259,7 @@ echo $user->name;
   <p class="STYLE7">
   
 
-  <td height="99" colspan="2" align="center">
+  <td  colspan="2" align="center">
     <label>
     <textarea name="comment" cols="50" rows="8" class="STYLE4" al="al">Please comment here.</textarea>
     </label>

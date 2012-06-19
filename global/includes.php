@@ -12,4 +12,7 @@ if (isset($_SESSION['id'])) {
 } else {
   $user = new User(array("id" => 0, "name" => "Guest"));
 }
+if (!isset($_REQUEST['status'])) {
+  $_REQUEST['status'] = "";
+}
 ?>

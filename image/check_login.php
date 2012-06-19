@@ -20,7 +20,7 @@ if($selected=="user"){
 	// If result matched $myusername and $mypassword, table row must be 1 row
 
 	if($count==1){
-	// Register $myusername, $mypassword and redirect to file "main.php"
+	// register $myusername, $mypassword and redirect to file "main.php"
 	//session_start();
 	$_SESSION['name']=$username;
 	$_SESSION['password']=$password; 
@@ -40,7 +40,7 @@ if($selected=="admin"){
 	// If result matched $myusername and $mypassword, table row must be 1 row
 
 	if($count==1){
-	// Register $myusername, $mypassword and redirect to file "login_success.php"
+	// register $myusername, $mypassword and redirect to file "login_success.php"
 	
 	$_SESSION['name']=$username;
 	$_SESSION['password']=$password;  

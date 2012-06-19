@@ -14,6 +14,7 @@ echo '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 	<title>'.escape_output($title).($subtitle != "" ? " - ".$subtitle : "").'</title>
 	<link rel="shortcut icon" href="/favicon.ico" />
 	<link rel="stylesheet" href="css/bootstrap.min.css" type="text/css" />
+	<link rel="stylesheet" href="css/bootstrap-responsive.min.css" type="text/css" />
 	<link rel="stylesheet" href="css/linac-qa.css" type="text/css" />
 	<!--<link rel="stylesheet" href="css/sample.css" type="text/css" media="screen" />
 	<link rel="stylesheet" href="css/print.css" type="text/css" media="print" />
@@ -47,7 +48,9 @@ echo '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
                   <b class="caret"></b>
                 </a>
                 <ul class="dropdown-menu">
-                  <li>Stuff here.</li>
+                  <li><a href="qa.php?type=linac">Submit new record</a></li>
+                  <li><a href="image.php?type=linac">Upload an image</a></li>
+                  <li><a href="history.php?type=linac">View history</a></li>
                 </ul>
               </li>
               <li class="dropdown">
@@ -56,7 +59,9 @@ echo '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
                   <b class="caret"></b>
                 </a>
                 <ul class="dropdown-menu">
-                  <li>Stuff here.</li>
+                  <li><a href="qa.php?type=ct">Submit new record</a></li>
+                  <li><a href="image.php?type=ct">Upload an image</a></li>
+                  <li><a href="history.php?type=ct">View history</a></li>
                 </ul>
               </li>
           </ul>
@@ -106,6 +111,42 @@ function display_login_form() {
   <input id="password" name="password" size="30" type="password" />
   <input class="btn btn-small btn-primary" name="commit" type="submit" value="Sign in" />
 </form>
+';
+}
+
+function display_register_form($action=".") {
+  echo '    <form class="form-horizontal" name="register" method="post" action="'.$action.'">
+      <fieldset>
+        <legend>Sign up</legend>
+        <div class="control-group">
+          <label class="control-label">Name</label>
+          <div class="controls">
+            <input type="text" class="" name="name" id="name" />
+          </div>
+        </div>
+        <div class="control-group">
+          <label class="control-label">Email</label>
+          <div class="controls">
+            <input type="text" class="" name="email" id="email" />
+          </div>
+        </div>
+        <div class="control-group">
+          <label class="control-label">Password</label>
+          <div class="controls">
+            <input type="password" class="" name="password" id="password" />
+          </div>
+        </div>
+        <div class="control-group">
+          <label class="control-label">Confirm your password</label>
+          <div class="controls">
+            <input type="password" class="" name="password_confirmation" id="password_confirmation" />
+          </div>
+        </div>
+        <div class="form-actions">
+          <button type="submit" class="btn btn-primary">Sign up</button>
+        </div>
+      </fieldset>
+    </form>
 ';
 }
 
