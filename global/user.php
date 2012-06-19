@@ -55,10 +55,8 @@ class User {
           $bcrypt = new Bcrypt();
           $registerUser = $database->stdQuery("INSERT INTO `users` SET `name` = ".$database->quoteSmart($name).", `email` = ".$database->quoteSmart($email).", `password_hash` = ".$database->quoteSmart($bcrypt->hash($password)).", `userlevel` = 1, `last_ip` = ".$database->quoteSmart($_SERVER['REMOTE_ADDR']));
           if (!$registerUser) {
-            $registerUser->free();
             $returnArray = array("location" => "register.php", "status" => "Database errors were encountered during registration. Please try again later.");
           } else {
-            $registerUser->free();
             $returnArray = array("location" => "index.php", "status" => "Registration successful. You can now log in.");
           }
         }
