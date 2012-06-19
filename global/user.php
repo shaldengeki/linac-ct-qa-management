@@ -30,6 +30,9 @@ class User {
     if (!$bcrypt->verify($password, $findUsername['password_hash'])) {
       return false;
     }
+    
+    //update last IP address.
+    $updateLastIP = $database->stdQuery("UPDATE `users` SET `last_ip` = ".$database->quoteSmart($_SERVER['REMOTE_ADDR'])." WHERE `id` = ".intval($findUsername['id'])." LIMIT 1");
     $_SESSION['id'] = $findUsername['id'];
     $_SESSION['name'] = $findUsername['name'];
     $this->id = $findUsername['id'];
