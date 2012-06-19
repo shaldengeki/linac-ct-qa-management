@@ -71,9 +71,7 @@ class DbConn extends mysqli {
     if (!$result) {
       return false;
     }
-    $returnValue = intval($result['COUNT('.$column.')']);
-    $result->free();
-    return $returnValue;
+    return intval($result['COUNT('.$column.')']);
   }
 }
 
