@@ -15,4 +15,7 @@ if (isset($_SESSION['id'])) {
 if (!isset($_REQUEST['status'])) {
   $_REQUEST['status'] = "";
 }
+if (!isset($_REQUEST['action'])) {
+  $_REQUEST['action'] = 'index';
+}
 ?>

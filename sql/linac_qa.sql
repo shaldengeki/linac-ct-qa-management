@@ -35,7 +35,7 @@ CREATE TABLE IF NOT EXISTS `facilities` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` text COLLATE utf8_bin NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=2 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -51,6 +51,7 @@ CREATE TABLE IF NOT EXISTS `forms` (
   `name` varchar(30) COLLATE utf8_bin NOT NULL,
   `description` text COLLATE utf8_bin NOT NULL,
   `machine_type_id` int(11) DEFAULT NULL,
+  `js_path` varchar(60) COLLATE utf8_bin NOT NULL,
   PRIMARY KEY (`id`),
   KEY `machine_type_id` (`machine_type_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1 ;
@@ -230,7 +231,7 @@ CREATE TABLE IF NOT EXISTS `users` (
   UNIQUE KEY `email` (`email`(30)),
   KEY `userlevel` (`userlevel`),
   KEY `facility_id` (`facility_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=2 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1 ;
 
 --
 -- RELATIONS FOR TABLE `users`:
