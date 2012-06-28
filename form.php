@@ -24,6 +24,8 @@ switch($_REQUEST['action']) {
     break;
   default:
   case 'index':
+    echo "<h1>Forms</h1>
+";
     display_forms($database);
     echo "<a href='form.php?action=new'>Add a new form</a><br />
 ";

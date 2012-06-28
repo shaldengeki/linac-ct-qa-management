@@ -51,7 +51,8 @@ CREATE TABLE IF NOT EXISTS `forms` (
   `name` varchar(30) COLLATE utf8_bin NOT NULL,
   `description` text COLLATE utf8_bin NOT NULL,
   `machine_type_id` int(11) DEFAULT NULL,
-  `js_path` varchar(60) COLLATE utf8_bin NOT NULL,
+  `js` longtext COLLATE utf8_bin NOT NULL,
+  `php` longtext COLLATE utf8_bin NOT NULL,
   PRIMARY KEY (`id`),
   KEY `machine_type_id` (`machine_type_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1 ;

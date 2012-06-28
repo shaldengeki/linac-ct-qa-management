@@ -16,12 +16,14 @@ echo '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 	<link rel="shortcut icon" href="/favicon.ico" />
 	<link rel="stylesheet" href="css/bootstrap.min.css" type="text/css" />
 	<link rel="stylesheet" href="css/bootstrap-responsive.min.css" type="text/css" />
+	<link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" type="text/css" />
 	<link rel="stylesheet" href="css/linac-qa.css" type="text/css" />
 	<!--<link rel="stylesheet" href="css/sample.css" type="text/css" media="screen" />
 	<link rel="stylesheet" href="css/print.css" type="text/css" media="print" />
 	<link rel="stylesheet" href="css/style.css" type="text/css" media="screen, projection"/>-->
   <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
   <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.18/jquery-ui.min.js"></script>
+  <script type="text/javascript" src="js/jquery-ui-timepicker-addon.js"></script>
 	<script type="text/javascript" language="javascript" src="js/jquery.dropdownPlain.js"></script>
   <script type="text/javascript" src="js/highcharts.js"></script>
   <script type="text/javascript" src="js/exporting.js"></script>
@@ -49,7 +51,7 @@ echo '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
                   <b class="caret"></b>
                 </a>
                 <ul class="dropdown-menu">
-                  <li><a href="qa.php?type=linac">Submit new record</a></li>
+                  <li><a href="form_entry.php?action=new&form_id=1">Submit new record</a></li>
                   <li><a href="image.php?type=linac">Upload an image</a></li>
                   <li><a href="history.php?type=linac">View history</a></li>
                 </ul>
@@ -60,7 +62,7 @@ echo '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
                   <b class="caret"></b>
                 </a>
                 <ul class="dropdown-menu">
-                  <li><a href="qa.php?type=ct">Submit new record</a></li>
+                  <li><a href="form_entry.php?action=new&form_id=2">Submit new record</a></li>
                   <li><a href="image.php?type=ct">Upload an image</a></li>
                   <li><a href="history.php?type=ct">View history</a></li>
                 </ul>
@@ -162,6 +164,23 @@ function display_register_form($action=".") {
 ';
 }
 
+function display_ionization_chamber_dropdown($select_id = "form_entry_form_values_ionization_chamber", $select_name_prefix="form_entry[form_values][]", $selected=0) {
+  echo "<select id='".escape_output($select_id)."' name='".escape_output($select_id)."[ionization_chamber]'>
+  <option value='Farmer (S/N 944, ND.SW(Gy/C) 5.18E+07)'>Farmer (S/N 944, ND.SW(Gy/C) 5.18E+07)</option>
+  <option value='Farmer (S/N 269, ND.SW(Gy/C) 5.32E+07)'>Farmer (S/N 269, ND.SW(Gy/C) 5.32E+07)</option>
+</select>
+";
+}
+
+function display_electrometer_dropdown($select_id = "form_entry_form_values_electrometer", $select_name_prefix="form_entry[form_values][]", $selected=0) {
+  echo "<select id='".escape_output($select_id)."' name='".escape_output($select_id)."[electrometer]'>
+  <option value='Keithley Model 614 (S/N 42215, Kelec 0.995)'>Keithley Model 614 (S/N 42215, Kelec 0.995)</option>
+  <option value='SI CDX 2000B #1 (S/N J073443, Kelec 1.000)'>SI CDX 2000B #1 (S/N J073443, Kelec 1.000)</option>
+  <option value='SI CDX 2000B #2 (S/N J073444, Kelec 1.000)'>SI CDX 2000B #2 (S/N J073444, Kelec 1.000)</option>
+</select>
+";  
+}
+
 function display_machine_types($database) {
   //lists all machine types.
   echo "<table class='table table-striped table-bordered'>
@@ -229,6 +248,18 @@ function display_machine_type_edit_form($database, $id=false) {
 ";
 }
 
+function display_machine_dropdown($database, $select_id="machine_id", $selected=0) {
+  echo "<select id='".escape_output($select_id)."' name='".escape_output($select_id)."'>
+";
+  $machineTypes = $database->stdQuery("SELECT `id`, `name` FROM `machines`");
+  while ($machine = mysqli_fetch_assoc($machine)) {
+    echo "  <option value='".intval($machine['id'])."'".(($selected == intval($machine['id'])) ? "selected='selected'" : "").">".escape_output($machine['name'])."</option>
+";
+  }
+  echo "</select>
+";
+}
+
 function display_forms($database) {
   //lists all forms.
   echo "<table class='table table-striped table-bordered'>
@@ -291,6 +322,35 @@ function display_form_edit_form($database, $id=false) {
   </fieldset>
 </form>
 ";
+}
+
+function display_form_entry_edit_form($database, $id=false, $form_id=false) {
+  // displays a form to edit form parameters.
+  if (!($form_id === false)) {
+    $formObject = $database->queryFirstRow("SELECT * FROM `forms` WHERE `id` = ".intval($form_id)." LIMIT 1");
+    if (!$formObject) {
+      $form_id = false;
+    }
+  }
+  if ($form_id === false) {
+    echo "Please specify a form ID.";
+    return;
+  }  
+  if (!($id === false)) {
+    $formEntryObject = $database->queryFirstRow("SELECT * FROM `form_entries` WHERE `id` = ".intval($id)." LIMIT 1");
+    if (!$formEntryObject) {
+      $id = false;
+    }
+  }
+  if ($formObject['php'] != '') {
+    eval($formObject['php']);
+  }
+  if ($formObject['js'] != '') {
+    echo "<script type='text/javascript'>
+  ".$formObject['js']."
+</script>
+";
+  }
 }
 
 function display_footer() {

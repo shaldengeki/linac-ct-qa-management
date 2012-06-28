@@ -24,6 +24,8 @@ switch($_REQUEST['action']) {
     break;
   default:
   case 'index':
+    echo "<h1>Machine Types</h1>
+";
     display_machine_types($database);
     echo "<a href='machine_type.php?action=new'>Add a new machine type</a><br />
 ";
