@@ -106,8 +106,77 @@ class DbConn extends mysqli {
       return array('location' => 'index.php', 'status' => 'You are not allowed to modify or create forms without first logging in.');
     }
     if (!isset($form['name']) || !isset($form['description']) || !isset($form['machine_type_id'])) {
-      return array('location' => 'form.php'.((isset($_REQUEST['id'])) ? "?id=".intval($_REQUEST['id']) : ""), 'status' => 'One or more required fields are missing. Please check your input and try again.');
-      
+      return array('location' => 'form.php'.((isset($form['id'])) ? "?id=".intval($form['id']) : ""), 'status' => 'One or more required fields are missing. Please check your input and try again.');
+    }
+    if (isset($form['id'])) {
+      // update. check to ensure that this form exists.
+      $updateForm = $this->stdQuery("UPDATE `forms` SET `name` = ".$this->quoteSmart($form['name']).", `description` = ".$this->quoteSmart($form['description']).", `machine_type_id` = ".intval($form['machine_type_id']).", `js` = ".$this->quoteSmart($form['js']).", `php` = ".$this->quoteSmart($form['php'])."
+                                      WHERE `id` = ".intval($form['id'])." LIMIT 1");
+      if (!$updateForm) {
+        return array('location' => 'form.php?action=edit&id='.intval($form['id']), 'status' => "An error occurred while updating this form. Please try again.");
+      } else {
+        return array('location' => 'form.php', 'status' => "Form successfully updated.");
+      }
+    } else {
+      // inserting form.
+      $insertForm = $this->stdQuery("INSERT INTO `forms` SET `name` = ".$this->quoteSmart($form['name']).", `description` = ".$this->quoteSmart($form['description']).", `machine_type_id` = ".intval($form['machine_type_id']).", `js` = ".$this->quoteSmart($form['js']).", `php` = ".$this->quoteSmart($form['php']));
+      if (!$insertForm) {
+        return array('location' => 'form.php?action=new', 'status' => "An error occurred while creating this form. Please try again.");
+      } else {
+        return array('location' => 'form.php', 'status' => "Form successfully created.");
+      }
+    }
+  }
+  public function create_or_update_form_entry($user, $form_entry) {
+    if (!$user->loggedIn($this)) {
+      return array('location' => 'index.php', 'status' => 'You are not allowed to modify or create forms without first logging in.');
+    }
+    if (!isset($form_entry['machine_id']) || !isset($form_entry['form_id'])) {
+      return array('location' => 'form_entry.php'.((isset($form_entry['id'])) ? "?id=".intval($form_entry['id']) : ""), 'status' => 'Please specify a machine ID and form ID and try again.');
+    } else {
+      if (isset($form_entry['id'])) {
+        // updating a form entry. check permissions and existence of form entry.
+        $checkUser = $this->queryFirstValue("SELECT `user_id` FROM `form_entries` WHERE `id` = ".intval($form_entry['id'])." && `form_id` = ".intval($form_entry['form_id']));
+        if (!$checkUser) {
+          return array('location' => 'form_entry.php'.((isset($form_entry['id'])) ? "?id=".intval($form_entry['id']) : ""), 'status' => 'Cannot find that form entry to update.');          
+        }
+        if ($user->id != intval($checkUser)) {
+          return array('location' => 'form_entry.php'.((isset($form_entry['id'])) ? "?id=".intval($form_entry['id']) : ""), 'status' => "You don't have permissions to update that form entry.");          
+        }
+        foreach ($form_entry['form_values'] as $name=>$value) {
+          $findField = $this->queryFirstValue("SELECT `id` FROM `form_fields` WHERE `form_id` = ".intval($form_entry['form_id'])." && `name` = ".$this->quoteSmart($name));
+          if (!$findField) {
+            $insertField = $this->stdQuery("INSERT INTO `form_fields` (`form_id`, `name`) VALUES (".intval($form_entry['form_id']).", ".$this->quoteSmart($name).")");
+            $findField = $this->insert_id;
+          }
+          $insertOrUpdateValue = $this->stdQuery("INSERT INTO `form_values` (`value`, `form_field_id`, `form_entry_id`) VALUES (".$this->quoteSmart($value).", ".intval($findField).", ".intval($form_entry['id']).") ON DUPLICATE KEY UPDATE `value` = ".$this->quoteSmart($value));
+        }
+        return array('location' => 'form_entry.php', 'status' => "Successfully updated form entry.");
+      } else {
+        // inserting a form entry.
+        // ensure that this form exists.
+        $checkForm = $this->queryCount("SELECT COUNT(*) FROM `forms` WHERE `id` = ".intval($form_entry['form_id']));
+        if (!$checkForm || $checkForm != 1) {
+          return array('location' => 'form_entry.php?action=new'.((isset($form_entry['form_id'])) ? "&form_id=".intval($form_entry['form_id']) : ""), 'status' => "The specified form does not exist.");                  
+        }
+        $insertEntry = $this->stdQuery("INSERT INTO `form_entries` (`form_id`, `machine_id`, `user_id`, `comments`, `created_at`, `updated_at`) VALUES (".intval($form_entry['form_id']).", ".intval($form_entry['machine_id']).", ".intval($user->id).", ".$this->quoteSmart($form_entry['comments']).", '".date('Y-m-d H:i:s')."', '".date('Y-m-d H:i:s')."')");
+        $form_entry['id'] = intval($this->insert_id);
+        $valueQueryArray = [];
+        foreach ($form_entry['form_values'] as $name=>$value) {
+          $findField = $this->queryFirstValue("SELECT `id` FROM `form_fields` WHERE `form_id` = ".intval($form_entry['form_id'])." && `name` = ".$this->quoteSmart($name));
+          if (!$findField) {
+            $insertField = $this->stdQuery("INSERT INTO `form_fields` (`form_id`, `name`) VALUES (".intval($form_entry['form_id']).", ".$this->quoteSmart($name).")");
+            $findField = $this->insert_id;
+          }
+          $valueQueryArray[] = "(".$this->quoteSmart($value).", ".intval($findField).", ".intval($form_entry['id']).")";
+        }
+        $insertFormValues = $this->stdQuery("INSERT INTO `form_values` (`value`, `form_field_id`, `form_entry_id`) VALUES ".implode(",", $valueQueryArray));
+        if ($insertFormValues) {
+          return array('location' => 'form_entry.php', 'status' => "Successfully inserted form entry.");
+        } else {
+          return array('location' => 'form_entry.php?action=new'.((isset($form_entry['form_id'])) ? "&form_id=".intval($form_entry['form_id']) : ""), 'status' => "Error while inserting form entry. Please try again.");
+        }
+      }
     }
   }
 }

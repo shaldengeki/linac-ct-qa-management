@@ -36,7 +36,7 @@ echo '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 <body>
   <div class="navbar navbar-fixed-top">
     <div class="navbar-inner">
-      <div class="container">
+      <div class="container-fluid">
         <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
@@ -106,7 +106,7 @@ echo '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
       </div>
     </div>
   </div>
-  <div class="container">
+  <div class="container-fluid">
 ';
   if ($status != "") {
     echo '<div class="alert">
@@ -251,8 +251,8 @@ function display_machine_type_edit_form($database, $id=false) {
 function display_machine_dropdown($database, $select_id="machine_id", $selected=0) {
   echo "<select id='".escape_output($select_id)."' name='".escape_output($select_id)."'>
 ";
-  $machineTypes = $database->stdQuery("SELECT `id`, `name` FROM `machines`");
-  while ($machine = mysqli_fetch_assoc($machine)) {
+  $machines = $database->stdQuery("SELECT `id`, `name` FROM `machines`");
+  while ($machine = mysqli_fetch_assoc($machines)) {
     echo "  <option value='".intval($machine['id'])."'".(($selected == intval($machine['id'])) ? "selected='selected'" : "").">".escape_output($machine['name'])."</option>
 ";
   }
@@ -296,6 +296,7 @@ function display_form_edit_form($database, $id=false) {
   }
   echo "<form action='form.php".(($id === false) ? "" : "?id=".intval($id))."' method='POST' class='form-horizontal'>
   <fieldset>
+".(($id === false) ? "" : "<input type='hidden' name='form[id]' value='".intval($id)."' />")."
     <div class='control-group'>
       <label class='control-label' for='form[name]'>Name</label>
       <div class='controls'>
@@ -315,6 +316,18 @@ function display_form_edit_form($database, $id=false) {
   display_machine_type_dropdown($database, "form[machine_type_id]", (($id === false) ? 0 : intval($formObject['machine_type_id'])));
   echo "      </div>
     </div>
+    <div class='control-group'>
+      <label class='control-label' for='form[js]'>Javascript</label>
+      <div class='controls'>
+        <textarea class='input-xlarge' id='form[js]' cols='500' rows='10'>".escape_output($formObject['js'])."</textarea>
+      </div>
+    </div>
+    <div class='control-group'>
+      <label class='control-label' for='form[php]'>PHP</label>
+      <div class='controls'>
+        <textarea class='input-xlarge' id='form[php]' cols='500' rows='10'>".escape_output($formObject['php'])."</textarea>
+      </div>
+    </div>
     <div class='form-actions'>
       <button type='submit' class='btn btn-primary'>".(($id === false) ? "Create form" : "Save changes")."</button>
       <button class='btn'>".(($id === false) ? "Go back" : "Discard changes")."</button>
@@ -326,6 +339,15 @@ function display_form_edit_form($database, $id=false) {
 
 function display_form_entry_edit_form($database, $id=false, $form_id=false) {
   // displays a form to edit form parameters.
+  if (!($id === false)) {
+    $formEntryObject = $database->queryFirstRow("SELECT * FROM `form_entries` WHERE `id` = ".intval($id)." LIMIT 1");
+    if (!$formEntryObject) {
+      $id = false;
+      $form_id = false;
+    } else {
+      $form_id = $formEntryObject['form_id'];
+    }
+  }
   if (!($form_id === false)) {
     $formObject = $database->queryFirstRow("SELECT * FROM `forms` WHERE `id` = ".intval($form_id)." LIMIT 1");
     if (!$formObject) {
@@ -333,13 +355,16 @@ function display_form_entry_edit_form($database, $id=false, $form_id=false) {
     }
   }
   if ($form_id === false) {
-    echo "Please specify a form ID.";
+    echo "Please specify a valid form entry ID or form ID.";
     return;
-  }  
+  }
   if (!($id === false)) {
-    $formEntryObject = $database->queryFirstRow("SELECT * FROM `form_entries` WHERE `id` = ".intval($id)." LIMIT 1");
-    if (!$formEntryObject) {
-      $id = false;
+    $formValues = $database->stdQuery("SELECT * FROM `form_values` WHERE `form_entry_id` = ".intval($id));
+    while ($formValue = mysqli_fetch_assoc($formValues)) {
+      $formField = $database->queryFirstValue("SELECT `name` FROM `form_fields` WHERE `id` = ".intval($formValue['form_field_id'])." LIMIT 1");
+      if ($formField) {
+        $formEntryObject['form_values'][$formField] = $formValue['value'];
+      }
     }
   }
   if ($formObject['php'] != '') {

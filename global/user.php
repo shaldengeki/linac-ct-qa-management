@@ -2,7 +2,7 @@
 
 class User {
 
-  private $id;
+  public $id;
   public $name;
   
   public function __construct($inputArray) {

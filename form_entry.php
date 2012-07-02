@@ -5,11 +5,6 @@ if (!$user->loggedIn($database)) {
 }
 
 if (isset($_POST['form_entry'])) {
-  echo "<pre>
-";
-  print_r($_POST['form_entry']);
-  echo "</pre>
-";
   $createFormEntry = $database->create_or_update_form_entry($user, $_POST['form_entry']);
   header("Location: ".$createFormEntry['location']."?status=".$createFormEntry['status']);
 }
@@ -25,7 +20,7 @@ switch($_REQUEST['action']) {
   case 'edit':
     echo "<h1>Modify a form entry</h1>
 ";
-    display_form_entry_edit_form($database, intval($_REQUEST['id']), intval($_REQUEST['form_id']));
+    display_form_entry_edit_form($database, intval($_REQUEST['id']), false);
     break;
   default:
   case 'index':
