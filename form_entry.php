@@ -15,12 +15,12 @@ switch($_REQUEST['action']) {
   case 'new':
     echo "<h1>Create a form entry</h1>
 ";
-    display_form_entry_edit_form($database, false, intval($_REQUEST['form_id']));
+    display_form_entry_edit_form($database, $user, false, intval($_REQUEST['form_id']));
     break;
   case 'edit':
     echo "<h1>Modify a form entry</h1>
 ";
-    display_form_entry_edit_form($database, intval($_REQUEST['id']), false);
+    display_form_entry_edit_form($database, $user, intval($_REQUEST['id']), false);
     break;
   default:
   case 'index':

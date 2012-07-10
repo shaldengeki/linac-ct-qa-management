@@ -4,6 +4,7 @@ class User {
 
   public $id;
   public $name;
+  public $facility_id;
   
   public function __construct($inputArray) {
     foreach ($inputArray as $key=>$value) {
@@ -23,7 +24,7 @@ class User {
   }
   public function logIn($database, $username, $password) {
     $bcrypt = new Bcrypt();
-    $findUsername = $database->queryFirstRow("SELECT `id`, `name`, `password_hash` FROM `users` WHERE `email` = ".$database->quoteSmart($username)." LIMIT 1");
+    $findUsername = $database->queryFirstRow("SELECT `id`, `name`, `facility_id`, `password_hash` FROM `users` WHERE `email` = ".$database->quoteSmart($username)." LIMIT 1");
     if (!$findUsername) {
       return false;
     }
@@ -35,32 +36,45 @@ class User {
     $updateLastIP = $database->stdQuery("UPDATE `users` SET `last_ip` = ".$database->quoteSmart($_SERVER['REMOTE_ADDR'])." WHERE `id` = ".intval($findUsername['id'])." LIMIT 1");
     $_SESSION['id'] = $findUsername['id'];
     $_SESSION['name'] = $findUsername['name'];
-    $this->id = $findUsername['id'];
+    $_SESSION['facility_id'] = $findUsername['facility_id'];
+    $this->id = intval($findUsername['id']);
+    $this->facility_id = intval($findUsername['facility_id']);
     return true;
   }
   
-  public function register($database, $name, $email, $password, $password_confirmation) {
-    //check if user's passwords match.
-    if ($password != $password_confirmation) {
-        $returnArray = array("location" => "register.php", "status" => "Your passwords do not match. Please try again.");      
+  public function register($database, $name, $email, $password, $password_confirmation, $facility_id) {
+    //registration is closed to all non-admin users.
+    if (!$this->loggedIn($database) || !$this->isAdmin($database)) {
+      $returnArray = array("location" => "register.php", "status" => "Registration is closed to all non-admin users. Please contact your facility administrator for access.");
     } else {
-      //check if email is well-formed.
-      $email_regex = "/[0-9A-Za-z\\+\\-\\%\\.]+@[0-9A-Za-z\\.\\-]+\\.[A-Za-z]{2,4}/";
-      if (!preg_match($email_regex, $email)) {
-        $returnArray = array("location" => "register.php", "status" => "The email address you have entered is malformed. Please check it and try again.");
+      //check if user's passwords match.
+      if ($password != $password_confirmation) {
+          $returnArray = array("location" => "register.php", "status" => "Your passwords do not match. Please try again.");      
       } else {
-        //check if user is already registered.
-        $checkNameEmail = intval($database->queryCount("SELECT COUNT(*) FROM `users` WHERE (`name` = ".$database->quoteSmart($name)." || `email` = ".$database->quoteSmart($email).")"));
-        if ($checkNameEmail > 0) {
-          $returnArray = array("location" => "register.php", "status" => "Your name or email has previously been registered. Please try logging in.");
+        //check if email is well-formed.
+        $email_regex = "/[0-9A-Za-z\\+\\-\\%\\.]+@[0-9A-Za-z\\.\\-]+\\.[A-Za-z]{2,4}/";
+        if (!preg_match($email_regex, $email)) {
+          $returnArray = array("location" => "register.php", "status" => "The email address you have entered is malformed. Please check it and try again.");
         } else {
-          //register this user.
-          $bcrypt = new Bcrypt();
-          $registerUser = $database->stdQuery("INSERT INTO `users` SET `name` = ".$database->quoteSmart($name).", `email` = ".$database->quoteSmart($email).", `password_hash` = ".$database->quoteSmart($bcrypt->hash($password)).", `userlevel` = 1, `last_ip` = ".$database->quoteSmart($_SERVER['REMOTE_ADDR']));
-          if (!$registerUser) {
-            $returnArray = array("location" => "register.php", "status" => "Database errors were encountered during registration. Please try again later.");
+          //check if user is already registered.
+          $checkNameEmail = intval($database->queryCount("SELECT COUNT(*) FROM `users` WHERE (`name` = ".$database->quoteSmart($name)." || `email` = ".$database->quoteSmart($email).")"));
+          if ($checkNameEmail > 0) {
+            $returnArray = array("location" => "register.php", "status" => "Your name or email has previously been registered. Please try logging in.");
           } else {
-            $returnArray = array("location" => "index.php", "status" => "Registration successful. You can now log in.");
+            //check if this facility exists.
+            $checkFacilityExists = intval($database->queryCount("SELECT COUNT(*) FROM `facilities` WHERE `id` = ".intval($facility_id)));
+            if ($checkFacilityExists < 1) {
+              $returnArray = array("location" => "register.php", "status" => "That facility does not exist. Please try again.");
+            } else {
+              //register this user.
+              $bcrypt = new Bcrypt();
+              $registerUser = $database->stdQuery("INSERT INTO `users` SET `name` = ".$database->quoteSmart($name).", `email` = ".$database->quoteSmart($email).", `password_hash` = ".$database->quoteSmart($bcrypt->hash($password)).", `userlevel` = 1, `last_ip` = ".$database->quoteSmart($_SERVER['REMOTE_ADDR']).", `facility_id` = ".intval($facility_id));
+              if (!$registerUser) {
+                $returnArray = array("location" => "register.php", "status" => "Database errors were encountered during registration. Please try again later.");
+              } else {
+                $returnArray = array("location" => "register.php", "status" => "Registration successful. ".escape_output($name)." can now log in.");
+              }
+            }
           }
         }
       }
@@ -69,14 +83,25 @@ class User {
   }
   
   public function isAdmin($database) {
-    if (!$this->loggedIn) {
+    if (!$this->loggedIn($database)) {
       return false;
     }
-    $checkUserlevel = $database->queryFirstRow("SELECT `userlevel` FROM `users` WHERE `id` = ".intval($this->id));
+    $checkUserlevel = $database->queryFirstValue("SELECT `userlevel` FROM `users` WHERE `id` = ".intval($this->id));
     if (!$checkUserlevel or intval($checkUserlevel) < 2) {
       return false;
     }
     return true;
+  }
+  
+  public function facility($database) {
+    if (!$this->facility_id) {
+      return false;
+    }
+    $getFacility = $database->queryFirstRow("SELECT * FROM `facilities` WHERE `id` = ".intval($this->facility_id)." LIMIT 1");
+    if (!$getFacility) {
+      return false;
+    }
+    return $getFacility;
   }
 }
 

@@ -15,18 +15,18 @@ switch($_REQUEST['action']) {
   case 'new':
     echo "<h1>Add a machine type</h1>
 ";
-    display_machine_type_edit_form($database);
+    display_machine_type_edit_form($database, $user);
     break;
   case 'edit':
     echo "<h1>Modify a machine type</h1>
 ";
-    display_machine_type_edit_form($database, intval($_REQUEST['id']));
+    display_machine_type_edit_form($database, $user, intval($_REQUEST['id']));
     break;
   default:
   case 'index':
     echo "<h1>Machine Types</h1>
 ";
-    display_machine_types($database);
+    display_machine_types($database, $user);
     echo "<a href='machine_type.php?action=new'>Add a new machine type</a><br />
 ";
     break;
