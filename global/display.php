@@ -1,5 +1,17 @@
 ﻿<?php
 
+function humanize($str) {
+  $str = trim(strtolower($str));
+  $str = preg_replace('/_/', ' ', $str);
+  $str = preg_replace('/[^a-z0-9\s+]/', '', $str);
+  $str = preg_replace('/\s+/', ' ', $str);
+  $str = explode(' ', $str);
+
+  $str = array_map('ucwords', $str);
+
+  return implode(' ', $str);
+}
+
 function escape_output($input) {
   return htmlspecialchars($input, ENT_QUOTES, "UTF-8");
 }
@@ -25,6 +37,8 @@ echo '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
   <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.18/jquery-ui.min.js"></script>
   <script type="text/javascript" src="js/jquery-ui-timepicker-addon.js"></script>
 	<script type="text/javascript" language="javascript" src="js/jquery.dropdownPlain.js"></script>
+  <script type="text/javascript" src="js/d3.v2.min.js"></script>
+  <script type="text/javascript" src="js/d3-helpers.js"></script>
   <script type="text/javascript" src="js/highcharts.js"></script>
   <script type="text/javascript" src="js/exporting.js"></script>
 	<script type="text/javascript" language="javascript" src="js/calcFunctions.js"></script>
@@ -273,7 +287,7 @@ function display_machine_types($database, $user) {
     $machine_types = $database->stdQuery("SELECT `id`, `name`, `description` FROM `machine_types` ORDER BY `id` ASC");
     while ($machine_type = mysqli_fetch_assoc($machine_types)) {
       echo "    <tr>
-      <td><a href='machine_type.php?action=edit&id=".intval($machine_type['id'])."'>".escape_output($machine_type['name'])."</a></td>
+      <td><a href='machine_type.php?action=show&id=".intval($machine_type['id'])."'>".escape_output($machine_type['name'])."</a></td>
       <td>".escape_output($machine_type['description'])."</td>
     </tr>
 ";
@@ -327,6 +341,20 @@ function display_machine_type_edit_form($database, $user, $id=false) {
 ";
 }
 
+function display_machine_type_info($database, $user, $machine_type_id, $graph_div_prefix = "machine_type_info") {
+  $machineTypeObject = $database->queryFirstRow("SELECT * FROM `machine_types` WHERE `id` = ".intval($machine_type_id)." LIMIT 1");
+  if (!$machineTypeObject) {
+    echo "This machine_type does not exist. Please select another machine_type and try again.";
+  } else {
+    $machines = $database->stdQuery("SELECT `id`, `name` FROM `machines` WHERE `facility_id` = ".intval($user->facility_id)." AND `machine_type_id` = ".intval($machineTypeObject['id']));
+    while ($machine = mysqli_fetch_assoc($machines)) {
+      echo "<h2>".escape_output($machine['name'])."</h2>
+";
+      display_machine_info($database, $user, $machine['id'], $graph_div_prefix."_".$machine['id']);
+    }
+  }
+}
+
 function display_machines($database, $user) {
   //lists all machines.
   if (!$user->isAdmin($database)) {
@@ -353,7 +381,7 @@ function display_machines($database, $user) {
         $type = "None";
       }
       echo "    <tr>
-      <td><a href='machine.php?action=edit&id=".intval($machine['id'])."'>".escape_output($machine['name'])."</a></td>
+      <td><a href='machine.php?action=show&id=".intval($machine['id'])."'>".escape_output($machine['name'])."</a></td>
       <td>".escape_output($type)."</td>
       <td>".escape_output($facility)."</td>
     </tr>
@@ -422,6 +450,36 @@ function display_machine_edit_form($database, $user, $id=false) {
 ";
 }
 
+function display_machine_info($database, $user, $machine_id, $graph_div_prefix = "machine_info") {
+  $machineObject = $database->queryFirstRow("SELECT * FROM `machines` WHERE `id` = ".intval($machine_id)." LIMIT 1");
+  if (!$machineObject) {
+    echo "This machine does not exist. Please select another machine and try again.";
+  } else {
+    $i = 0;
+    $machine_fields = $database->stdQuery("SELECT `form_fields`.`id`, `form_fields`.`name` FROM `form_entries` LEFT OUTER JOIN `form_fields` ON `form_fields`.`form_id` = `form_entries`.`form_id` WHERE `form_entries`.`machine_id` = ".intval($machine_id));
+    while ($machine_field = mysqli_fetch_assoc($machine_fields)) {
+      $field_values = $database->queryAssoc("SELECT `form_values`.`value`, `form_entries`.`created_at` AS `date` FROM `form_values` LEFT OUTER JOIN `form_entries` ON `form_values`.`form_entry_id` = `form_entries`.`id` WHERE `form_values`.`form_field_id` = ".intval($machine_field['id'])." ORDER BY `form_entries`.`created_at` ASC");
+      $field_strings = array();
+      $field_labels = array();
+      
+      foreach ($field_values as $key => $field_value) {
+        if (is_numeric($field_value[0])) {
+          $field_strings[] = "{x: '".date('m/d/y', strtotime($field_value[1]))."', y: ".escape_output($field_value[0])."}";
+        }
+      }
+      if (count($field_strings) > 1) {
+        echo "<span id='".escape_output($graph_div_prefix)."_".intval($i)."'></span>
+<script type='text/javascript'>
+var data = [".implode(",", $field_strings)."];
+displayFormFieldLineGraph(data, '".humanize($machine_field['name'])."', '".escape_output($graph_div_prefix)."_".intval($i)."');
+</script>
+";
+        $i++;
+      }
+    }
+  }
+}
+
 function display_forms($database) {
   //lists all forms.
   echo "<table class='table table-striped table-bordered'>
@@ -448,12 +506,19 @@ function display_forms($database) {
 ";
 }
 
-function display_form_history($database, $user, $id) {
-  $formObject = $database->queryFirstRow("SELECT * FROM `forms` WHERE `id` = ".intval($id)." LIMIT 1");
+function display_form_field_graph($database, $form_field) {
+  $field_values = $database->queryAssoc("SELECT * FROM `form_values` WHERE `form_field_id` = ".intval($form_field['id']));
+}
+
+function display_form_history($database, $user, $form_id) {
+  $formObject = $database->queryFirstRow("SELECT * FROM `forms` WHERE `id` = ".intval($form_id)." LIMIT 1");
   if (!$formObject) {
     echo "This form does not exist. Please select another form and try again.";
   } else {
-    echo "This is coming very soon!";
+    $form_fields = $database->stdQuery("SELECT `id`, `name` FROM `form_fields` WHERE `form_id` = ".intval($form_id));
+    while ($form_field = mysqli_fetch_assoc($form_fields)) {
+      display_form_field_graph($database, $form_field);
+    }
   }
 }
 

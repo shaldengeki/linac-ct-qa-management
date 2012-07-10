@@ -22,7 +22,7 @@
       <div class='span6'>
         <h3>Measurement parameters</h3>
         <div class='control-group'>
-          <label class='control-label' for='form_entry[form_values][temperature]'>Temperature (°C)</label>
+          <label class='control-label' for='form_entry[form_values][temperature]'>Temperature (&deg;C)</label>
           <div class='controls'>
             <input name='form_entry[form_values][temperature]' type='text' class='input-xlarge' id='form_entry_form_values_temperature'".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['temperature'])."'").">
           </div>
@@ -233,11 +233,11 @@
             </tr>
             <tr>
               <td>Mc</td>
-              <td><input name='form_entry[form_values][electron_output_calibration_6MeV_Mc]' class='span12' id='form_entry_form_values_electron_output_calibration_6MeV_Mc' /></td>
-              <td><input name='form_entry[form_values][electron_output_calibration_9MeV_Mc]' class='span12' id='form_entry_form_values_electron_output_calibration_9MeV_Mc' /></td>
-              <td><input name='form_entry[form_values][electron_output_calibration_12MeV_Mc]' class='span12' id='form_entry_form_values_electron_output_calibration_12MeV_Mc' /></td>
-              <td><input name='form_entry[form_values][electron_output_calibration_16MeV_Mc]' class='span12' id='form_entry_form_values_electron_output_calibration_16MeV_Mc' /></td>
-              <td><input name='form_entry[form_values][electron_output_calibration_20MeV_Mc]' class='span12' id='form_entry_form_values_electron_output_calibration_20MeV_Mc' /></td>
+              <td><input name='form_entry[constants][electron_output_calibration_6MeV_Mc]' class='span12' id='form_entry_form_values_electron_output_calibration_6MeV_Mc' /></td>
+              <td><input name='form_entry[constants][electron_output_calibration_9MeV_Mc]' class='span12' id='form_entry_form_values_electron_output_calibration_9MeV_Mc' /></td>
+              <td><input name='form_entry[constants][electron_output_calibration_12MeV_Mc]' class='span12' id='form_entry_form_values_electron_output_calibration_12MeV_Mc' /></td>
+              <td><input name='form_entry[constants][electron_output_calibration_16MeV_Mc]' class='span12' id='form_entry_form_values_electron_output_calibration_16MeV_Mc' /></td>
+              <td><input name='form_entry[constants][electron_output_calibration_20MeV_Mc]' class='span12' id='form_entry_form_values_electron_output_calibration_20MeV_Mc' /></td>
             </tr>
             <tr>
               <td>%diff</td>
@@ -281,11 +281,11 @@
               </tr>
               <tr>
                 <td>Q2</td>
-                <td><input name='form_entry[form_values][electron_output_calibration_adjusted_6MeV_q2]' class='form_entry_form_values_electron_output_calibration_adjusted_6MeV span12' id='form_entry_form_values_electron_output_calibration_adjusted_6MeV_adjusted_q2' /></td>
-                <td><input name='form_entry[form_values][electron_output_calibration_adjusted_9MeV_q2]' class='form_entry_form_values_electron_output_calibration_adjusted_9MeV span12' id='form_entry_form_values_electron_output_calibration_adjusted_9MeV_adjusted_q2' /></td>
-                <td><input name='form_entry[form_values][electron_output_calibration_adjusted_12MeV_q2]' class='form_entry_form_values_electron_output_calibration_adjusted_12MeV span12' id='form_entry_form_values_electron_output_calibration_adjusted_12MeV_adjusted_q2' /></td>
-                <td><input name='form_entry[form_values][electron_output_calibration_adjusted_16MeV_q2]' class='form_entry_form_values_electron_output_calibration_adjusted_16MeV span12' id='form_entry_form_values_electron_output_calibration_adjusted_16MeV_adjusted_q2' /></td>
-                <td><input name='form_entry[form_values][electron_output_calibration_adjusted_20MeV_q2]' class='form_entry_form_values_electron_output_calibration_adjusted_20MeV span12' id='form_entry_form_values_electron_output_calibration_adjusted_20MeV_adjusted_q2' /></td>
+                <td><input name='form_entry[form_values][electron_output_calibration_adjusted_6MeV_q2]' class='form_entry_form_values_electron_output_calibration_adjusted_6MeV span12' id='form_entry_form_values_electron_output_calibration_adjusted_6MeV_q2' /></td>
+                <td><input name='form_entry[form_values][electron_output_calibration_adjusted_9MeV_q2]' class='form_entry_form_values_electron_output_calibration_adjusted_9MeV span12' id='form_entry_form_values_electron_output_calibration_adjusted_9MeV_q2' /></td>
+                <td><input name='form_entry[form_values][electron_output_calibration_adjusted_12MeV_q2]' class='form_entry_form_values_electron_output_calibration_adjusted_12MeV span12' id='form_entry_form_values_electron_output_calibration_adjusted_12MeV_q2' /></td>
+                <td><input name='form_entry[form_values][electron_output_calibration_adjusted_16MeV_q2]' class='form_entry_form_values_electron_output_calibration_adjusted_16MeV span12' id='form_entry_form_values_electron_output_calibration_adjusted_16MeV_q2' /></td>
+                <td><input name='form_entry[form_values][electron_output_calibration_adjusted_20MeV_q2]' class='form_entry_form_values_electron_output_calibration_adjusted_20MeV span12' id='form_entry_form_values_electron_output_calibration_adjusted_20MeV_q2' /></td>
               </tr>
               <tr>
                 <td>Q3</td>
@@ -296,12 +296,28 @@
                 <td><input name='form_entry[form_values][electron_output_calibration_adjusted_20MeV_q3]' class='form_entry_form_values_electron_output_calibration_adjusted_20MeV span12' id='form_entry_form_values_electron_output_calibration_adjusted_20MeV_q3' /></td>
               </tr>
               <tr>
+                <td>Avg</td>
+                <td><input name='form_entry[form_values][electron_output_calibration_adjusted_6MeV_avg]' class='span12' id='form_entry_form_values_electron_output_calibration_adjusted_6MeV_avg' /></td>
+                <td><input name='form_entry[form_values][electron_output_calibration_adjusted_9MeV_avg]' class='span12' id='form_entry_form_values_electron_output_calibration_adjusted_9MeV_avg' /></td>
+                <td><input name='form_entry[form_values][electron_output_calibration_adjusted_12MeV_avg]' class='span12' id='form_entry_form_values_electron_output_calibration_adjusted_12MeV_avg' /></td>
+                <td><input name='form_entry[form_values][electron_output_calibration_adjusted_16MeV_avg]' class='span12' id='form_entry_form_values_electron_output_calibration_adjusted_16MeV_avg' /></td>
+                <td><input name='form_entry[form_values][electron_output_calibration_adjusted_20MeV_avg]' class='span12' id='form_entry_form_values_electron_output_calibration_adjusted_20MeV_avg' /></td>
+              </tr>
+              <tr>
                 <td>M</td>
                 <td><input name='form_entry[form_values][electron_output_calibration_6eMeV_adjusted_M]' class='span12' id='form_entry_form_values_electron_output_calibration_adjusted_6MeV_M' /></td>
                 <td><input name='form_entry[form_values][electron_output_calibration_adjusted_9MeV_M]' class='span12' id='form_entry_form_values_electron_output_calibration_adjusted_9MeV_M' /></td>
                 <td><input name='form_entry[form_values][electron_output_calibration_adjusted_12MeV_M]' class='span12' id='form_entry_form_values_electron_output_calibration_adjusted_12MeV_M' /></td>
                 <td><input name='form_entry[form_values][electron_output_calibration_adjusted_16MeV_M]' class='span12' id='form_entry_form_values_electron_output_calibration_adjusted_16MeV_M' /></td>
                 <td><input name='form_entry[form_values][electron_output_calibration_adjusted_20MeV_M]' class='span12' id='form_entry_form_values_electron_output_calibration_adjusted_20MeV_M' /></td>
+              </tr>
+              <tr>
+                <td>Mc</td>
+                <td><input name='form_entry[constants][electron_output_calibration_adjusted_6MeV_Mc]' class='span12' id='form_entry_form_values_electron_output_calibration_adjusted_6MeV_Mc' /></td>
+                <td><input name='form_entry[constants][electron_output_calibration_adjusted_9MeV_Mc]' class='span12' id='form_entry_form_values_electron_output_calibration_adjusted_9MeV_Mc' /></td>
+                <td><input name='form_entry[constants][electron_output_calibration_adjusted_12MeV_Mc]' class='span12' id='form_entry_form_values_electron_output_calibration_adjusted_12MeV_Mc' /></td>
+                <td><input name='form_entry[constants][electron_output_calibration_adjusted_16MeV_Mc]' class='span12' id='form_entry_form_values_electron_output_calibration_adjusted_16MeV_Mc' /></td>
+                <td><input name='form_entry[constants][electron_output_calibration_adjusted_20MeV_Mc]' class='span12' id='form_entry_form_values_electron_output_calibration_adjusted_20MeV_Mc' /></td>
               </tr>
               <tr>
                 <td>%diff</td>

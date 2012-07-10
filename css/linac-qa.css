@@ -9,3 +9,12 @@ body {
 .ui-timepicker-div dl dd { margin: 0 10px 10px 65px; }
 .ui-timepicker-div td { font-size: 90%; }
 .ui-tpicker-grid-label { background: none; border: none; margin: 0; padding: 0; }
+
+/* css for form graphs. */
+.rule line {
+  stroke: #eee;
+}
+path {
+  fill: none;
+  stroke: maroon;
+}?

@@ -22,6 +22,16 @@ switch($_REQUEST['action']) {
 ";
     display_machine_edit_form($database, $user, intval($_REQUEST['id']));
     break;
+  case 'show':
+    $machineName = $database->queryFirstValue("SELECT `name` FROM `machines` WHERE `id` = ".intval($_REQUEST['id'])." LIMIT 1");
+    if (!$machineName) {
+      echo "This machine was not found. Please select another machine and try again.";
+    } else {
+      echo "<h1>".escape_output($machineName)." - History</h1> (<a href='machine.php?action=edit&id=".intval($_REQUEST['id'])."'>edit</a>)
+";
+      display_machine_info($database, $user, intval($_REQUEST['id']));
+    }
+    break;
   default:
   case 'index':
     echo "<h1>Machines</h1>

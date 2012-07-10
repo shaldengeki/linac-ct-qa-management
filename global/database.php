@@ -105,7 +105,7 @@ class DbConn extends mysqli {
     return $returnArray;
   }
   public function create_or_update_machine_type($user, $machine_type) {
-    if (!$user->loggedIn($this)) {
+    if (!$user->loggedIn($this) || !$user->isAdmin($this)) {
       $returnArray = array('location' => 'index.php', 'status' => 'You are not allowed to modify or create machine types without first logging in.');
     } elseif (!isset($machine_type['name']) || !isset($machine_type['description'])) {
       $returnArray = array('location' => 'machine_type.php'.((isset($_REQUEST['id'])) ? "?id=".intval($_REQUEST['id']) : ""), 'status' => 'One or more required fields are missing. Please check your input and try again.');
@@ -179,7 +179,7 @@ class DbConn extends mysqli {
     return $returnArray;
   }
   public function create_or_update_form($user, $form) {
-    if (!$user->loggedIn($this)) {
+    if (!$user->loggedIn($this) || !$user->isAdmin($this)) {
       return array('location' => 'index.php', 'status' => 'You are not allowed to modify or create forms without first logging in.');
     }
     if (!isset($form['name']) || !isset($form['description']) || !isset($form['machine_type_id'])) {
