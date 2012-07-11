@@ -558,18 +558,18 @@ function display_form_edit_form($database, $user, $id=false) {
     <div class='control-group'>
       <label class='control-label' for='form[js]'>Javascript</label>
       <div class='controls'>
-        <textarea class='input-xlarge' id='form[js]' name='form[js]' cols='500' rows='10'>".escape_output($formObject['js'])."</textarea>
+        <textarea class='input-xlarge' id='form[js]' name='form[js]' cols='500' rows='10'>".(($id === false) ? "" : escape_output($formObject['js']))."</textarea>
       </div>
     </div>
     <div class='control-group'>
       <label class='control-label' for='form[php]'>PHP</label>
       <div class='controls'>
-        <textarea class='input-xlarge' id='form[php]' name='form[php]' cols='500' rows='10'>".escape_output($formObject['php'])."</textarea>
+        <textarea class='input-xlarge' id='form[php]' name='form[php]' cols='500' rows='10'>".(($id === false) ? "" : escape_output($formObject['php']))."</textarea>
       </div>
     </div>
     <div class='form-actions'>
       <button type='submit' class='btn btn-primary'>".(($id === false) ? "Create form" : "Save changes")."</button>
-      <a href='form.php' class='btn'>".(($id === false) ? "Go back" : "Discard changes")."</button>
+      <a href='form.php' class='btn'>".(($id === false) ? "Go back" : "Discard changes")."</a>
     </div>
   </fieldset>
 </form>
