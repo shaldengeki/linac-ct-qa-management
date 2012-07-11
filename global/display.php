@@ -456,7 +456,7 @@ function display_machine_info($database, $user, $machine_id, $graph_div_prefix =
     echo "This machine does not exist. Please select another machine and try again.";
   } else {
     $i = 0;
-    $machine_fields = $database->stdQuery("SELECT `form_fields`.`id`, `form_fields`.`name` FROM `form_entries` LEFT OUTER JOIN `form_fields` ON `form_fields`.`form_id` = `form_entries`.`form_id` WHERE `form_entries`.`machine_id` = ".intval($machine_id));
+    $machine_fields = $database->stdQuery("SELECT `form_fields`.`id`, `form_fields`.`name` FROM `form_entries` LEFT OUTER JOIN `form_fields` ON `form_fields`.`form_id` = `form_entries`.`form_id` WHERE `form_entries`.`machine_id` = ".intval($machine_id)." GROUP BY `form_fields`.`id` ORDER BY `form_fields`.`name` ASC");
     while ($machine_field = mysqli_fetch_assoc($machine_fields)) {
       $field_values = $database->queryAssoc("SELECT `form_values`.`value`, `form_entries`.`created_at` AS `date` FROM `form_values` LEFT OUTER JOIN `form_entries` ON `form_values`.`form_entry_id` = `form_entries`.`id` WHERE `form_values`.`form_field_id` = ".intval($machine_field['id'])." ORDER BY `form_entries`.`created_at` ASC");
       $field_strings = array();
@@ -585,7 +585,7 @@ function display_form_entries($database, $user) {
       <th>Form</th>
       <th>Machine</th>
       <th>User</th>
-      <th>Last updated</th>
+      <th>Submitted at</th>
       <th>Comments</th>
       <th></th>
       <th></th>
@@ -593,13 +593,13 @@ function display_form_entries($database, $user) {
   </thead>
   <tbody>
 ";
-  $form_entries = $database->stdQuery("SELECT `form_entries`.`id`, `form_entries`.`form_id`, `forms`.`name` AS `form_name`, `form_entries`.`machine_id`, `machines`.`name` AS `machine_name`, `form_entries`.`user_id`, `users`.`name` AS `user_name`, `updated_at`, `comments` FROM `form_entries` LEFT OUTER JOIN `forms` ON `forms`.`id` = `form_entries`.`form_id` LEFT OUTER JOIN `machines` ON `machines`.`id` = `form_entries`.`machine_id` LEFT OUTER JOIN `users` ON `users`.`id` = `form_entries`.`user_id` ORDER BY `id` ASC");
+  $form_entries = $database->stdQuery("SELECT `form_entries`.`id`, `form_entries`.`form_id`, `forms`.`name` AS `form_name`, `form_entries`.`machine_id`, `machines`.`name` AS `machine_name`, `form_entries`.`user_id`, `users`.`name` AS `user_name`, `created_at`, `comments` FROM `form_entries` LEFT OUTER JOIN `forms` ON `forms`.`id` = `form_entries`.`form_id` LEFT OUTER JOIN `machines` ON `machines`.`id` = `form_entries`.`machine_id` LEFT OUTER JOIN `users` ON `users`.`id` = `form_entries`.`user_id` ORDER BY `id` ASC");
   while ($form_entry = mysqli_fetch_assoc($form_entries)) {
     echo "    <tr>
       <td><a href='form.php?action=show&id=".intval($form_entry['form_id'])."'>".escape_output($form_entry['form_name'])."</a></td>
       <td><a href='machine.php?action=show&id=".intval($form_entry['machine_id'])."'>".escape_output($form_entry['machine_name'])."</a></td>
       <td><a href='user.php?action=show&id=".intval($form_entry['user_id'])."'>".escape_output($form_entry['user_name'])."</a></td>
-      <td>".escape_output($form_entry['updated_at'])."</td>
+      <td>".escape_output($form_entry['created_at'])."</td>
       <td>".escape_output($form_entry['comments'])."</td>
       <td><a href='form_entry.php?action=edit&id=".intval($form_entry['id'])."'>Edit</a></td>
       <td></td>

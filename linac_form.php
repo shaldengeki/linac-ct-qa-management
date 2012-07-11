@@ -78,7 +78,7 @@
             <tr><td>M</td><td><input name='form_entry[form_values][photon_output_calibration_6MV_M]' class='span12' id='form_entry_form_values_photon_output_calibration_6MV_M' /></td><td><input name='form_entry[form_values][photon_output_calibration_18MV_M]' class='span12' id='form_entry_form_values_photon_output_calibration_18MV_M' /></td></tr>
             <tr><td>Dw</td><td><input name='form_entry[form_values][photon_output_calibration_6MV_Dw]' class='span12' id='form_entry_form_values_photon_output_calibration_6MV_Dw' /></td><td><input name='form_entry[form_values][photon_output_calibration_18MV_Dw]' class='span12' id='form_entry_form_values_photon_output_calibration_18MV_Dw' /></td></tr>
             <tr><td>Dw(abs)</td><td><input name='form_entry[constants][photon_output_calibration_6MV_Dw_abs]' class='span12' id='form_entry_form_values_photon_output_calibration_6MV_Dw_abs' /></td><td><input name='form_entry[constants][photon_output_calibration_18MV_Dw_abs]' class='span12' id='form_entry_form_values_photon_output_calibration_18MV_Dw_abs' /></td></tr>
-            <tr><td>%diff</td><td><input name='form_entry[form_values][photon_output_calibration_6MV_diff]' class='span12' id='form_entry_form_values_photon_output_calibration_6MV_diff' /></td><td><input name='form_entry[form_values][photon_output_calibration_18MV_diff]' class='span12' id='form_entry_form_values_photon_output_calibration_18MV_diff' /></td></tr>
+            <tr><td>%diff</td><td><input name='form_entry[form_values][photon_output_calibration_6MV_diff]' class='span12 form_entry_form_values_photon_output_calibration_diff' id='form_entry_form_values_photon_output_calibration_6MV_diff' /></td><td><input name='form_entry[form_values][photon_output_calibration_18MV_diff]' class='span12 form_entry_form_values_photon_output_calibration_diff' id='form_entry_form_values_photon_output_calibration_18MV_diff' /></td></tr>
           </tbody>
         </table>
         <div id='photon_output_calibration_adjustment' style='display:none;'>
@@ -99,7 +99,7 @@
               <tr><td>M</td><td><input name='form_entry[form_values][photon_output_calibration_adjusted_6MV_M]' class='span12' id='form_entry_form_values_photon_output_calibration_adjusted_6MV_M' /></td><td><input name='form_entry[form_values][photon_output_calibration_adjusted_18MV_M]' class='span12' id='form_entry_form_values_photon_output_calibration_adjusted_18MV_M' /></td></tr>
               <tr><td>Dw</td><td><input name='form_entry[form_values][photon_output_calibration_adjusted_6MV_Dw]' class='span12' id='form_entry_form_values_photon_output_calibration_adjusted_6MV_Dw' /></td><td><input name='form_entry[form_values][photon_output_calibration_adjusted_18MV_Dw]' class='span12' id='form_entry_form_values_photon_output_calibration_adjusted_18MV_Dw' /></td></tr>
               <tr><td>Dw(abs)</td><td><input name='form_entry[constants][photon_output_calibration_adjusted_6MV_Dw_abs]' class='span12' id='form_entry_form_values_photon_output_calibration_adjusted_6MV_Dw_abs' /></td><td><input name='form_entry[constants][photon_output_calibration_adjusted_18MV_Dw_abs]' class='span12' id='form_entry_form_values_photon_output_calibration_adjusted_18MV_Dw_abs' /></td></tr>
-              <tr><td>%diff</td><td><input name='form_entry[form_values][photon_output_calibration_adjusted_6MV_diff]' class='span12' id='form_entry_form_values_photon_output_calibration_adjusted_6MV_diff' /></td><td><input name='form_entry[form_values][photon_output_calibration_adjusted_18MV_diff]' class='span12' id='form_entry_form_values_photon_output_calibration_adjusted_18MV_diff' /></td></tr>
+              <tr><td>%diff</td><td><input name='form_entry[form_values][photon_output_calibration_adjusted_6MV_diff]' class='span12 form_entry_form_values_photon_output_calibration_adjusted_diff' id='form_entry_form_values_photon_output_calibration_adjusted_6MV_diff' /></td><td><input name='form_entry[form_values][photon_output_calibration_adjusted_18MV_diff]' class='span12 form_entry_form_values_photon_output_calibration_adjusted_diff' id='form_entry_form_values_photon_output_calibration_adjusted_18MV_diff' /></td></tr>
             </tbody>
           </table>
         </div>
@@ -241,11 +241,11 @@
             </tr>
             <tr>
               <td>%diff</td>
-              <td><input name='form_entry[form_values][electron_output_calibration_6MeV_diff]' class='span12' id='form_entry_form_values_electron_output_calibration_6MeV_diff' /></td>
-              <td><input name='form_entry[form_values][electron_output_calibration_9MeV_diff]' class='span12' id='form_entry_form_values_electron_output_calibration_9MeV_diff' /></td>
-              <td><input name='form_entry[form_values][electron_output_calibration_12MeV_diff]' class='span12' id='form_entry_form_values_electron_output_calibration_12MeV_diff' /></td>
-              <td><input name='form_entry[form_values][electron_output_calibration_16MeV_diff]' class='span12' id='form_entry_form_values_electron_output_calibration_16MeV_diff' /></td>
-              <td><input name='form_entry[form_values][electron_output_calibration_20MeV_diff]' class='span12' id='form_entry_form_values_electron_output_calibration_20MeV_diff' /></td>
+              <td><input name='form_entry[form_values][electron_output_calibration_6MeV_diff]' class='span12 form_entry_form_values_electron_output_calibration_diff' id='form_entry_form_values_electron_output_calibration_6MeV_diff' /></td>
+              <td><input name='form_entry[form_values][electron_output_calibration_9MeV_diff]' class='span12 form_entry_form_values_electron_output_calibration_diff' id='form_entry_form_values_electron_output_calibration_9MeV_diff' /></td>
+              <td><input name='form_entry[form_values][electron_output_calibration_12MeV_diff]' class='span12 form_entry_form_values_electron_output_calibration_diff' id='form_entry_form_values_electron_output_calibration_12MeV_diff' /></td>
+              <td><input name='form_entry[form_values][electron_output_calibration_16MeV_diff]' class='span12 form_entry_form_values_electron_output_calibration_diff' id='form_entry_form_values_electron_output_calibration_16MeV_diff' /></td>
+              <td><input name='form_entry[form_values][electron_output_calibration_20MeV_diff]' class='span12 form_entry_form_values_electron_output_calibration_diff' id='form_entry_form_values_electron_output_calibration_20MeV_diff' /></td>
             </tr>
           </tbody>
         </table>
@@ -321,11 +321,11 @@
               </tr>
               <tr>
                 <td>%diff</td>
-                <td><input name='form_entry[form_values][electron_output_calibration_adjusted_6MeV_diff]' class='span12' id='form_entry_form_values_electron_output_calibration_adjusted_6MeV_diff' /></td>
-                <td><input name='form_entry[form_values][electron_output_calibration_adjusted_9MeV_diff]' class='span12' id='form_entry_form_values_electron_output_calibration_adjusted_9MeV_diff' /></td>
-                <td><input name='form_entry[form_values][electron_output_calibration_adjusted_12MeV_diff]' class='span12' id='form_entry_form_values_electron_output_calibration_adjusted_12MeV_diff' /></td>
-                <td><input name='form_entry[form_values][electron_output_calibration_adjusted_16MeV_diff]' class='span12' id='form_entry_form_values_electron_output_calibration_adjusted_16MeV_diff' /></td>
-                <td><input name='form_entry[form_values][electron_output_calibration_adjusted_20MeV_diff]' class='span12' id='form_entry_form_values_electron_output_calibration_adjusted_20MeV_diff' /></td>
+                <td><input name='form_entry[form_values][electron_output_calibration_adjusted_6MeV_diff]' class='span12 form_entry_form_values_electron_output_calibration_adjusted_diff' id='form_entry_form_values_electron_output_calibration_adjusted_6MeV_diff' /></td>
+                <td><input name='form_entry[form_values][electron_output_calibration_adjusted_9MeV_diff]' class='span12 form_entry_form_values_electron_output_calibration_adjusted_diff' id='form_entry_form_values_electron_output_calibration_adjusted_9MeV_diff' /></td>
+                <td><input name='form_entry[form_values][electron_output_calibration_adjusted_12MeV_diff]' class='span12 form_entry_form_values_electron_output_calibration_adjusted_diff' id='form_entry_form_values_electron_output_calibration_adjusted_12MeV_diff' /></td>
+                <td><input name='form_entry[form_values][electron_output_calibration_adjusted_16MeV_diff]' class='span12 form_entry_form_values_electron_output_calibration_adjusted_diff' id='form_entry_form_values_electron_output_calibration_adjusted_16MeV_diff' /></td>
+                <td><input name='form_entry[form_values][electron_output_calibration_adjusted_20MeV_diff]' class='span12 form_entry_form_values_electron_output_calibration_adjusted_diff' id='form_entry_form_values_electron_output_calibration_adjusted_20MeV_diff' /></td>
               </tr>
             </tbody>
           </table>

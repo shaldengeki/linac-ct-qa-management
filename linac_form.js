@@ -62,32 +62,42 @@ function calculateOutputCalibrationStats(type, id_prefix) {
         break;
     }
     
-    var M = qAvg * parseFloat($('#form_entry_form_values_tpcf').val()) * p_ion * k_elec;
-    $('#' + id_prefix + '_M').val(roundNumber(M, 4));
-    $('#' + id_prefix + '_M').trigger('change');
-    if (type == 'photon') {
-      var D_w = M * k_q * chamber_constant * electrometer_adjustment;
-      var percentDiff = (D_w - D_w_abs) / D_w_abs * 100;
-      $('#' + id_prefix + '_Dw').val(roundNumber(D_w, 4));
-      $('#' + id_prefix + '_Dw').trigger('change');
-    } else if (type == 'electron') {
-      var M_c = M_c_choices[id_prefix.substr(-5)] * electrometer_electron_adjustment;
-      var percentDiff = (M - M_c) / M_c * 100;
-      $('#' + id_prefix + '_Mc').val(roundNumber(M_c, 4));
-      $('#' + id_prefix + '_Mc').trigger('change');    
-    }
-    
-    $('#' + id_prefix + '_diff').val(roundNumber(percentDiff, 4))
-    if (id_prefix.indexOf('_adjusted') < 0) {
-      // if we're in the non-adjustment form, then toggle the adjustment form's display status based on the percent diff calculated earlier.
-      switch (type) {
-        case 'electron':
-          $('#electron_output_calibration_adjustment').toggle(Math.abs(percentDiff) > 2.0);
-          break;
-        default:
-        case 'photon':
-          $('#photon_output_calibration_adjustment').toggle(Math.abs(percentDiff) > 2.0);
-          break;
+    if ($('#form_entry_form_values_tpcf').val() != '') {
+      var M = qAvg * parseFloat($('#form_entry_form_values_tpcf').val()) * p_ion * k_elec;
+      $('#' + id_prefix + '_M').val(roundNumber(M, 4));
+      $('#' + id_prefix + '_M').trigger('change');
+      if (type == 'photon') {
+        var D_w = M * k_q * chamber_constant * electrometer_adjustment;
+        var percentDiff = (D_w - D_w_abs) / D_w_abs * 100;
+        $('#' + id_prefix + '_Dw').val(roundNumber(D_w, 4));
+        $('#' + id_prefix + '_Dw').trigger('change');
+      } else if (type == 'electron') {
+        var M_c = M_c_choices[id_prefix.substr(-5)] * electrometer_electron_adjustment;
+        var percentDiff = (M - M_c) / M_c * 100;
+        $('#' + id_prefix + '_Mc').val(roundNumber(M_c, 4));
+        $('#' + id_prefix + '_Mc').trigger('change');    
+      }
+      
+      $('#' + id_prefix + '_diff').val(roundNumber(percentDiff, 4))
+      if (id_prefix.indexOf('_adjusted') < 0) {
+        // if we're in the non-adjustment form, then toggle the adjustment form's display status based on the percent diff calculated earlier.
+        switch (type) {
+          case 'electron':
+            anyFailures = false;
+            $('.form_entry_form_values_electron_output_calibration_diff').each(function() {
+              anyFailures = anyFailures || (Math.abs($(this).val()) > 2.0);
+            });
+            $('#electron_output_calibration_adjustment').toggle(anyFailures);
+            break;
+          default:
+          case 'photon':
+            anyFailures = false;
+            $('.form_entry_form_values_photon_output_calibration_diff').each(function() {
+              anyFailures = anyFailures || (Math.abs($(this).val()) > 2.0);
+            });
+            $('#photon_output_calibration_adjustment').toggle(anyFailures);
+            break;
+        }
       }
     }
   }
@@ -96,11 +106,10 @@ function calculateTPRStats(id_prefix, outputCalibration_prefix) {
   if ($('#' + id_prefix + '_q1').val() != '' && $('#' + id_prefix + '_q2').val() != '' && $('#' + id_prefix + '_q3').val() != '') {
     var qAvg = (parseFloat($('#' + id_prefix + '_q1').val()) + parseFloat($('#' + id_prefix + '_q2').val()) + parseFloat($('#' + id_prefix + '_q3').val())) / 3.0;
     $('#' + id_prefix + '_avg').val(qAvg);
-    if ($('#' + outputCalibration_prefix + '_adjusted_q1').is(":visible")) {
-      var qAvg_outputCalibration = (parseFloat($('#' + outputCalibration_prefix + '_adjusted_q1').val()) + parseFloat($('#' + outputCalibration_prefix + '_adjusted_q2').val()) + parseFloat($('#' + outputCalibration_prefix + '_adjusted_q3').val())) / 3.0;
-    } else {
-      var qAvg_outputCalibration = (parseFloat($('#' + outputCalibration_prefix + '_q1').val()) + parseFloat($('#' + outputCalibration_prefix + '_q2').val()) + parseFloat($('#' + outputCalibration_prefix + '_q3').val())) / 3.0;
+    if ($('#' + outputCalibration_prefix + '_q1').val() == '' && outputCalibration_prefix.indexOf('_adjusted') > 0) {
+      outputCalibration_prefix = outputCalibration_prefix.replace(/\_adjusted/gi, "");
     }
+      var qAvg_outputCalibration = (parseFloat($('#' + outputCalibration_prefix + '_q1').val()) + parseFloat($('#' + outputCalibration_prefix + '_q2').val()) + parseFloat($('#' + outputCalibration_prefix + '_q3').val())) / 3.0;
     if (id_prefix.indexOf('18MV') < 0) {
       var TPR_abs = 1.183;
     } else {
@@ -120,17 +129,15 @@ function calculateGatingStats(id_prefix, TPR_prefix) {
   if ($('#' + id_prefix + '_q1').val() != '' && $('#' + id_prefix + '_q2').val() != '' && $('#' + id_prefix + '_q3').val() != '') {
     var qAvg = (parseFloat($('#' + id_prefix + '_q1').val()) + parseFloat($('#' + id_prefix + '_q2').val()) + parseFloat($('#' + id_prefix + '_q3').val())) / 3.0;
     $('#' + id_prefix + '_avg').val(qAvg);
-    if ($('#' + TPR_prefix + '_adjusted_q1').is(":visible")) {
-      var qAvg_TPR = (parseFloat($('#' + TPR_prefix + '_adjusted_q1').val()) + parseFloat($('#' + TPR_prefix + '_adjusted_q2').val()) + parseFloat($('#' + TPR_prefix + '_adjusted_q3').val())) / 3.0;
-    } else {
+    if ($('#' + TPR_prefix + '_q1').val() != '' && $('#' + TPR_prefix + '_q2').val() != '' && $('#' + TPR_prefix + '_q3').val() != '') {
       var qAvg_TPR = (parseFloat($('#' + TPR_prefix + '_q1').val()) + parseFloat($('#' + TPR_prefix + '_q2').val()) + parseFloat($('#' + TPR_prefix + '_q3').val())) / 3.0;
-    }
-    $('#' + id_prefix + '_TPR_abs').val(qAvg_TPR);
-    var percentDiff = (qAvg - qAvg_TPR) / qAvg_TPR * 100;
+      $('#' + id_prefix + '_TPR_abs').val(qAvg_TPR);
+      var percentDiff = (qAvg - qAvg_TPR) / qAvg_TPR * 100;
 
-    $('#' + id_prefix + '_TPR').val(roundNumber(qAvg, 4));
-    $('#' + id_prefix + '_TPR').trigger('change');
-    $('#' + id_prefix + '_diff').val(roundNumber(percentDiff, 2));
+      $('#' + id_prefix + '_TPR').val(roundNumber(qAvg, 4));
+      $('#' + id_prefix + '_TPR').trigger('change');
+      $('#' + id_prefix + '_diff').val(roundNumber(percentDiff, 2));
+    }
   }
 }
 function calculateEDWStats(id_prefix, TPR_prefix) {
@@ -156,12 +163,10 @@ function calculateEDWStats(id_prefix, TPR_prefix) {
 function calculateEnergyRatioStats(id_prefix, outputCalibration_prefix) {
   if ($('#' + id_prefix + '_q1').val() != '' && $('#' + id_prefix + '_q2').val() != '' && $('#' + id_prefix + '_q3').val() != '') {
     var qAvg = (parseFloat($('#' + id_prefix + '_q1').val()) + parseFloat($('#' + id_prefix + '_q2').val()) + parseFloat($('#' + id_prefix + '_q3').val())) / 3.0;
-    if ($('#' + outputCalibration_prefix + '_q1').is(':hidden')) {
+    if ($('#' + outputCalibration_prefix + '_q1').val() == '' && outputCalibration_prefix.indexOf('_adjusted') > 0) {
       outputCalibration_prefix = outputCalibration_prefix.replace(/\_adjusted/gi, "");
-      var qAvg_outputCalibration = (parseFloat($('#' + outputCalibration_prefix + '_q1').val()) + parseFloat($('#' + outputCalibration_prefix + '_q2').val()) + parseFloat($('#' + outputCalibration_prefix + '_q3').val())) / 3.0;
-    } else {
-      var qAvg_outputCalibration = (parseFloat($('#' + outputCalibration_prefix + '_q1').val()) + parseFloat($('#' + outputCalibration_prefix + '_q2').val()) + parseFloat($('#' + outputCalibration_prefix + '_q3').val())) / 3.0;
     }
+    var qAvg_outputCalibration = (parseFloat($('#' + outputCalibration_prefix + '_q1').val()) + parseFloat($('#' + outputCalibration_prefix + '_q2').val()) + parseFloat($('#' + outputCalibration_prefix + '_q3').val())) / 3.0;
     
     PDD_choices = {"_6MeV": 0.840, "_9MeV": 0.863, "12MeV": 0.913, "16MeV": 0.853, "20MeV": 0.862}
     
