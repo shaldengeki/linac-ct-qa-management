@@ -524,7 +524,7 @@ function display_form_history($database, $user, $form_id) {
 
 function display_form_edit_form($database, $user, $id=false) {
   // displays a form to edit form parameters.
-  if ($user->isAdmin($database)) {
+  if (!$user->isAdmin($database)) {
     echo "Only administrators may edit forms.";
   } else {
     if (!($id === false)) {
@@ -575,6 +575,40 @@ function display_form_edit_form($database, $user, $id=false) {
 </form>
 ";
   }
+}
+
+function display_form_entries($database, $user) {
+  //lists all form_entries.
+  echo "<table class='table table-striped table-bordered'>
+  <thead>
+    <tr>
+      <th>Form</th>
+      <th>Machine</th>
+      <th>User</th>
+      <th>Last updated</th>
+      <th>Comments</th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+";
+  $form_entries = $database->stdQuery("SELECT `form_entries`.`id`, `form_entries`.`form_id`, `forms`.`name` AS `form_name`, `form_entries`.`machine_id`, `machines`.`name` AS `machine_name`, `form_entries`.`user_id`, `users`.`name` AS `user_name`, `updated_at`, `comments` FROM `form_entries` LEFT OUTER JOIN `forms` ON `forms`.`id` = `form_entries`.`form_id` LEFT OUTER JOIN `machines` ON `machines`.`id` = `form_entries`.`machine_id` LEFT OUTER JOIN `users` ON `users`.`id` = `form_entries`.`user_id` ORDER BY `id` ASC");
+  while ($form_entry = mysqli_fetch_assoc($form_entries)) {
+    echo "    <tr>
+      <td><a href='form.php?action=show&id=".intval($form_entry['form_id'])."'>".escape_output($form_entry['form_name'])."</a></td>
+      <td><a href='machine.php?action=show&id=".intval($form_entry['machine_id'])."'>".escape_output($form_entry['machine_name'])."</a></td>
+      <td><a href='user.php?action=show&id=".intval($form_entry['user_id'])."'>".escape_output($form_entry['user_name'])."</a></td>
+      <td>".escape_output($form_entry['updated_at'])."</td>
+      <td>".escape_output($form_entry['comments'])."</td>
+      <td><a href='form_entry.php?action=edit&id=".intval($form_entry['id'])."'>Edit</a></td>
+      <td></td>
+    </tr>
+";
+  }
+  echo "  </tbody>
+</table>
+";
 }
 
 function display_form_entry_edit_form($database, $user, $id=false, $form_id=false) {
