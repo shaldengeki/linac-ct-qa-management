@@ -877,7 +877,12 @@
     <h3>Comments</h3>
     <textarea name='form_entry[comments]' id='form_entry_comments' rows='10' class='span12' placeholder='Comments go here.'>".(($id === false) ? "" : escape_output($formEntryObject['comments']))."</textarea><br />
     <h3>Image</h3>
-    <input name='form_image' class='input-file' type='file' />
+";
+    if ($id != false && $formEntryObject['image_path'] != '') {
+      echo "<img src='".escape_output($formEntryObject['image_path'])."' /><br />
+";
+    }
+    echo "    <input name='form_image' class='input-file' type='file' />
     <div class='form-actions'>
       <button type='submit' class='btn btn-primary'>".(($id === false) ? "Save entry" : "Save changes")."</button>
       <button class='btn'>".(($id === false) ? "Go back" : "Discard changes")."</button>

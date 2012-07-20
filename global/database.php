@@ -227,6 +227,9 @@ class DbConn extends mysqli {
             return array('location' => 'form_entry.php'.((isset($get_form_entry_id)) ? "?id=".intval($get_form_entry_id) : ""), 'status' => "You don't have permissions to update that form entry.");
           }
           foreach ($form_entry['form_values'] as $name=>$value) {
+            if ($value == 'NULL') {
+              continue;
+            }
             $findField = $this->queryFirstValue("SELECT `id` FROM `form_fields` WHERE `form_id` = ".intval($form_entry['form_id'])." && `name` = ".$this->quoteSmart($name));
             if (!$findField) {
               $insertField = $this->stdQuery("INSERT INTO `form_fields` (`form_id`, `name`) VALUES (".intval($form_entry['form_id']).", ".$this->quoteSmart($name).")");

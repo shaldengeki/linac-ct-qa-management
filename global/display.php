@@ -13,6 +13,9 @@ function humanize($str) {
 }
 
 function escape_output($input) {
+  if ($input == '') {
+    return '';
+  }
   return htmlspecialchars($input, ENT_QUOTES, "UTF-8");
 }
 
