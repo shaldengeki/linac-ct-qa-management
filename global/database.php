@@ -239,7 +239,8 @@ class DbConn extends mysqli {
           }
           // process uploaded image.
           $file_array = $_FILES['form_image'];
-          if ($file_array['error'] != UPLOAD_ERR_OK || !is_uploaded_file($file_array['tmp_name'])) {
+          if (!empty($file_array['tmp_name']) && is_uploaded_file($file_array['tmp_name'])) {
+            if ($file_array['error'] != UPLOAD_ERR_OK) {
             return array('location' => 'form_entry.php'.((isset($get_form_entry_id)) ? "?id=".intval($get_form_entry_id) : ""), 'status' => "There was an error uploading your image file.");
           }
           $file_contents = file_get_contents($file_array['tmp_name']);
@@ -289,34 +290,36 @@ class DbConn extends mysqli {
           if (!$insertFormValues) {
             return array('location' => 'form_entry.php?action=new'.((isset($form_entry['form_id'])) ? "&form_id=".intval($form_entry['form_id']) : ""), 'status' => "Error while inserting form entry. Please try again.");
           }
-          // process uploaded image.
+          // process uploaded image (if there is one)
           $file_array = $_FILES['form_image'];
-          if ($file_array['error'] != UPLOAD_ERR_OK || !is_uploaded_file($file_array['tmp_name'])) {
-            return array('location' => 'form_entry.php?action=new'.((isset($form_entry['form_id'])) ? "&form_id=".intval($form_entry['form_id']) : ""), 'status' => "There was an error uploading your image file.");
+          if (!empty($file_array['tmp_name']) && is_uploaded_file($file_array['tmp_name'])) {
+            if ($file_array['error'] != UPLOAD_ERR_OK) {
+              return array('location' => 'form_entry.php?action=new'.((isset($form_entry['form_id'])) ? "&form_id=".intval($form_entry['form_id']) : ""), 'status' => "There was an error uploading your image file.");
+            }
+            $file_contents = file_get_contents($file_array['tmp_name']);
+            if (!$file_contents) {
+              return array('location' => 'form_entry.php?action=new'.((isset($form_entry['form_id'])) ? "&form_id=".intval($form_entry['form_id']) : ""), 'status' => "Could not read contents of uploaded image file.");
+            }
+            $newIm = @imagecreatefromstring($file_contents);
+            if (!$newIm) {
+              return array('location' => 'form_entry.php?action=new'.((isset($form_entry['form_id'])) ? "&form_id=".intval($form_entry['form_id']) : ""), 'status' => "The image file you uploaded is invalid.");
+            }
+            $imageSize = getimagesize($file_array['tmp_name']);
+            if ($imageSize[0] > 2000 || $imageSize[1] > 2000) {
+              return array('location' => 'form_entry.php?action=new'.((isset($form_entry['form_id'])) ? "&form_id=".intval($form_entry['form_id']) : ""), 'status' => "The maximum allowed size for images is 2000x2000 pixels.");
+            }
+            // move file to destination and save path in db.
+            if (!is_dir(joinPaths($_SERVER[''], "uploads", "forms", $form_entry['form_id']))) {
+              mkdir(joinPaths($_SERVER[''], "uploads", "forms", $form_entry['form_id']));
+            }
+            $imagePathInfo = pathinfo($file_array['tmp_name']);
+            $imagePath = joinPaths("uploads", "forms", $form_entry['form_id'], $form_entry['id'].'.'.$imagePathInfo['extension']);
+            if (!move_uploaded_file($file_array['tmp_name'], $imagePath)) {
+              return array('location' => 'form_entry.php?action=new'.((isset($form_entry['form_id'])) ? "&form_id=".intval($form_entry['form_id']) : ""), 'status' => "There was an error moving your uploaded file.");
+            }
+            $updateImagePath = $this->stdQuery("UPDATE `form_entries` SET `image_path` = ".$this->quoteSmart($imagePath)." WHERE `id` = ".intval($form_entry['id'])." LIMIT 1");
+            return array('location' => 'form_entry.php', 'status' => "Successfully inserted form entry.");
           }
-          $file_contents = file_get_contents($file_array['tmp_name']);
-          if (!$file_contents) {
-            return array('location' => 'form_entry.php?action=new'.((isset($form_entry['form_id'])) ? "&form_id=".intval($form_entry['form_id']) : ""), 'status' => "Could not read contents of uploaded image file.");
-          }
-          $newIm = @imagecreatefromstring($file_contents);
-          if (!$newIm) {
-            return array('location' => 'form_entry.php?action=new'.((isset($form_entry['form_id'])) ? "&form_id=".intval($form_entry['form_id']) : ""), 'status' => "The image file you uploaded is invalid.");
-          }
-          $imageSize = getimagesize($file_array['tmp_name']);
-          if ($imageSize[0] > 2000 || $imageSize[1] > 2000) {
-            return array('location' => 'form_entry.php?action=new'.((isset($form_entry['form_id'])) ? "&form_id=".intval($form_entry['form_id']) : ""), 'status' => "The maximum allowed size for images is 2000x2000 pixels.");
-          }
-          // move file to destination and save path in db.
-          if (!is_dir(joinPaths($_SERVER[''], "uploads", "forms", $form_entry['form_id']))) {
-            mkdir(joinPaths($_SERVER[''], "uploads", "forms", $form_entry['form_id']));
-          }
-          $imagePathInfo = pathinfo($file_array['tmp_name']);
-          $imagePath = joinPaths("uploads", "forms", $form_entry['form_id'], $form_entry['id'].'.'.$imagePathInfo['extension']);
-          if (!move_uploaded_file($file_array['tmp_name'], $imagePath)) {
-            return array('location' => 'form_entry.php?action=new'.((isset($form_entry['form_id'])) ? "&form_id=".intval($form_entry['form_id']) : ""), 'status' => "There was an error moving your uploaded file.");
-          }
-          $updateImagePath = $this->stdQuery("UPDATE `form_entries` SET `image_path` = ".$this->quoteSmart($imagePath)." WHERE `id` = ".intval($form_entry['id'])." LIMIT 1");
-          return array('location' => 'form_entry.php', 'status' => "Successfully inserted form entry.");
         }
       }
     }
