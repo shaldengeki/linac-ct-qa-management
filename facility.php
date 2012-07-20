@@ -6,7 +6,7 @@ if (!$user->loggedIn($database)) {
 
 if (isset($_POST['facility'])) {
   $createfacility = $database->create_or_update_facility($user, $_POST['facility']);
-  header("Location: ".$createfacility['location']."&status=".$createfacility['status']);
+  redirect_to($createfacility['location'], $createfacility['status']);
 }
 
 start_html($user, $database, "UCMC Radiation Oncology QA", "Manage Facilities", $_REQUEST['status']);

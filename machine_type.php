@@ -6,7 +6,7 @@ if (!$user->loggedIn($database)) {
 
 if (isset($_POST['machine_type'])) {
   $createMachineType = $database->create_or_update_machine_type($user, $_POST['machine_type']);
-  header("Location: ".$createMachineType['location']."&status=".$createMachineType['status']);
+  redirect_to($createMachineType['location'], $createMachineType['status']);
 }
 
 start_html($user, $database, "UCMC Radiation Oncology QA", "Manage Machine Types", $_REQUEST['status']);

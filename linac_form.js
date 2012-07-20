@@ -173,13 +173,12 @@ function calculateEnergyRatioStats(id_prefix, outputCalibration_prefix) {
     
     var PDD = qAvg / qAvg_outputCalibration;
     var PDD_ref = PDD_choices[id_prefix.substr(-5)]
-    $('#' + id_prefix + '_PDD_abs').val(PDD_ref);
     var percentDiff = (PDD - PDD_ref) / PDD_ref * 100;
 
     $('#' + id_prefix + '_PDD').val(roundNumber(PDD, 4));    
     $('#' + id_prefix + '_PDD').trigger('change');
-    $('#' + id_prefix + '_PDD_ref').val(roundNumber(PDD_ref, 4));    
-    $('#' + id_prefix + '_PDD_ref').trigger('change');
+    $('#' + id_prefix + '_PDD_abs').val(roundNumber(PDD_ref, 4));    
+    $('#' + id_prefix + '_PDD_abs').trigger('change');
     $('#' + id_prefix + '_diff').val(roundNumber(percentDiff, 2));
   }
 }

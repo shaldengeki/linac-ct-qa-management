@@ -6,7 +6,7 @@ if (!$user->loggedIn($database)) {
 
 if (isset($_POST['machine'])) {
   $createmachine = $database->create_or_update_machine($user, $_POST['machine']);
-  header("Location: ".$createmachine['location']."&status=".$createmachine['status']);
+  redirect_to($createmachine['location'], $createmachine['status']);
 }
 
 start_html($user, $database, "UCMC Radiation Oncology QA", "Manage Machines", $_REQUEST['status']);

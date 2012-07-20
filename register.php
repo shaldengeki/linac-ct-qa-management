@@ -5,7 +5,7 @@ if (!$user->isAdmin($database)) {
 }
 if (isset($_POST['name']) && isset($_POST['email']) && isset($_POST['password']) && isset($_POST['password_confirmation'])) {
   $register_user = $user->register($database, $_POST['name'], $_POST['email'], $_POST['password'], $_POST['password_confirmation'], $_POST['facility_id']);
-  header("Location: ".$register_user['location']."?status=".$register_user['status']);
+  redirect_to($register_user['location'], $register_user['status']);
 } else {
   start_html($user, $database, "UCMC Radiation Oncology QA", "", $_REQUEST['status']);
 ?>

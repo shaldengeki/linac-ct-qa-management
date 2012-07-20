@@ -6,7 +6,7 @@ if (!$user->loggedIn($database)) {
 
 if (isset($_POST['form'])) {
   $createForm = $database->create_or_update_form($user, $_POST['form']);
-  header("Location: ".$createForm['location']."?status=".$createForm['status']);
+  redirect_to($createForm['location'], $createForm['status']);
 }
 
 start_html($user, $database, "UCMC Radiation Oncology QA", "Manage Forms", $_REQUEST['status']);

@@ -19,6 +19,14 @@ function escape_output($input) {
   return htmlspecialchars($input, ENT_QUOTES, "UTF-8");
 }
 
+function redirect_to($location, $status) {
+  if (strpos($location, "?") === FALSE) {
+    header("Location: ".$location."?status=".$status);
+  } else {
+    header("Location: ".$location."&status=".$status);
+  }
+}
+
 function start_html($user, $database, $title="UCMC Radiation Oncology QA", $subtitle="", $status="") {
 echo '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
         "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
