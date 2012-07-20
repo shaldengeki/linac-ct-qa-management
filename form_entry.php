@@ -26,7 +26,7 @@ switch($_REQUEST['action']) {
   case 'index':
     echo "<h1>Form Entries</h1>
 ";
-    display_form_entries($database, $user);
+    display_form_entries($database, $user, intval($_REQUEST['form_id']));
     echo "<a href='form_entry.php?action=new'>Add a new form entry</a><br />
 ";
     break;

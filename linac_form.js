@@ -163,6 +163,7 @@ function calculateEDWStats(id_prefix, TPR_prefix) {
 function calculateEnergyRatioStats(id_prefix, outputCalibration_prefix) {
   if ($('#' + id_prefix + '_q1').val() != '' && $('#' + id_prefix + '_q2').val() != '' && $('#' + id_prefix + '_q3').val() != '') {
     var qAvg = (parseFloat($('#' + id_prefix + '_q1').val()) + parseFloat($('#' + id_prefix + '_q2').val()) + parseFloat($('#' + id_prefix + '_q3').val())) / 3.0;
+    $('#' + id_prefix + '_avg').val(qAvg);
     if ($('#' + outputCalibration_prefix + '_q1').val() == '' && outputCalibration_prefix.indexOf('_adjusted') > 0) {
       outputCalibration_prefix = outputCalibration_prefix.replace(/\_adjusted/gi, "");
     }
@@ -172,6 +173,7 @@ function calculateEnergyRatioStats(id_prefix, outputCalibration_prefix) {
     
     var PDD = qAvg / qAvg_outputCalibration;
     var PDD_ref = PDD_choices[id_prefix.substr(-5)]
+    $('#' + id_prefix + '_PDD_abs').val(PDD_ref);
     var percentDiff = (PDD - PDD_ref) / PDD_ref * 100;
 
     $('#' + id_prefix + '_PDD').val(roundNumber(PDD, 4));    

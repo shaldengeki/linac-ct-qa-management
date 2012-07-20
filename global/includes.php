@@ -4,6 +4,7 @@ include_once("database.php");
 include_once("bcrypt.php");
 include_once("user.php");
 include_once("display.php");
+include_once("misc.php");
 
 $database = new DbConn(MYSQL_HOST, MYSQL_USERNAME, MYSQL_PASSWORD, MYSQL_DATABASE);
 session_start();
@@ -18,4 +19,7 @@ if (!isset($_REQUEST['status'])) {
 if (!isset($_REQUEST['action'])) {
   $_REQUEST['action'] = 'index';
 }
+
+//print_r($_FILES);
+//exit;
 ?>

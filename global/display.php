@@ -29,14 +29,13 @@ echo '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 	<link rel="stylesheet" href="css/bootstrap.min.css" type="text/css" />
 	<link rel="stylesheet" href="css/bootstrap-responsive.min.css" type="text/css" />
 	<link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" type="text/css" />
+	<link rel="stylesheet" href="css/jquery.dataTables.css" type="text/css" />
 	<link rel="stylesheet" href="css/linac-qa.css" type="text/css" />
-	<!--<link rel="stylesheet" href="css/sample.css" type="text/css" media="screen" />
-	<link rel="stylesheet" href="css/print.css" type="text/css" media="print" />
-	<link rel="stylesheet" href="css/style.css" type="text/css" media="screen, projection"/>-->
   <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
   <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.18/jquery-ui.min.js"></script>
   <script type="text/javascript" src="js/jquery-ui-timepicker-addon.js"></script>
 	<script type="text/javascript" language="javascript" src="js/jquery.dropdownPlain.js"></script>
+	<script type="text/javascript" language="javascript" src="js/jquery.dataTables.min.js"></script>
   <script type="text/javascript" src="js/d3.v2.min.js"></script>
   <script type="text/javascript" src="js/d3-helpers.js"></script>
   <script type="text/javascript" src="js/highcharts.js"></script>
@@ -66,7 +65,7 @@ echo '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
                 </a>
                 <ul class="dropdown-menu">
                   <li><a href="form_entry.php?action=new&form_id=1">Submit new record</a></li>
-                  <li><a href="form.php?action=show&id=1">View history</a></li>
+                  <li><a href="form_entry.php?action=index&form_id=1">View history</a></li>
                 </ul>
               </li>
               <li class="dropdown">
@@ -76,7 +75,7 @@ echo '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
                 </a>
                 <ul class="dropdown-menu">
                   <li><a href="form_entry.php?action=new&form_id=2">Submit new record</a></li>
-                  <li><a href="form.php?action=show&id=2">View history</a></li>
+                  <li><a href="form_entry.php?action=index&form_id=2">View history</a></li>
                 </ul>
               </li>
 ';
@@ -151,7 +150,7 @@ function display_facilities($database, $user) {
   if (!$user->isAdmin($database)) {
     echo "You must be an administrator to view facilities.";
   } else {
-    echo "<table class='table table-striped table-bordered'>
+    echo "<table class='table table-striped table-bordered dataTable'>
   <thead>
     <tr>
       <th>Name</th>
@@ -253,19 +252,19 @@ function display_register_form($database, $action=".") {
 ';
 }
 
-function display_ionization_chamber_dropdown($select_id = "form_entry_form_values_ionization_chamber", $select_name_prefix="form_entry[form_values][]", $selected=0) {
-  echo "<select id='".escape_output($select_id)."' name='".escape_output($select_id)."[ionization_chamber]'>
-  <option value='Farmer (S/N 944, ND.SW(Gy/C) 5.18E+07)'>Farmer (S/N 944, ND.SW(Gy/C) 5.18E+07)</option>
-  <option value='Farmer (S/N 269, ND.SW(Gy/C) 5.32E+07)'>Farmer (S/N 269, ND.SW(Gy/C) 5.32E+07)</option>
+function display_ionization_chamber_dropdown($select_id = "form_entry_form_values_ionization_chamber", $select_name_prefix="form_entry[form_values]", $selected="") {
+  echo "<select id='".escape_output($select_id)."' name='".escape_output($select_name_prefix)."[ionization_chamber]'>
+  <option value='Farmer (S/N 944, ND.SW(Gy/C) 5.18E+07)'".(($selected === 'Farmer (S/N 944, ND.SW(Gy/C) 5.18E+07)') ? "selected='selected'" : "").">Farmer (S/N 944, ND.SW(Gy/C) 5.18E+07)</option>
+  <option value='Farmer (S/N 269, ND.SW(Gy/C) 5.32E+07)'".(($selected === 'Farmer (S/N 269, ND.SW(Gy/C) 5.32E+07)') ? "selected='selected'" : "").">Farmer (S/N 269, ND.SW(Gy/C) 5.32E+07)</option>
 </select>
 ";
 }
 
-function display_electrometer_dropdown($select_id = "form_entry_form_values_electrometer", $select_name_prefix="form_entry[form_values][]", $selected=0) {
-  echo "<select id='".escape_output($select_id)."' name='".escape_output($select_id)."[electrometer]'>
-  <option value='Keithley Model 614 (S/N 42215, Kelec 0.995)'>Keithley Model 614 (S/N 42215, Kelec 0.995)</option>
-  <option value='SI CDX 2000B #1 (S/N J073443, Kelec 1.000)'>SI CDX 2000B #1 (S/N J073443, Kelec 1.000)</option>
-  <option value='SI CDX 2000B #2 (S/N J073444, Kelec 1.000)'>SI CDX 2000B #2 (S/N J073444, Kelec 1.000)</option>
+function display_electrometer_dropdown($select_id = "form_entry_form_values_electrometer", $select_name_prefix="form_entry[form_values]", $selected="") {
+  echo "<select id='".escape_output($select_id)."' name='".escape_output($select_name_prefix)."[electrometer]'>
+  <option value='Keithley Model 614 (S/N 42215, Kelec 0.995)'".(($selected === 'Keithley Model 614 (S/N 42215, Kelec 0.995)') ? "selected='selected'" : "").">Keithley Model 614 (S/N 42215, Kelec 0.995)</option>
+  <option value='SI CDX 2000B #1 (S/N J073443, Kelec 1.000)'".(($selected === 'SI CDX 2000B #1 (S/N J073443, Kelec 1.000)') ? "selected='selected'" : "").">SI CDX 2000B #1 (S/N J073443, Kelec 1.000)</option>
+  <option value='SI CDX 2000B #2 (S/N J073444, Kelec 1.000)'".(($selected === 'SI CDX 2000B #2 (S/N J073444, Kelec 1.000)') ? "selected='selected'" : "").">SI CDX 2000B #2 (S/N J073444, Kelec 1.000)</option>
 </select>
 ";  
 }
@@ -275,7 +274,7 @@ function display_machine_types($database, $user) {
   if (!$user->isAdmin($database)) {
     echo "You must be an administrator to view machine types.";
   } else {
-    echo "<table class='table table-striped table-bordered'>
+    echo "<table class='table table-striped table-bordered dataTable'>
   <thead>
     <tr>
       <th>Name</th>
@@ -360,7 +359,7 @@ function display_machines($database, $user) {
   if (!$user->isAdmin($database)) {
     echo "You must be an administrator to view machines.";
   } else {
-    echo "<table class='table table-striped table-bordered'>
+    echo "<table class='table table-striped table-bordered dataTable'>
   <thead>
     <tr>
       <th>Name</th>
@@ -482,7 +481,7 @@ displayFormFieldLineGraph(data, '".humanize($machine_field['name'])."', '".escap
 
 function display_forms($database) {
   //lists all forms.
-  echo "<table class='table table-striped table-bordered'>
+  echo "<table class='table table-striped table-bordered dataTable'>
   <thead>
     <tr>
       <th>Name</th>
@@ -577,9 +576,9 @@ function display_form_edit_form($database, $user, $id=false) {
   }
 }
 
-function display_form_entries($database, $user) {
+function display_form_entries($database, $user, $form_id=false) {
   //lists all form_entries.
-  echo "<table class='table table-striped table-bordered'>
+  echo "<table class='table table-striped table-bordered dataTable'>
   <thead>
     <tr>
       <th>Form</th>
@@ -593,7 +592,12 @@ function display_form_entries($database, $user) {
   </thead>
   <tbody>
 ";
-  $form_entries = $database->stdQuery("SELECT `form_entries`.`id`, `form_entries`.`form_id`, `forms`.`name` AS `form_name`, `form_entries`.`machine_id`, `machines`.`name` AS `machine_name`, `form_entries`.`user_id`, `users`.`name` AS `user_name`, `created_at`, `comments` FROM `form_entries` LEFT OUTER JOIN `forms` ON `forms`.`id` = `form_entries`.`form_id` LEFT OUTER JOIN `machines` ON `machines`.`id` = `form_entries`.`machine_id` LEFT OUTER JOIN `users` ON `users`.`id` = `form_entries`.`user_id` ORDER BY `id` ASC");
+  if (is_numeric($form_id)) {
+    $form_id = intval($form_id);
+  } else {
+    $form_id = "`form_entries`.`form_id`";
+  }
+  $form_entries = $database->stdQuery("SELECT `form_entries`.`id`, `form_entries`.`form_id`, `forms`.`name` AS `form_name`, `form_entries`.`machine_id`, `machines`.`name` AS `machine_name`, `form_entries`.`user_id`, `users`.`name` AS `user_name`, `created_at`, `comments` FROM `form_entries` LEFT OUTER JOIN `forms` ON `forms`.`id` = `form_entries`.`form_id` LEFT OUTER JOIN `machines` ON `machines`.`id` = `form_entries`.`machine_id` LEFT OUTER JOIN `users` ON `users`.`id` = `form_entries`.`user_id` WHERE `form_entries`.`form_id` = ".$form_id." ORDER BY `id` ASC");
   while ($form_entry = mysqli_fetch_assoc($form_entries)) {
     echo "    <tr>
       <td><a href='form.php?action=show&id=".intval($form_entry['form_id'])."'>".escape_output($form_entry['form_name'])."</a></td>
