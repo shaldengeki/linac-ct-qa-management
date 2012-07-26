@@ -177,10 +177,12 @@ function calculateEnergyRatioStats(id_prefix, outputCalibration_prefix) {
     }
     var qAvg_outputCalibration = (parseFloat($('#' + outputCalibration_prefix + '_q1').val()) + parseFloat($('#' + outputCalibration_prefix + '_q2').val()) + parseFloat($('#' + outputCalibration_prefix + '_q3').val())) / 3.0;
     
-    PDD_choices = {"_6MeV": 0.840, "_9MeV": 0.863, "12MeV": 0.913, "16MeV": 0.853, "20MeV": 0.862}
+    PDD_choices = {"_6MeV": 0.840, "_9MeV": 0.863, "12MeV": 0.913, "16MeV": 0.853, "20MeV": 0.862};
+    percentDiff_mins = {"_6MeV": 0.6921, "_9MeV": 0.7763, "12MeV": 0.861, "16MeV": 0.812, "20MeV": 0.840};
+    percentDiff_maxes = {"_6MeV": 0.9368, "_9MeV": 0.9362, "12MeV": 0.949, "16MeV": 0.889, "20MeV": 0.884};
     
     var PDD = qAvg / qAvg_outputCalibration;
-    var PDD_ref = PDD_choices[id_prefix.substr(-5)]
+    var PDD_ref = PDD_choices[id_prefix.substr(-5)];
     var percentDiff = (PDD - PDD_ref) / PDD_ref * 100;
 
     $('#' + id_prefix + '_PDD').val(roundNumber(PDD, 4));    
@@ -188,7 +190,7 @@ function calculateEnergyRatioStats(id_prefix, outputCalibration_prefix) {
     $('#' + id_prefix + '_PDD_abs').val(roundNumber(PDD_ref, 4));    
     $('#' + id_prefix + '_PDD_abs').trigger('change');
     $('#' + id_prefix + '_diff').val(roundNumber(percentDiff, 2));
-    $('#' + id_prefix + '_diff').parent().toggleClass("error", (Math.abs(percentDiff) > 2.0));
+    $('#' + id_prefix + '_diff').parent().toggleClass("error", ((PDD > percentDiff_maxes[id_prefix.substr(-5)]) || (PDD < percentDiff_mins[id_prefix.substr(-5)])));
   }
 }
 
