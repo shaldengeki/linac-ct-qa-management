@@ -17,7 +17,7 @@
         <label class='control-label' for='form_entry[machine_id]'>Machine</label>
         <div class='controls'>
 ";
-  display_machine_dropdown($database, $user, "form_entry[machine_id]", (($id === false) ? 0 : intval($formEntryObject['machine_id'])));
+  display_machine_dropdown($database, $user, "form_entry[machine_id]", (($id === false) ? 0 : intval($formEntryObject['machine_id'])), intval($formObject['machine_type_id']));
   echo "        </div>
       </div>
       <div class='control-group'>

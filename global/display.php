@@ -421,10 +421,11 @@ function display_machines($database, $user) {
   }
 }
 
-function display_machine_dropdown($database, $user, $select_id="machine_id", $selected=0) {
+function display_machine_dropdown($database, $user, $select_id="machine_id", $selected=0, $machine_type=false) {
   echo "<select id='".escape_output($select_id)."' name='".escape_output($select_id)."'>
 ";
-  $machines = $database->stdQuery("SELECT `id`, `name` FROM `machines` WHERE `facility_id` = ".intval($user->facility_id));
+  $machineTypeFilter = intval($machine_type) ? " && `machine_type_id` = ".intval($machine_type) : "";
+  $machines = $database->stdQuery("SELECT `id`, `name` FROM `machines` WHERE `facility_id` = ".intval($user->facility_id).$machineTypeFilter." ORDER BY `name` ASC");
   while ($machine = mysqli_fetch_assoc($machines)) {
     echo "  <option value='".intval($machine['id'])."'".(($selected == intval($machine['id'])) ? "selected='selected'" : "").">".escape_output($machine['name'])."</option>
 ";
