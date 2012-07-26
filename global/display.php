@@ -627,7 +627,7 @@ function display_form_entries($database, $user, $form_id=false) {
   } else {
     $form_id = "`form_entries`.`form_id`";
   }
-  $form_entries = $database->stdQuery("SELECT `form_entries`.`id`, `form_entries`.`form_id`, `forms`.`name` AS `form_name`, `form_entries`.`machine_id`, `machines`.`name` AS `machine_name`, `form_entries`.`user_id`, `users`.`name` AS `user_name`, `created_at`, `comments` FROM `form_entries` LEFT OUTER JOIN `forms` ON `forms`.`id` = `form_entries`.`form_id` LEFT OUTER JOIN `machines` ON `machines`.`id` = `form_entries`.`machine_id` LEFT OUTER JOIN `users` ON `users`.`id` = `form_entries`.`user_id` WHERE `form_entries`.`form_id` = ".$form_id." ORDER BY `id` ASC");
+  $form_entries = $database->stdQuery("SELECT `form_entries`.`id`, `form_entries`.`form_id`, `forms`.`name` AS `form_name`, `form_entries`.`machine_id`, `machines`.`name` AS `machine_name`, `form_entries`.`user_id`, `users`.`name` AS `user_name`, `created_at`, `qa_month`, `qa_year`, `comments` FROM `form_entries` LEFT OUTER JOIN `forms` ON `forms`.`id` = `form_entries`.`form_id` LEFT OUTER JOIN `machines` ON `machines`.`id` = `form_entries`.`machine_id` LEFT OUTER JOIN `users` ON `users`.`id` = `form_entries`.`user_id` WHERE `form_entries`.`form_id` = ".$form_id." ORDER BY `id` ASC");
   while ($form_entry = mysqli_fetch_assoc($form_entries)) {
     echo "    <tr>
       <td><a href='form.php?action=show&id=".intval($form_entry['form_id'])."'>".escape_output($form_entry['form_name'])."</a></td>
