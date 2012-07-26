@@ -86,6 +86,7 @@ function calculateOutputCalibrationStats(type, id_prefix) {
             anyFailures = false;
             $('.form_entry_form_values_electron_output_calibration_diff').each(function() {
               anyFailures = anyFailures || (Math.abs($(this).val()) > 2.0);
+              $(this).parent().toggleClass("error", (Math.abs($(this).val()) > 2.0));
             });
             $('#electron_output_calibration_adjustment').toggle(anyFailures);
             break;
@@ -94,10 +95,13 @@ function calculateOutputCalibrationStats(type, id_prefix) {
             anyFailures = false;
             $('.form_entry_form_values_photon_output_calibration_diff').each(function() {
               anyFailures = anyFailures || (Math.abs($(this).val()) > 2.0);
+              $(this).parent().toggleClass("error", (Math.abs($(this).val()) > 2.0));
             });
             $('#photon_output_calibration_adjustment').toggle(anyFailures);
             break;
         }
+      } else {
+        $('#' + id_prefix + '_diff').parent().toggleClass("error", (Math.abs(percentDiff) > 2.0));
       }
     }
   }
@@ -109,7 +113,8 @@ function calculateTPRStats(id_prefix, outputCalibration_prefix) {
     if ($('#' + outputCalibration_prefix + '_q1').val() == '' && outputCalibration_prefix.indexOf('_adjusted') > 0) {
       outputCalibration_prefix = outputCalibration_prefix.replace(/\_adjusted/gi, "");
     }
-      var qAvg_outputCalibration = (parseFloat($('#' + outputCalibration_prefix + '_q1').val()) + parseFloat($('#' + outputCalibration_prefix + '_q2').val()) + parseFloat($('#' + outputCalibration_prefix + '_q3').val())) / 3.0;
+    var qAvg_outputCalibration = (parseFloat($('#' + outputCalibration_prefix + '_q1').val()) + parseFloat($('#' + outputCalibration_prefix + '_q2').val()) + parseFloat($('#' + outputCalibration_prefix + '_q3').val())) / 3.0;
+    
     if (id_prefix.indexOf('18MV') < 0) {
       var TPR_abs = 1.183;
     } else {
@@ -122,6 +127,7 @@ function calculateTPRStats(id_prefix, outputCalibration_prefix) {
 
     $('#' + id_prefix + '_TPR').val(roundNumber(TPR, 4));
     $('#' + id_prefix + '_diff').val(roundNumber(percentDiff, 2));
+    $('#' + id_prefix + '_diff').parent().toggleClass("error", (Math.abs(percentDiff) > 2.0));
     $('#' + id_prefix + '_TPR').trigger('change');
   }
 }
@@ -137,6 +143,7 @@ function calculateGatingStats(id_prefix, TPR_prefix) {
       $('#' + id_prefix + '_TPR').val(roundNumber(qAvg, 4));
       $('#' + id_prefix + '_TPR').trigger('change');
       $('#' + id_prefix + '_diff').val(roundNumber(percentDiff, 2));
+      $('#' + id_prefix + '_diff').parent().toggleClass("error", (Math.abs(percentDiff) > 2.0));
     }
   }
 }
@@ -158,6 +165,7 @@ function calculateEDWStats(id_prefix, TPR_prefix) {
     $('#' + id_prefix + '_WF').val(roundNumber(WF, 4));    
     $('#' + id_prefix + '_WF').trigger('change');
     $('#' + id_prefix + '_diff').val(roundNumber(percentDiff, 2));
+    $('#' + id_prefix + '_diff').parent().toggleClass("error", (Math.abs(percentDiff) > 2.0));
   }
 }
 function calculateEnergyRatioStats(id_prefix, outputCalibration_prefix) {
@@ -180,60 +188,73 @@ function calculateEnergyRatioStats(id_prefix, outputCalibration_prefix) {
     $('#' + id_prefix + '_PDD_abs').val(roundNumber(PDD_ref, 4));    
     $('#' + id_prefix + '_PDD_abs').trigger('change');
     $('#' + id_prefix + '_diff').val(roundNumber(percentDiff, 2));
+    $('#' + id_prefix + '_diff').parent().toggleClass("error", (Math.abs(percentDiff) > 2.0));
   }
 }
+
+function calculateAllOutputCalibrationStats() {
+  calculateOutputCalibrationStats('photon', 'form_entry_form_values_photon_output_calibration_6MV'); 
+  calculateOutputCalibrationStats('photon', 'form_entry_form_values_photon_output_calibration_18MV');
+  calculateOutputCalibrationStats('electron', 'form_entry_form_values_electron_output_calibration_6MeV'); 
+  calculateOutputCalibrationStats('electron', 'form_entry_form_values_electron_output_calibration_9MeV'); 
+  calculateOutputCalibrationStats('electron', 'form_entry_form_values_electron_output_calibration_12MeV'); 
+  calculateOutputCalibrationStats('electron', 'form_entry_form_values_electron_output_calibration_16MeV'); 
+  calculateOutputCalibrationStats('electron', 'form_entry_form_values_electron_output_calibration_20MeV'); 
+  calculateOutputCalibrationStats('photon', 'form_entry_form_values_photon_output_calibration_adjusted_6MV'); 
+  calculateOutputCalibrationStats('photon', 'form_entry_form_values_photon_output_calibration_adjusted_18MV');
+  calculateOutputCalibrationStats('electron', 'form_entry_form_values_electron_output_calibration_adjusted_6MeV'); 
+  calculateOutputCalibrationStats('electron', 'form_entry_form_values_electron_output_calibration_adjusted_9MeV'); 
+  calculateOutputCalibrationStats('electron', 'form_entry_form_values_electron_output_calibration_adjusted_12MeV'); 
+  calculateOutputCalibrationStats('electron', 'form_entry_form_values_electron_output_calibration_adjusted_16MeV'); 
+  calculateOutputCalibrationStats('electron', 'form_entry_form_values_electron_output_calibration_adjusted_20MeV'); 
+}
+
+function calculateAllTPRStats() {
+  calculateTPRStats('form_entry_form_values_tpr_6MV', 'form_entry_form_values_photon_output_calibration_adjusted_6MV');
+  calculateTPRStats('form_entry_form_values_tpr_18MV', 'form_entry_form_values_photon_output_calibration_adjusted_18MV');
+  calculateTPRStats('form_entry_form_values_tpr_6MV', 'form_entry_form_values_photon_output_calibration_adjusted_6MV');
+  calculateTPRStats('form_entry_form_values_tpr_18MV', 'form_entry_form_values_photon_output_calibration_adjusted_18MV');
+}
+
+function calculateAllGatingStats() {
+  calculateGatingStats('form_entry_form_values_gating_6MV', 'form_entry_form_values_tpr_6MV');
+}
+
+function calculateAllEDWStats() {
+  calculateEDWStats('form_entry_form_values_edw_6MV', 'form_entry_form_values_tpr_6MV');
+  calculateEDWStats('form_entry_form_values_edw_18MV', 'form_entry_form_values_tpr_18MV');
+}
+
+function calculateAllEnergyRatioStats() {
+  calculateEnergyRatioStats('form_entry_form_values_energy_ratio_6MeV', 'form_entry_form_values_electron_output_calibration_adjusted_6MeV');
+  calculateEnergyRatioStats('form_entry_form_values_energy_ratio_6MeV', 'form_entry_form_values_electron_output_calibration_adjusted_9MeV');
+  calculateEnergyRatioStats('form_entry_form_values_energy_ratio_6MeV', 'form_entry_form_values_electron_output_calibration_adjusted_12MeV');
+  calculateEnergyRatioStats('form_entry_form_values_energy_ratio_6MeV', 'form_entry_form_values_electron_output_calibration_adjusted_16MeV');
+  calculateEnergyRatioStats('form_entry_form_values_energy_ratio_6MeV', 'form_entry_form_values_electron_output_calibration_adjusted_20MeV');
+  calculateEnergyRatioStats('form_entry_form_values_energy_ratio_6MeV', 'form_entry_form_values_electron_output_calibration_adjusted_6MeV');
+  calculateEnergyRatioStats('form_entry_form_values_energy_ratio_9MeV', 'form_entry_form_values_electron_output_calibration_adjusted_9MeV');
+  calculateEnergyRatioStats('form_entry_form_values_energy_ratio_12MeV', 'form_entry_form_values_electron_output_calibration_adjusted_12MeV');
+  calculateEnergyRatioStats('form_entry_form_values_energy_ratio_16MeV', 'form_entry_form_values_electron_output_calibration_adjusted_16MeV');
+  calculateEnergyRatioStats('form_entry_form_values_energy_ratio_20MeV', 'form_entry_form_values_electron_output_calibration_adjusted_20MeV');
+}
+
 $(document).ready(function() {
   $('#form_entry_created_at').datetimepicker();
   $('#form_entry_form_values_temperature').change(function() {calculateTPCF();});
   $('#form_entry_form_values_pressure').change(function() {calculateTPCF();});
   $('#form_entry_form_values_tpcf').change(function() { 
-    calculateOutputCalibrationStats('photon', 'form_entry_form_values_photon_output_calibration_6MV'); 
-    calculateOutputCalibrationStats('photon', 'form_entry_form_values_photon_output_calibration_18MV');
-    calculateOutputCalibrationStats('electron', 'form_entry_form_values_electron_output_calibration_6MeV'); 
-    calculateOutputCalibrationStats('electron', 'form_entry_form_values_electron_output_calibration_9MeV'); 
-    calculateOutputCalibrationStats('electron', 'form_entry_form_values_electron_output_calibration_12MeV'); 
-    calculateOutputCalibrationStats('electron', 'form_entry_form_values_electron_output_calibration_16MeV'); 
-    calculateOutputCalibrationStats('electron', 'form_entry_form_values_electron_output_calibration_20MeV'); 
-    calculateOutputCalibrationStats('photon', 'form_entry_form_values_photon_output_calibration_adjusted_6MV'); 
-    calculateOutputCalibrationStats('photon', 'form_entry_form_values_photon_output_calibration_adjusted_18MV');
-    calculateOutputCalibrationStats('electron', 'form_entry_form_values_electron_output_calibration_adjusted_6MeV'); 
-    calculateOutputCalibrationStats('electron', 'form_entry_form_values_electron_output_calibration_adjusted_9MeV'); 
-    calculateOutputCalibrationStats('electron', 'form_entry_form_values_electron_output_calibration_adjusted_12MeV'); 
-    calculateOutputCalibrationStats('electron', 'form_entry_form_values_electron_output_calibration_adjusted_16MeV'); 
-    calculateOutputCalibrationStats('electron', 'form_entry_form_values_electron_output_calibration_adjusted_20MeV'); 
+    calculateAllOutputCalibrationStats();
+    calculateAllTPRStats();
   });
   $('#form_entry_form_values_ionization_chamber').change(function() {
-    calculateOutputCalibrationStats('photon', 'form_entry_form_values_photon_output_calibration_6MV'); 
-    calculateOutputCalibrationStats('photon', 'form_entry_form_values_photon_output_calibration_18MV');
-    calculateOutputCalibrationStats('electron', 'form_entry_form_values_electron_output_calibration_6MeV'); 
-    calculateOutputCalibrationStats('electron', 'form_entry_form_values_electron_output_calibration_9MeV'); 
-    calculateOutputCalibrationStats('electron', 'form_entry_form_values_electron_output_calibration_12MeV'); 
-    calculateOutputCalibrationStats('electron', 'form_entry_form_values_electron_output_calibration_16MeV'); 
-    calculateOutputCalibrationStats('electron', 'form_entry_form_values_electron_output_calibration_20MeV');
-    calculateOutputCalibrationStats('photon', 'form_entry_form_values_photon_output_calibration_adjusted_6MV'); 
-    calculateOutputCalibrationStats('photon', 'form_entry_form_values_photon_output_calibration_adjusted_18MV');
-    calculateOutputCalibrationStats('electron', 'form_entry_form_values_electron_output_calibration_adjusted_6MeV');
-    calculateOutputCalibrationStats('electron', 'form_entry_form_values_electron_output_calibration_adjusted_9MeV'); 
-    calculateOutputCalibrationStats('electron', 'form_entry_form_values_electron_output_calibration_adjusted_12MeV'); 
-    calculateOutputCalibrationStats('electron', 'form_entry_form_values_electron_output_calibration_adjusted_16MeV'); 
-    calculateOutputCalibrationStats('electron', 'form_entry_form_values_electron_output_calibration_adjusted_20MeV');
+    calculateAllOutputCalibrationStats();
+    calculateAllTPRStats();
   });
   $('#form_entry_form_values_electrometer').change(function() {
-    calculateOutputCalibrationStats('photon', 'form_entry_form_values_photon_output_calibration_6MV'); 
-    calculateOutputCalibrationStats('photon', 'form_entry_form_values_photon_output_calibration_18MV');
-    calculateOutputCalibrationStats('electron', 'form_entry_form_values_electron_output_calibration_6MeV'); 
-    calculateOutputCalibrationStats('electron', 'form_entry_form_values_electron_output_calibration_9MeV'); 
-    calculateOutputCalibrationStats('electron', 'form_entry_form_values_electron_output_calibration_12MeV'); 
-    calculateOutputCalibrationStats('electron', 'form_entry_form_values_electron_output_calibration_16MeV'); 
-    calculateOutputCalibrationStats('electron', 'form_entry_form_values_electron_output_calibration_20MeV');
-    calculateOutputCalibrationStats('photon', 'form_entry_form_values_photon_output_calibration_adjusted_6MV'); 
-    calculateOutputCalibrationStats('photon', 'form_entry_form_values_photon_output_calibration_adjusted_18MV');
-    calculateOutputCalibrationStats('electron', 'form_entry_form_values_electron_output_calibration_adjusted_6MeV'); 
-    calculateOutputCalibrationStats('electron', 'form_entry_form_values_electron_output_calibration_adjusted_9MeV'); 
-    calculateOutputCalibrationStats('electron', 'form_entry_form_values_electron_output_calibration_adjusted_12MeV'); 
-    calculateOutputCalibrationStats('electron', 'form_entry_form_values_electron_output_calibration_adjusted_16MeV'); 
-    calculateOutputCalibrationStats('electron', 'form_entry_form_values_electron_output_calibration_adjusted_20MeV');
+    calculateAllOutputCalibrationStats();
+    calculateAllTPRStats();
   });
+
   $('.form_entry_form_values_photon_output_calibration_6MV').each(function() {
     $(this).change(function() {
       calculateOutputCalibrationStats('photon', 'form_entry_form_values_photon_output_calibration_6MV');
@@ -254,17 +275,26 @@ $(document).ready(function() {
       calculateOutputCalibrationStats('photon', 'form_entry_form_values_photon_output_calibration_adjusted_18MV');
     });
   });
+  $('#form_entry_form_values_photon_output_calibration_6MV_Dw').change(function() {
+    calculateTPRStats('form_entry_form_values_tpr_6MV', 'form_entry_form_values_photon_output_calibration_adjusted_6MV');
+  });
   $('#form_entry_form_values_photon_output_calibration_18MV_Dw').change(function() {
-    calculateTPRStats('form_entry_form_values_tpr_18MV', 'form_entry_form_values_photon_output_calibration_18MV');
+    calculateTPRStats('form_entry_form_values_tpr_18MV', 'form_entry_form_values_photon_output_calibration_adjusted_18MV');
+  });
+  $('#form_entry_form_values_photon_output_calibration_adjusted_6MV_Dw').change(function() {
+    calculateTPRStats('form_entry_form_values_tpr_6MV', 'form_entry_form_values_photon_output_calibration_adjusted_6MV');
+  });
+  $('#form_entry_form_values_photon_output_calibration_adjusted_18MV_Dw').change(function() {
+    calculateTPRStats('form_entry_form_values_tpr_18MV', 'form_entry_form_values_photon_output_calibration_adjusted_18MV');
   });
   $('.form_entry_form_values_tpr_6MV').each(function() {
     $(this).change(function() {
-      calculateTPRStats('form_entry_form_values_tpr_6MV', 'form_entry_form_values_photon_output_calibration_6MV');
+      calculateTPRStats('form_entry_form_values_tpr_6MV', 'form_entry_form_values_photon_output_calibration_adjusted_6MV');
     });
   });
   $('.form_entry_form_values_tpr_18MV').each(function() {
     $(this).change(function() {
-      calculateTPRStats('form_entry_form_values_tpr_18MV', 'form_entry_form_values_photon_output_calibration_18MV');
+      calculateTPRStats('form_entry_form_values_tpr_18MV', 'form_entry_form_values_photon_output_calibration_adjusted_18MV');
     });
   });
   $('.form_entry_form_values_gating_6MV').each(function() {
@@ -282,6 +312,7 @@ $(document).ready(function() {
       calculateEDWStats('form_entry_form_values_edw_18MV', 'form_entry_form_values_tpr_18MV');
     });
   });
+  
   $('.form_entry_form_values_electron_output_calibration_6MeV').each(function() {
     $(this).change(function() {
       calculateOutputCalibrationStats('electron', 'form_entry_form_values_electron_output_calibration_6MeV');
@@ -367,5 +398,9 @@ $(document).ready(function() {
       calculateEnergyRatioStats('form_entry_form_values_energy_ratio_20MeV', 'form_entry_form_values_electron_output_calibration_adjusted_20MeV');
     });
   });
-
+  calculateAllOutputCalibrationStats();
+  calculateAllTPRStats();
+  calculateAllGatingStats();
+  calculateAllEDWStats();
+  calculateAllEnergyRatioStats();
 });

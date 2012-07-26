@@ -264,7 +264,7 @@ class DbConn extends mysqli {
             if (!move_uploaded_file($file_array['tmp_name'], $imagePath)) {
               return array('location' => 'form_entry.php'.((isset($get_form_entry_id)) ? "?id=".intval($get_form_entry_id) : ""), 'status' => "There was an error moving your uploaded file.");
             }
-            $updateImagePath = $this->stdQuery("UPDATE `form_entries` SET `image_path` = ".$this->quoteSmart($imagePath).", `updated_at` = '".date('Y-m-d H:i:s')."' WHERE `id` = ".intval($form_entry['id'])." LIMIT 1");
+            $updateFormEntry = $this->stdQuery("UPDATE `form_entries` SET `machine_id` = ".intval($form_entry['machine_id']).", `image_path` = ".$this->quoteSmart($imagePath).", `created_at` = '".date('Y-m-d H:i:s', strtotime($form_entry['created_at']))."', `qa_month` = ".intval($form_entry['qa_month']).", `qa_year` = ".intval($form_entry['qa_year']).", `updated_at` = '".date('Y-m-d H:i:s')."' WHERE `id` = ".intval($form_entry['id'])." LIMIT 1");
           }
           return array('location' => 'form_entry.php', 'status' => "Successfully updated form entry.");
         } else {
@@ -274,7 +274,7 @@ class DbConn extends mysqli {
           if (!$checkForm || $checkForm != 1) {
             return array('location' => 'form_entry.php?action=new'.((isset($form_entry['form_id'])) ? "&form_id=".intval($form_entry['form_id']) : ""), 'status' => "The specified form does not exist.");                  
           }
-          $insertEntry = $this->stdQuery("INSERT INTO `form_entries` (`form_id`, `machine_id`, `user_id`, `comments`, `created_at`, `updated_at`) VALUES (".intval($form_entry['form_id']).", ".intval($form_entry['machine_id']).", ".intval($user->id).", ".$this->quoteSmart($form_entry['comments']).", ".$this->quoteSmart($form_entry['created_at']).", '".date('Y-m-d H:i:s')."')");
+          $insertEntry = $this->stdQuery("INSERT INTO `form_entries` (`form_id`, `machine_id`, `user_id`, `comments`, `image_path`, `created_at`, `qa_month`, `qa_year`, `updated_at`) VALUES (".intval($form_entry['form_id']).", ".intval($form_entry['machine_id']).", ".intval($user->id).", ".$this->quoteSmart($form_entry['comments']).", '', '".date('Y-m-d H:i:s', strtotime($form_entry['created_at']))."', ".intval($form_entry['qa_month']).", ".intval($form_entry['qa_year']).", '".date('Y-m-d H:i:s')."')");
           $form_entry['id'] = intval($this->insert_id);
           $valueQueryArray = [];
           foreach ($form_entry['form_values'] as $name=>$value) {

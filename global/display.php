@@ -156,6 +156,24 @@ function display_login_form() {
 ';
 }
 
+function display_month_year_dropdown($select_id="", $select_name_prefix="form_entry", $selected=array(1,1)) {
+  echo "<select id='".escape_output($select_id)."' name='".escape_output($select_name_prefix)."[qa_month]'>
+";
+  for ($month_i = 1; $month_i <= 12; $month_i++) {
+    echo "  <option value='".$month_i."'".(($selected[0] === $month_i) ? "selected='selected'" : "").">".htmlentities(date('M', mktime(0, 0, 0, $month_i, 1, 2000)), ENT_QUOTES, "UTF-8")."</option>
+";
+  }
+echo "</select>
+<select id='".escape_output($select_id)."' name='".escape_output($select_name_prefix)."[qa_year]'>
+";
+  for ($year = 2007; $year <= intval(date('Y', time())); $year++) {
+    echo "  <option value='".$year."'".(($selected[1] === $year) ? "selected='selected'" : "").">".$year."</option>
+";
+  }
+echo "</select>
+";
+}
+
 function display_facilities($database, $user) {
   //lists all facilities.
   if (!$user->isAdmin($database)) {
@@ -213,7 +231,7 @@ function display_facility_edit_form($database, $user, $id=false) {
     </div>
     <div class='form-actions'>
       <button type='submit' class='btn btn-primary'>".(($id === false) ? "Add Facility" : "Save changes")."</button>
-      <a href='facility.php' class='btn'>".(($id === false) ? "Go back" : "Discard changes")."</a>
+      <a href='#' onClick='window.location.replace(document.referrer);' class='btn'>".(($id === false) ? "Go back" : "Discard changes")."</a>
     </div>
   </fieldset>
 </form>
@@ -264,7 +282,7 @@ function display_register_form($database, $action=".") {
 }
 
 function display_ionization_chamber_dropdown($select_id = "form_entry_form_values_ionization_chamber", $select_name_prefix="form_entry[form_values]", $selected="") {
-  echo "<select id='".escape_output($select_id)."' name='".escape_output($select_name_prefix)."[ionization_chamber]'>
+  echo "<select class='span12' id='".escape_output($select_id)."' name='".escape_output($select_name_prefix)."[ionization_chamber]'>
   <option value='Farmer (S/N 944, ND.SW(Gy/C) 5.18E+07)'".(($selected === 'Farmer (S/N 944, ND.SW(Gy/C) 5.18E+07)') ? "selected='selected'" : "").">Farmer (S/N 944, ND.SW(Gy/C) 5.18E+07)</option>
   <option value='Farmer (S/N 269, ND.SW(Gy/C) 5.32E+07)'".(($selected === 'Farmer (S/N 269, ND.SW(Gy/C) 5.32E+07)') ? "selected='selected'" : "").">Farmer (S/N 269, ND.SW(Gy/C) 5.32E+07)</option>
 </select>
@@ -272,7 +290,7 @@ function display_ionization_chamber_dropdown($select_id = "form_entry_form_value
 }
 
 function display_electrometer_dropdown($select_id = "form_entry_form_values_electrometer", $select_name_prefix="form_entry[form_values]", $selected="") {
-  echo "<select id='".escape_output($select_id)."' name='".escape_output($select_name_prefix)."[electrometer]'>
+  echo "<select class='span12' id='".escape_output($select_id)."' name='".escape_output($select_name_prefix)."[electrometer]'>
   <option value='Keithley Model 614 (S/N 42215, Kelec 0.995)'".(($selected === 'Keithley Model 614 (S/N 42215, Kelec 0.995)') ? "selected='selected'" : "").">Keithley Model 614 (S/N 42215, Kelec 0.995)</option>
   <option value='SI CDX 2000B #1 (S/N J073443, Kelec 1.000)'".(($selected === 'SI CDX 2000B #1 (S/N J073443, Kelec 1.000)') ? "selected='selected'" : "").">SI CDX 2000B #1 (S/N J073443, Kelec 1.000)</option>
   <option value='SI CDX 2000B #2 (S/N J073444, Kelec 1.000)'".(($selected === 'SI CDX 2000B #2 (S/N J073444, Kelec 1.000)') ? "selected='selected'" : "").">SI CDX 2000B #2 (S/N J073444, Kelec 1.000)</option>
@@ -344,7 +362,7 @@ function display_machine_type_edit_form($database, $user, $id=false) {
     </div>
     <div class='form-actions'>
       <button type='submit' class='btn btn-primary'>".(($id === false) ? "Add Machine Type" : "Save changes")."</button>
-      <a href='machine_type.php' class='btn'>".(($id === false) ? "Go back" : "Discard changes")."</a>
+      <a href='#' onClick='window.location.replace(document.referrer);' class='btn'>".(($id === false) ? "Go back" : "Discard changes")."</a>
     </div>
   </fieldset>
 </form>
@@ -453,7 +471,7 @@ function display_machine_edit_form($database, $user, $id=false) {
     </div>
     <div class='form-actions'>
       <button type='submit' class='btn btn-primary'>".(($id === false) ? "Add Machine" : "Save changes")."</button>
-      <a href='machine.php' class='btn'>".(($id === false) ? "Go back" : "Discard changes")."</a>
+      <a href='#' onClick='window.location.replace(document.referrer);' class='btn'>".(($id === false) ? "Go back" : "Discard changes")."</a>
     </div>
   </fieldset>
 </form>
@@ -579,7 +597,7 @@ function display_form_edit_form($database, $user, $id=false) {
     </div>
     <div class='form-actions'>
       <button type='submit' class='btn btn-primary'>".(($id === false) ? "Create form" : "Save changes")."</button>
-      <a href='form.php' class='btn'>".(($id === false) ? "Go back" : "Discard changes")."</a>
+      <a href='#' onClick='window.location.replace(document.referrer);' class='btn'>".(($id === false) ? "Go back" : "Discard changes")."</a>
     </div>
   </fieldset>
 </form>
