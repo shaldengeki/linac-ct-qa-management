@@ -635,7 +635,7 @@ function display_form_entries($database, $user, $form_id=false) {
       <td><a href='form.php?action=show&id=".intval($form_entry['form_id'])."'>".escape_output($form_entry['form_name'])."</a></td>
       <td><a href='machine.php?action=show&id=".intval($form_entry['machine_id'])."'>".escape_output($form_entry['machine_name'])."</a></td>
       <td><a href='user.php?action=show&id=".intval($form_entry['user_id'])."'>".escape_output($form_entry['user_name'])."</a></td>
-      <td>".intval($form_entry['qa_year'])."/".intval($form_entry['qa_month'])."</td>
+      <td>".intval($form_entry['qa_year'])."/".((intval($form_entry['qa_month']) >= 10) ? "" : "0").intval($form_entry['qa_month'])."</td>
       <td>".escape_output(date('n/j/Y', strtotime($form_entry['created_at'])))."</td>
       <td>".escape_output($form_entry['comments'])."</td>
       <td><a href='form_entry.php?action=edit&id=".intval($form_entry['id'])."'>Edit</a></td>

@@ -19,7 +19,11 @@ path {
   stroke: maroon;
 }
 
-/* css for form images. */
+/* css for forms. */
+.center-horizontal {
+  text-align: center;
+}
+
 .image-preview {
   border: 1px solid black;
   -moz-border-radius: 20px;

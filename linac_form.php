@@ -81,7 +81,7 @@
     <h1>Photon Dosimetry</h1>
     <div class='row-fluid'>
       <div class='span3'>
-        <h3>Output Calibration</h3>
+        <h3 class='center-horizontal'>Output Calibration</h3>
         <table class='table table-bordered table-striped'>
           <thead>
             <tr>
@@ -134,7 +134,7 @@
           </tbody>
         </table>
         <div id='photon_output_calibration_adjustment' style='display:none;'>
-          <h3>Adjusted Output Calibration</h3>
+          <h3 class='center-horizontal'>Adjusted Output Calibration</h3>
           <table class='table table-bordered table-striped'>
             <thead>
               <tr>
@@ -189,7 +189,7 @@
         </div>
       </div>
       <div class='span3'>
-        <h3>TPR Check</h3>
+        <h3 class='center-horizontal'>TPR Check</h3>
         <table class='table table-bordered table-striped'>
           <thead>
             <tr>
@@ -238,7 +238,7 @@
         </table>
       </div>
       <div class='span3'>
-        <h3>Gating</h3>
+        <h3 class='center-horizontal'>Gating</h3>
         <table class='table table-bordered table-striped'>
           <thead>
             <tr>
@@ -279,7 +279,7 @@
         </table>
       </div>
       <div class='span3'>
-        <h3>EDW</h3>
+        <h3 class='center-horizontal'>EDW</h3>
         <table class='table table-bordered table-striped'>
           <thead>
             <tr>
@@ -331,7 +331,7 @@
     <h1>Electron Dosimetry</h1>
     <div class='row-fluid'>
       <div class='span6'>
-        <h3>Output Calibration</h3>
+        <h3 class='center-horizontal'>Output Calibration</h3>
         <table class='table table-bordered table-striped'>
           <thead>
             <tr>
@@ -411,7 +411,7 @@
           </tbody>
         </table>
         <div id='electron_output_calibration_adjustment' style='display:none;'>
-          <h3>Adjusted Output Calibration</h3>
+          <h3 class='center-horizontal'>Adjusted Output Calibration</h3>
           <table class='table table-bordered table-striped'>
             <thead>
               <tr>
@@ -493,7 +493,7 @@
         </div>
       </div>
       <div class='span6'>
-        <h3>Energy Ratio Check</h3>
+        <h3 class='center-horizontal'>Energy Ratio Check</h3>
         <table class='table table-bordered table-striped'>
           <thead>
             <tr>
@@ -575,7 +575,7 @@
     <h1>Mechanical QA</h1>
     <div class='row-fluid'>
       <div class='span2'>
-        <h3>Laser position</h3>
+        <h3 class='center-horizontal'>Laser position</h3>
         <table class='table table-bordered table-striped'>
           <thead>
             <tr>
@@ -624,7 +624,7 @@
         </table>
       </div>
       <div class='span2'>
-        <h3>ODI vs Light Field Isocenter</h3>
+        <h3 class='center-horizontal'>ODI vs Light Field Isocenter</h3>
         <table class='table table-bordered table-striped'>
           <thead>
             <tr>
@@ -649,7 +649,7 @@
         </table>
       </div>
       <div class='span2'>
-        <h3>Centering of Light Field Cross-Hair</h3>
+        <h3 class='center-horizontal'>Centering of Light Field Cross-Hair</h3>
         <table class='table table-bordered table-striped'>
           <thead>
             <tr>
@@ -674,7 +674,7 @@
         </table>
       </div>
       <div class='span2'>
-        <h3>Device Angles vs Readout</h3>
+        <h3 class='center-horizontal'>Device Angles vs Readout</h3>
         <table class='table table-bordered table-striped'>
           <thead>
             <tr>
@@ -733,7 +733,7 @@
         </table>
       </div>
       <div class='span4'>
-        <h3>Optical Field Size vs Digital Readout</h3>
+        <h3 class='center-horizontal'>Optical Field Size vs Digital Readout</h3>
         <table class='table table-bordered table-striped'>
           <thead>
             <tr>
@@ -772,7 +772,7 @@
     </div>
     <div class='row-fluid'>
       <div class='span3'>
-        <h3>Door and Key Interlock</h3>
+        <h3 class='center-horizontal'>Door and Key Interlock</h3>
         <table class='table table-bordered table-striped'>
           <thead>
             <tr>
@@ -801,7 +801,7 @@
         </table>
       </div>
       <div class='span6'>
-        <h3>Accessory Position and Latching</h3>
+        <h3 class='center-horizontal'>Accessory Position and Latching</h3>
         <table class='table table-bordered table-striped'>
           <thead>
           </thead>
@@ -848,7 +848,7 @@
         </table>
       </div>
       <div class='span3'>
-        <h3>BB Tray Alignment</h3>
+        <h3 class='center-horizontal'>BB Tray Alignment</h3>
         <table class='table table-bordered table-striped'>
           <thead>
             <tr>
