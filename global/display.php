@@ -487,22 +487,24 @@ function display_machine_info($database, $user, $machine_id, $graph_div_prefix =
     $machine_fields = $database->stdQuery("SELECT `form_fields`.`id`, `form_fields`.`name` FROM `form_entries` LEFT OUTER JOIN `form_fields` ON `form_fields`.`form_id` = `form_entries`.`form_id` WHERE `form_entries`.`machine_id` = ".intval($machine_id)." GROUP BY `form_fields`.`id` ORDER BY `form_fields`.`name` ASC");
     while ($machine_field = mysqli_fetch_assoc($machine_fields)) {
       $field_values = $database->queryAssoc("SELECT `form_values`.`value`, `form_entries`.`created_at` AS `date` FROM `form_values` LEFT OUTER JOIN `form_entries` ON `form_values`.`form_entry_id` = `form_entries`.`id` WHERE `form_values`.`form_field_id` = ".intval($machine_field['id'])." ORDER BY `form_entries`.`created_at` ASC");
-      $field_strings = array();
-      $field_labels = array();
+      if ($field_values) {
+        $field_strings = array();
+        $field_labels = array();
       
-      foreach ($field_values as $key => $field_value) {
-        if (is_numeric($field_value[0])) {
-          $field_strings[] = "{x: '".date('m/d/y', strtotime($field_value[1]))."', y: ".escape_output($field_value[0])."}";
+        foreach ($field_values as $key => $field_value) {
+          if (is_numeric($field_value[0])) {
+            $field_strings[] = "{x: '".date('m/d/y', strtotime($field_value[1]))."', y: ".escape_output($field_value[0])."}";
+          }
         }
-      }
-      if (count($field_strings) > 1) {
-        echo "<span id='".escape_output($graph_div_prefix)."_".intval($i)."'></span>
+        if (count($field_strings) > 1) {
+          echo "<span id='".escape_output($graph_div_prefix)."_".intval($i)."'></span>
 <script type='text/javascript'>
 var data = [".implode(",", $field_strings)."];
 displayFormFieldLineGraph(data, '".humanize($machine_field['name'])."', '".escape_output($graph_div_prefix)."_".intval($i)."');
 </script>
 ";
-        $i++;
+          $i++;
+        }
       }
     }
   }

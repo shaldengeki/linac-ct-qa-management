@@ -252,8 +252,8 @@ class DbConn extends mysqli {
               return array('location' => 'form_entry.php'.((isset($get_form_entry_id)) ? "?id=".intval($get_form_entry_id) : ""), 'status' => "The image file you uploaded is invalid.");
             }
             $imageSize = getimagesize($file_array['tmp_name']);
-            if ($imageSize[0] > 2000 || $imageSize[1] > 2000) {
-              return array('location' => 'form_entry.php'.((isset($get_form_entry_id)) ? "?id=".intval($get_form_entry_id) : ""), 'status' => "The maximum allowed size for images is 2000x2000 pixels.");
+            if ($imageSize[0] > 5000 || $imageSize[1] > 5000) {
+              return array('location' => 'form_entry.php'.((isset($get_form_entry_id)) ? "?id=".intval($get_form_entry_id) : ""), 'status' => "The maximum allowed size for images is 5000x5000 pixels.");
             }
             // move file to destination and save path in db.
             if (!is_dir(joinPaths($_SERVER[''], "uploads", "forms", $form_entry['form_id']))) {

@@ -227,15 +227,44 @@ function calculateAllEDWStats() {
 
 function calculateAllEnergyRatioStats() {
   calculateEnergyRatioStats('form_entry_form_values_energy_ratio_6MeV', 'form_entry_form_values_electron_output_calibration_adjusted_6MeV');
-  calculateEnergyRatioStats('form_entry_form_values_energy_ratio_6MeV', 'form_entry_form_values_electron_output_calibration_adjusted_9MeV');
-  calculateEnergyRatioStats('form_entry_form_values_energy_ratio_6MeV', 'form_entry_form_values_electron_output_calibration_adjusted_12MeV');
-  calculateEnergyRatioStats('form_entry_form_values_energy_ratio_6MeV', 'form_entry_form_values_electron_output_calibration_adjusted_16MeV');
-  calculateEnergyRatioStats('form_entry_form_values_energy_ratio_6MeV', 'form_entry_form_values_electron_output_calibration_adjusted_20MeV');
+  calculateEnergyRatioStats('form_entry_form_values_energy_ratio_9MeV', 'form_entry_form_values_electron_output_calibration_adjusted_9MeV');
+  calculateEnergyRatioStats('form_entry_form_values_energy_ratio_12MeV', 'form_entry_form_values_electron_output_calibration_adjusted_12MeV');
+  calculateEnergyRatioStats('form_entry_form_values_energy_ratio_16MeV', 'form_entry_form_values_electron_output_calibration_adjusted_16MeV');
+  calculateEnergyRatioStats('form_entry_form_values_energy_ratio_20MeV', 'form_entry_form_values_electron_output_calibration_adjusted_20MeV');
   calculateEnergyRatioStats('form_entry_form_values_energy_ratio_6MeV', 'form_entry_form_values_electron_output_calibration_adjusted_6MeV');
   calculateEnergyRatioStats('form_entry_form_values_energy_ratio_9MeV', 'form_entry_form_values_electron_output_calibration_adjusted_9MeV');
   calculateEnergyRatioStats('form_entry_form_values_energy_ratio_12MeV', 'form_entry_form_values_electron_output_calibration_adjusted_12MeV');
   calculateEnergyRatioStats('form_entry_form_values_energy_ratio_16MeV', 'form_entry_form_values_electron_output_calibration_adjusted_16MeV');
   calculateEnergyRatioStats('form_entry_form_values_energy_ratio_20MeV', 'form_entry_form_values_electron_output_calibration_adjusted_20MeV');
+}
+
+function displayImagePreview(files) {
+  for (var i = 0; i < files.length; i++) {
+    var file = files[i];
+    var imageType = /image.*/;
+    
+    if (!file.type.match(imageType)) {
+      continue;
+    }
+    var img = document.createElement("img");
+    img.classList.add("obj");
+    img.file = file;
+    
+    $('#image_preview').empty().append($('<div class="span6"></div>')).append($('<div class="span6"></div>'));
+    $('#image_preview').children(':first-child').each(function() {
+      $(this).append(img);
+      $(this).children().each(function() {
+        $(this).addClass('image-preview');
+      });
+    });
+    $('#image_preview').children(':nth-child(2)').each(function() {
+      $(this).append($('<h4>Preview</h4>'));
+    });
+    
+    var reader = new FileReader();
+    reader.onload = (function(aImg) { return function(e) { aImg.src = e.target.result; }; })(img);
+    reader.readAsDataURL(file);
+  }
 }
 
 $(document).ready(function() {

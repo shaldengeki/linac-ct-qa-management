@@ -17,4 +17,13 @@ body {
 path {
   fill: none;
   stroke: maroon;
-}?
+}
+
+/* css for form images. */
+.image-preview {
+  border: 1px solid black;
+  -moz-border-radius: 20px;
+  -webkit-border-radius: 20px;
+  -khtml-border-radius: 20px;
+  border-radius: 20px;
+}

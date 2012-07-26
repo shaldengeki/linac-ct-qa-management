@@ -746,21 +746,21 @@
           </thead>
           <tbody>
             <tr>
-              <td>5.0</td>
+              <td>5.0x5.0</td>
               <td class='control-group'><input name='form_entry[form_values][optical_field_x1_x5]' class='span12' id='form_entry_form_values_optical_field_x1_x5' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['optical_field_x1_x5'])."'")."/></td>
               <td class='control-group'><input name='form_entry[form_values][optical_field_x2_x5]' class='span12' id='form_entry_form_values_optical_field_x2_x5' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['optical_field_x2_x5'])."'")."/></td>
               <td class='control-group'><input name='form_entry[form_values][optical_field_y1_y5]' class='span12' id='form_entry_form_values_optical_field_y1_y5' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['optical_field_y1_y5'])."'")."/></td>
               <td class='control-group'><input name='form_entry[form_values][optical_field_y2_y5]' class='span12' id='form_entry_form_values_optical_field_y2_y5' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['optical_field_y2_y5'])."'")."/></td>
             </tr>
             <tr>
-              <td>10.0</td>
+              <td>10.0x10.0</td>
               <td class='control-group'><input name='form_entry[form_values][optical_field_x1_x10]' class='span12' id='form_entry_form_values_optical_field_x1_x10' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['optical_field_x1_x10'])."'")."/></td>
               <td class='control-group'><input name='form_entry[form_values][optical_field_x2_x10]' class='span12' id='form_entry_form_values_optical_field_x2_x10' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['optical_field_x2_x10'])."'")."/></td>
               <td class='control-group'><input name='form_entry[form_values][optical_field_y1_y10]' class='span12' id='form_entry_form_values_optical_field_y1_y10' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['optical_field_y1_y10'])."'")."/></td>
               <td class='control-group'><input name='form_entry[form_values][optical_field_y2_y10]' class='span12' id='form_entry_form_values_optical_field_y2_y10' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['optical_field_y2_y10'])."'")."/></td>
             </tr>
             <tr>
-              <td>20.0</td>
+              <td>20.0x20.0</td>
               <td class='control-group'><input name='form_entry[form_values][optical_field_x1_x20]' class='span12' id='form_entry_form_values_optical_field_x1_x20' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['optical_field_x1_x20'])."'")."/></td>
               <td class='control-group'><input name='form_entry[form_values][optical_field_x2_x20]' class='span12' id='form_entry_form_values_optical_field_x2_x20' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['optical_field_x2_x20'])."'")."/></td>
               <td class='control-group'><input name='form_entry[form_values][optical_field_y1_y20]' class='span12' id='form_entry_form_values_optical_field_y1_y20' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['optical_field_y1_y20'])."'")."/></td>
@@ -868,15 +868,16 @@
         </table>
       </div>
     </div>
-    <h3>Comments</h3>
-    <textarea name='form_entry[comments]' id='form_entry_comments' rows='10' class='span12' placeholder='Comments go here.'>".(($id === false) ? "" : escape_output($formEntryObject['comments']))."</textarea><br />
     <h3>Image</h3>
 ";
     if ($id != false && $formEntryObject['image_path'] != '') {
       echo "<img src='".escape_output($formEntryObject['image_path'])."' /><br />
 ";
     }
-    echo "    <input name='form_image' class='input-file' type='file' />
+    echo "    <div id='image_preview' class='row-fluid'></div>
+    <input name='form_image' class='input-file' type='file' onChange='displayImagePreview(this.files);' />
+    <h3>Comments</h3>
+    <textarea name='form_entry[comments]' id='form_entry_comments' rows='10' class='span12' placeholder='Comments go here.'>".(($id === false) ? "" : escape_output($formEntryObject['comments']))."</textarea><br />
     <div class='form-actions'>
       <button type='submit' class='btn btn-primary'>".(($id === false) ? "Save entry" : "Save changes")."</button>
       <a class='btn' href='#' onClick='window.location.replace(document.referrer);' >".(($id === false) ? "Go back" : "Discard changes")."</a>
