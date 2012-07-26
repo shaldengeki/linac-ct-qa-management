@@ -209,8 +209,8 @@ class DbConn extends mysqli {
     if (!$user->loggedIn($this)) {
       return array('location' => 'index.php', 'status' => 'You are not allowed to modify or create forms without first logging in.');
     }
-    if (!isset($form_entry['machine_id']) || !isset($form_entry['form_id'])) {
-      return array('location' => 'form_entry.php'.((isset($form_entry['id'])) ? "?id=".intval($form_entry['id']) : ""), 'status' => 'Please specify a machine ID and form ID and try again.');
+    if (!isset($form_entry['machine_id']) || !isset($form_entry['form_id']) || !isset($form_entry['created_at']) || intval($form_entry['machine_id']) == 0 || intval($form_entry['form_id']) == 0 || intval($form_entry['created_at']) == 0) {
+      return array('location' => 'form_entry.php'.((isset($form_entry['id'])) ? "?id=".intval($form_entry['id']) : ""), 'status' => 'Please specify a machine ID, form ID, and recording time and try again.');
     } else {
       $machineFacility = intval($this->queryFirstValue("SELECT `facility_id` FROM `machines` WHERE `id` = ".intval($form_entry['machine_id'])." LIMIT 1"));
       if ($machineFacility != $user->facility_id) {
@@ -266,7 +266,7 @@ class DbConn extends mysqli {
             }
             $updateFormEntry = $this->stdQuery("UPDATE `form_entries` SET `machine_id` = ".intval($form_entry['machine_id']).", `image_path` = ".$this->quoteSmart($imagePath).", `created_at` = '".date('Y-m-d H:i:s', strtotime($form_entry['created_at']))."', `qa_month` = ".intval($form_entry['qa_month']).", `qa_year` = ".intval($form_entry['qa_year']).", `updated_at` = '".date('Y-m-d H:i:s')."' WHERE `id` = ".intval($form_entry['id'])." LIMIT 1");
           }
-          return array('location' => 'form_entry.php', 'status' => "Successfully updated form entry.");
+          return array('location' => 'form_entry.php?action=index&form_id='.$form_entry['form_id'], 'status' => "Successfully updated form entry.");
         } else {
           // inserting a form entry.
           // ensure that this form exists.
@@ -320,7 +320,7 @@ class DbConn extends mysqli {
             }
             $updateImagePath = $this->stdQuery("UPDATE `form_entries` SET `image_path` = ".$this->quoteSmart($imagePath)." WHERE `id` = ".intval($form_entry['id'])." LIMIT 1");
           }
-          return array('location' => 'form_entry.php', 'status' => "Successfully inserted form entry.");
+          return array('location' => 'form_entry.php?action=index&form_id='.intval($form_entry['form_id']), 'status' => "Successfully inserted form entry.");
         }
       }
     }
