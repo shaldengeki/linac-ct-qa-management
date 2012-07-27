@@ -31,3 +31,7 @@ path {
   -khtml-border-radius: 20px;
   border-radius: 20px;
 }
+
+table > tbody > tr > td.control-group > input[class*="span"] {
+  display: inline;
+}

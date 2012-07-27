@@ -679,10 +679,10 @@ function display_form_entry_edit_form($database, $user, $id=false, $form_id=fals
       }
     }
   }
-  if ($formObject['php'] != '') {
+  if ($formObject['php'] != '' && $formObject['php'] != 'NULL') {
     eval($formObject['php']);
   }
-  if ($formObject['js'] != '') {
+  if ($formObject['js'] != '' && $formObject['js'] != 'NULL') {
     echo "<script type='text/javascript'>
   ".$formObject['js']."
 </script>
