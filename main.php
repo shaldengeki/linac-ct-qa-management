@@ -13,9 +13,13 @@ start_html($user, $database, "UCMC Radiation Oncology QA", "", $_REQUEST['status
     <li><s>Linac form entry submission</s></li>
     <li><s>Linac form entry history</s></li>
     <li><s>Linac image upload</s></li>
-    <li>CT form entry submission</li>
-    <li>CT form entry history</li>
+    <li><s>CT form entry submission</s></li>
+    <li><s>CT form entry history</s></li>
     <li>CT image upload</li>
+    <li><s>Backups</s></li>
+    <li><s>Revise forms for TrueBeam</s></li>
+    <li><s>Enter TrueBeam data</s></li>
+    <li>Large-graph view</li>
   </ol>
 </div>
 <?php

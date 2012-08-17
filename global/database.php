@@ -325,6 +325,77 @@ class DbConn extends mysqli {
       }
     }
   }
+  public function generate_backup($user, $backup) {
+    //generates a backup according to submitted parameters.
+    if (!$user->isAdmin($this)) {
+      return array('location' => 'main.php', 'status' => 'You are not allowed to generate backups.');
+    }
+    if (!isset($backup['contents']) || !is_array($backup['contents']) || count($backup['contents']) < 1) {
+      return array('location' => 'backup.php', 'status' => 'Please select at least one option for backup contents.');
+    }
+    if (!isset($backup['action']) || !is_array($backup['action']) || count($backup['action']) < 1) {
+      return array('location' => 'backup.php', 'status' => 'Please select at least one place to save backup contents.');
+    }
+    //create the individual backup files.
+    $output_files = array();
+    foreach ($backup['contents'] as $content) {
+      switch($content) {
+        case 'database':
+          $backup_file_name = 'backup-database-'.date('Y-m-d-H-i-s-u').'.sql';
+          exec('mysqldump -u'.MYSQL_USERNAME.' -p'.MYSQL_PASSWORD.' '.MYSQL_DATABASE.' > '.APP_ROOT.'/backups/'.$backup_file_name, $file_output, $file_return);
+          if (intval($file_return) != 0) {
+            return array('location' => 'backup.php', 'status' => 'There was an error (code '.intval($file_return).') while creating a backup of the database structure. Please try again.');
+          }
+          $output_files[] = $backup_file_name;
+          break;
+        case 'files':
+          $backup_file_name = 'backup-files-'.date('Y-m-d-H-i-s-u').'.tar.gz';
+          exec('cd '.APP_ROOT.' && tar cf ./backups/'.$backup_file_name.' --exclude "backups/*.tar.gz" *', $file_output, $file_return);
+          if (intval($file_return) != 0) {
+            return array('location' => 'backup.php', 'status' => 'There was an error (code '.intval($file_return).') while creating a backup of the files. Please try again.');
+          }
+          $output_files[] = $backup_file_name;
+          break;
+        default:
+          break;
+      }
+    }
+    if (count($output_files) < 1) {
+      return array('location' => 'backup.php', 'status' => 'Nothing was successfully backed up. Please try again.');      
+    }
+    //create a single backup tarball.
+    $backup_file_name = 'backup-'.date('Y-m-d-H-i-s-u').'.tar.gz';
+    $tar_command = 'cd '.APP_ROOT.'/backups/ && tar cf '.$backup_file_name.' '.implode(' ', $output_files);
+    $cleanup_command = 'cd '.APP_ROOT.'/backups/ && rm '.implode(' ', $output_files);
+    exec($tar_command, $tar_output, $tar_return);
+    if (intval($tar_return) != 0) {
+      return array('location' => 'backup.php', 'status' => 'There was an error (code '.intval($tar_return).') while creating a master tarball backup. Please try again.');
+    }
+    exec($cleanup_command, $cleanup_output, $cleanup_return);
+    if (intval($cleanup_return) != 0) {
+      return array('location' => 'backup.php', 'status' => 'There was an error (code '.intval($cleanup_return).') while cleaning up the backup directory. Please try again.');
+    }
+    
+    //insert this backup into the db list.
+    $insert_backup = $this->stdQuery("INSERT INTO `backups` (`created_at`, `path`, `user_id`) VALUES ('".date('Y-m-d H:i:s')."', ".$this->quoteSmart('backups/'.$backup_file_name).", ".intval($user->id).")");
+    if (!$insert_backup) {
+      return array('location' => 'backup.php', 'status' => 'There was an error while logging the backup. Please try again.');
+    }
+    
+    //now do what the user has requested with these backup files.
+    foreach ($backup['action'] as $action) {
+      switch($action) {
+        case 'local':
+          break;
+        case 'remote':
+          return array('location' => 'backups/'.$backup_file_name, 'status' => '');
+          break;
+        default:
+          break;
+      }
+    }
+    return array('location' => 'backup.php', 'status' => 'Backup successfully created.');
+  }
 }
 
 ?>

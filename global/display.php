@@ -19,12 +19,15 @@ function escape_output($input) {
   return htmlspecialchars($input, ENT_QUOTES, "UTF-8");
 }
 
-function redirect_to($location, $status) {
-  if (strpos($location, "?") === FALSE) {
-    header("Location: ".$location."?status=".$status);
-  } else {
-    header("Location: ".$location."&status=".$status);
+function redirect_to($location, $status="") {
+  if ($status != "") {
+    if (strpos($location, "?") === FALSE) {
+      $status = "?status=".$status;
+    } else {
+      $status = "&status=".$status;
+    }
   }
+  header("Location: ".$location.$status);
 }
 
 function start_html($user, $database, $title="UCMC Radiation Oncology QA", $subtitle="", $status="") {
@@ -102,6 +105,7 @@ echo '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
                   <li><a href="machine.php">Machines</a></li>
                   <li><a href="facility.php">Facilities</a></li>
                   <li><a href="#">Users</a></li>
+                  <li><a href="backup.php">Backup</a></li>
                 </ul>
               </li>
 ';
@@ -688,6 +692,79 @@ function display_form_entry_edit_form($database, $user, $id=false, $form_id=fals
 </script>
 ";
   }
+}
+
+function display_backups($database, $user) {
+  //lists all backups.
+  if (!$user->isAdmin($database)) {
+    echo "You must be an administrator to view backups.";
+  } else {
+    echo "<table class='table table-striped table-bordered dataTable'>
+  <thead>
+    <tr>
+      <th>Requested by</th>
+      <th>Path</th>
+      <th>Created at</th>
+    </tr>
+  </thead>
+  <tbody>
+";
+    $backups = $database->stdQuery("SELECT * FROM `backups` ORDER BY `created_at` DESC");
+    while ($backup = mysqli_fetch_assoc($backups)) {
+      $user = $database->queryFirstValue("SELECT `name` FROM `users` WHERE `id` = ".intval($backup['user_id'])." LIMIT 1");
+      if (!$user) {
+        $user = "None";
+      }
+      echo "    <tr>
+      <td>".escape_output($user)."</td>
+      <td><a href='".escape_output($backup['path'])."'>".escape_output($backup['path'])."</a></td>
+      <td>".escape_output(date('n/j/Y', strtotime($backup['created_at'])))."</td>
+    </tr>
+";
+    }
+    echo "  </tbody>
+</table>
+<a href='backup.php?action=create'>Create a backup</a>
+";
+  }
+}
+
+function display_backup_form($database) {
+  echo "<form class='form form-horizontal' method='post' action='backup.php'>
+  <fieldset>
+    <div classs='control-group'>
+      <label class='control-label' for=''>Contents</label>
+      <div class='controls'>
+        <label class='checkbox'>
+          <input type='checkbox' name='backup[contents][]' value='database' />
+          Database
+        </label>
+        <label class='checkbox'>
+          <input type='checkbox' name='backup[contents][]' value='files' />
+          Files
+        </label>
+      </div>
+    </div>
+    <div classs='control-group'>
+      <label class='control-label' for=''>Save as</label>
+      <div class='controls'>
+        <label class='checkbox'>
+          <input type='checkbox' name='backup[action][]' value='local' />
+          File on webserver
+        </label>
+        <label class='checkbox'>
+          <input type='checkbox' name='backup[action][]' value='remote' />
+          Downloadable file
+        </label>
+      </div>
+    </div>
+    <div class='form-actions'>
+      <button type='submit' class='btn btn-primary'>Create backup</button>
+      <a href='#' onClick='window.location.replace(document.referrer);' class='btn'>Go back</a>
+    </div>
+  </fieldset>
+</form>
+";
 }
 
 function display_footer() {

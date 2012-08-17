@@ -80,164 +80,270 @@
     </div>
     <h1>Photon Dosimetry</h1>
     <div class='row-fluid'>
-      <div class='span3'>
+      <div class='span6'>
         <h3 class='center-horizontal'>Output Calibration</h3>
         <table class='table table-bordered table-striped'>
           <thead>
             <tr>
               <th>Photon Energy</th>
               <th>6MV</th>
+              <th>10MV</th>
+              <th>15MV</th>
               <th>18MV</th>
+              <th>6XFFF</th>
+              <th>10XFFF</th>
             </tr>
           </thead>
           <tbody>
             <tr>
               <td>Q<sub>1</sub></td>
               <td class='control-group'><input name='form_entry[form_values][photon_output_calibration_6MV_q1]' class='form_entry_form_values_photon_output_calibration_6MV span12' id='form_entry_form_values_photon_output_calibration_6MV_q1' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['photon_output_calibration_6MV_q1'])."'")."/></td>
+              <td class='control-group'><input name='form_entry[form_values][photon_output_calibration_10MV_q1]' class='form_entry_form_values_photon_output_calibration_10MV span12' id='form_entry_form_values_photon_output_calibration_10MV_q1' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['photon_output_calibration_10MV_q1'])."'")."/></td>
+              <td class='control-group'><input name='form_entry[form_values][photon_output_calibration_15MV_q1]' class='form_entry_form_values_photon_output_calibration_15MV span12' id='form_entry_form_values_photon_output_calibration_15MV_q1' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['photon_output_calibration_15MV_q1'])."'")."/></td>
               <td class='control-group'><input name='form_entry[form_values][photon_output_calibration_18MV_q1]' class='form_entry_form_values_photon_output_calibration_18MV span12' id='form_entry_form_values_photon_output_calibration_18MV_q1' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['photon_output_calibration_18MV_q1'])."'")."/></td>
+              <td class='control-group'><input name='form_entry[form_values][photon_output_calibration_6XFFF_q1]' class='form_entry_form_values_photon_output_calibration_6XFFF span12' id='form_entry_form_values_photon_output_calibration_6XFFF_q1' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['photon_output_calibration_6XFFF_q1'])."'")."/></td>
+              <td class='control-group'><input name='form_entry[form_values][photon_output_calibration_10XFFF_q1]' class='form_entry_form_values_photon_output_calibration_10XFFF span12' id='form_entry_form_values_photon_output_calibration_10XFFF_q1' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['photon_output_calibration_10XFFF_q1'])."'")."/></td>
             </tr>
             <tr>
               <td>Q<sub>2</sub></td>
               <td class='control-group'><input name='form_entry[form_values][photon_output_calibration_6MV_q2]' class='form_entry_form_values_photon_output_calibration_6MV span12' id='form_entry_form_values_photon_output_calibration_6MV_q2' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['photon_output_calibration_6MV_q2'])."'")."/></td>
+              <td class='control-group'><input name='form_entry[form_values][photon_output_calibration_10MV_q2]' class='form_entry_form_values_photon_output_calibration_10MV span12' id='form_entry_form_values_photon_output_calibration_10MV_q2' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['photon_output_calibration_10MV_q2'])."'")."/></td>
+              <td class='control-group'><input name='form_entry[form_values][photon_output_calibration_15MV_q2]' class='form_entry_form_values_photon_output_calibration_15MV span12' id='form_entry_form_values_photon_output_calibration_15MV_q2' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['photon_output_calibration_15MV_q2'])."'")."/></td>
               <td class='control-group'><input name='form_entry[form_values][photon_output_calibration_18MV_q2]' class='form_entry_form_values_photon_output_calibration_18MV span12' id='form_entry_form_values_photon_output_calibration_18MV_q2' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['photon_output_calibration_18MV_q2'])."'")."/></td>
+              <td class='control-group'><input name='form_entry[form_values][photon_output_calibration_6XFFF_q2]' class='form_entry_form_values_photon_output_calibration_6XFFF span12' id='form_entry_form_values_photon_output_calibration_6XFFF_q2' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['photon_output_calibration_6XFFF_q2'])."'")."/></td>
+              <td class='control-group'><input name='form_entry[form_values][photon_output_calibration_10XFFF_q2]' class='form_entry_form_values_photon_output_calibration_10XFFF span12' id='form_entry_form_values_photon_output_calibration_10XFFF_q2' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['photon_output_calibration_10XFFF_q2'])."'")."/></td>
             </tr>
             <tr>
               <td>Q<sub>3</sub></td>
               <td class='control-group'><input name='form_entry[form_values][photon_output_calibration_6MV_q3]' class='form_entry_form_values_photon_output_calibration_6MV span12' id='form_entry_form_values_photon_output_calibration_6MV_q3' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['photon_output_calibration_6MV_q3'])."'")."/></td>
+              <td class='control-group'><input name='form_entry[form_values][photon_output_calibration_10MV_q3]' class='form_entry_form_values_photon_output_calibration_10MV span12' id='form_entry_form_values_photon_output_calibration_10MV_q3' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['photon_output_calibration_10MV_q3'])."'")."/></td>
+              <td class='control-group'><input name='form_entry[form_values][photon_output_calibration_15MV_q3]' class='form_entry_form_values_photon_output_calibration_15MV span12' id='form_entry_form_values_photon_output_calibration_15MV_q3' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['photon_output_calibration_15MV_q3'])."'")."/></td>
               <td class='control-group'><input name='form_entry[form_values][photon_output_calibration_18MV_q3]' class='form_entry_form_values_photon_output_calibration_18MV span12' id='form_entry_form_values_photon_output_calibration_18MV_q3' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['photon_output_calibration_18MV_q3'])."'")."/></td>
+              <td class='control-group'><input name='form_entry[form_values][photon_output_calibration_6XFFF_q3]' class='form_entry_form_values_photon_output_calibration_6XFFF span12' id='form_entry_form_values_photon_output_calibration_6XFFF_q3' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['photon_output_calibration_6XFFF_q3'])."'")."/></td>
+              <td class='control-group'><input name='form_entry[form_values][photon_output_calibration_10XFFF_q3]' class='form_entry_form_values_photon_output_calibration_10XFFF span12' id='form_entry_form_values_photon_output_calibration_10XFFF_q3' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['photon_output_calibration_10XFFF_q3'])."'")."/></td>
             </tr>
             <tr>
               <td>Avg</td>
               <td class='control-group'><input name='form_entry[form_values][photon_output_calibration_6MV_avg]' class='span12' id='form_entry_form_values_photon_output_calibration_6MV_avg' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['photon_output_calibration_6MV_avg'])."'")."/></td>
+              <td class='control-group'><input name='form_entry[form_values][photon_output_calibration_10MV_avg]' class='span12' id='form_entry_form_values_photon_output_calibration_10MV_avg' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['photon_output_calibration_10MV_avg'])."'")."/></td>
+              <td class='control-group'><input name='form_entry[form_values][photon_output_calibration_15MV_avg]' class='span12' id='form_entry_form_values_photon_output_calibration_15MV_avg' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['photon_output_calibration_15MV_avg'])."'")."/></td>
               <td class='control-group'><input name='form_entry[form_values][photon_output_calibration_18MV_avg]' class='span12' id='form_entry_form_values_photon_output_calibration_18MV_avg' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['photon_output_calibration_18MV_avg'])."'")."/></td>
+              <td class='control-group'><input name='form_entry[form_values][photon_output_calibration_6XFFF_avg]' class='span12' id='form_entry_form_values_photon_output_calibration_6XFFF_avg' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['photon_output_calibration_6XFFF_avg'])."'")."/></td>
+              <td class='control-group'><input name='form_entry[form_values][photon_output_calibration_10XFFF_avg]' class='span12' id='form_entry_form_values_photon_output_calibration_10XFFF_avg' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['photon_output_calibration_10XFFF_avg'])."'")."/></td>
             </tr>
             <tr>
               <td>M</td>
               <td class='control-group'><input name='form_entry[form_values][photon_output_calibration_6MV_M]' class='span12' id='form_entry_form_values_photon_output_calibration_6MV_M' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['photon_output_calibration_6MV_M'])."'")."/></td>
+              <td class='control-group'><input name='form_entry[form_values][photon_output_calibration_10MV_M]' class='span12' id='form_entry_form_values_photon_output_calibration_10MV_M' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['photon_output_calibration_10MV_M'])."'")."/></td>
+              <td class='control-group'><input name='form_entry[form_values][photon_output_calibration_15MV_M]' class='span12' id='form_entry_form_values_photon_output_calibration_15MV_M' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['photon_output_calibration_15MV_M'])."'")."/></td>
               <td class='control-group'><input name='form_entry[form_values][photon_output_calibration_18MV_M]' class='span12' id='form_entry_form_values_photon_output_calibration_18MV_M' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['photon_output_calibration_18MV_M'])."'")."/></td>
+              <td class='control-group'><input name='form_entry[form_values][photon_output_calibration_6XFFF_M]' class='span12' id='form_entry_form_values_photon_output_calibration_6XFFF_M' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['photon_output_calibration_6XFFF_M'])."'")."/></td>
+              <td class='control-group'><input name='form_entry[form_values][photon_output_calibration_10XFFF_M]' class='span12' id='form_entry_form_values_photon_output_calibration_10XFFF_M' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['photon_output_calibration_10XFFF_M'])."'")."/></td>
             </tr>
             <tr>
               <td>Dw</td>
               <td class='control-group'><input name='form_entry[form_values][photon_output_calibration_6MV_Dw]' class='span12' id='form_entry_form_values_photon_output_calibration_6MV_Dw' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['photon_output_calibration_6MV_Dw'])."'")."/></td>
+              <td class='control-group'><input name='form_entry[form_values][photon_output_calibration_10MV_Dw]' class='span12' id='form_entry_form_values_photon_output_calibration_10MV_Dw' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['photon_output_calibration_10MV_Dw'])."'")."/></td>
+              <td class='control-group'><input name='form_entry[form_values][photon_output_calibration_15MV_Dw]' class='span12' id='form_entry_form_values_photon_output_calibration_15MV_Dw' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['photon_output_calibration_15MV_Dw'])."'")."/></td>
               <td class='control-group'><input name='form_entry[form_values][photon_output_calibration_18MV_Dw]' class='span12' id='form_entry_form_values_photon_output_calibration_18MV_Dw' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['photon_output_calibration_18MV_Dw'])."'")."/></td>
+              <td class='control-group'><input name='form_entry[form_values][photon_output_calibration_6XFFF_Dw]' class='span12' id='form_entry_form_values_photon_output_calibration_6XFFF_Dw' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['photon_output_calibration_6XFFF_Dw'])."'")."/></td>
+              <td class='control-group'><input name='form_entry[form_values][photon_output_calibration_10XFFF_Dw]' class='span12' id='form_entry_form_values_photon_output_calibration_10XFFF_Dw' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['photon_output_calibration_10XFFF_Dw'])."'")."/></td>
             </tr>
             <tr>
               <td>Dw(abs)</td>
-              <td class='control-group'><input name='form_entry[constants][photon_output_calibration_6MV_Dw_abs]' class='span12' id='form_entry_form_values_photon_output_calibration_6MV_Dw_abs' /></td>
-              <td class='control-group'><input name='form_entry[constants][photon_output_calibration_18MV_Dw_abs]' class='span12' id='form_entry_form_values_photon_output_calibration_18MV_Dw_abs' /></td>
+              <td class='control-group'><input name='form_entry[form_constants][photon_output_calibration_6MV_Dw_abs]' class='span12' id='form_entry_form_values_photon_output_calibration_6MV_Dw_abs' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['photon_output_calibration_6MV_Dw_abs'])."'")."/></td>
+              <td class='control-group'><input name='form_entry[form_constants][photon_output_calibration_10MV_Dw_abs]' class='span12' id='form_entry_form_values_photon_output_calibration_10MV_Dw_abs' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['photon_output_calibration_10MV_Dw_abs'])."'")."/></td>
+              <td class='control-group'><input name='form_entry[form_constants][photon_output_calibration_15MV_Dw_abs]' class='span12' id='form_entry_form_values_photon_output_calibration_15MV_Dw_abs' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['photon_output_calibration_15MV_Dw_abs'])."'")."/></td>
+              <td class='control-group'><input name='form_entry[form_constants][photon_output_calibration_18MV_Dw_abs]' class='span12' id='form_entry_form_values_photon_output_calibration_18MV_Dw_abs' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['photon_output_calibration_18MV_Dw_abs'])."'")."/></td>
+              <td class='control-group'><input name='form_entry[form_constants][photon_output_calibration_6XFFF_Dw_abs]' class='span12' id='form_entry_form_values_photon_output_calibration_6XFFF_Dw_abs' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['photon_output_calibration_6XFFF_Dw_abs'])."'")."/></td>
+              <td class='control-group'><input name='form_entry[form_constants][photon_output_calibration_10XFFF_Dw_abs]' class='span12' id='form_entry_form_values_photon_output_calibration_10XFFF_Dw_abs' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['photon_output_calibration_10XFFF_Dw_abs'])."'")."/></td>
             </tr>
             <tr>
               <td>%diff</td>
               <td class='control-group'><input name='form_entry[form_values][photon_output_calibration_6MV_diff]' class='span12 form_entry_form_values_photon_output_calibration_diff' id='form_entry_form_values_photon_output_calibration_6MV_diff' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['photon_output_calibration_6MV_diff'])."'")."/></td>
+              <td class='control-group'><input name='form_entry[form_values][photon_output_calibration_10MV_diff]' class='span12 form_entry_form_values_photon_output_calibration_diff' id='form_entry_form_values_photon_output_calibration_10MV_diff' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['photon_output_calibration_10MV_diff'])."'")."/></td>
+              <td class='control-group'><input name='form_entry[form_values][photon_output_calibration_15MV_diff]' class='span12 form_entry_form_values_photon_output_calibration_diff' id='form_entry_form_values_photon_output_calibration_15MV_diff' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['photon_output_calibration_15MV_diff'])."'")."/></td>
               <td class='control-group'><input name='form_entry[form_values][photon_output_calibration_18MV_diff]' class='span12 form_entry_form_values_photon_output_calibration_diff' id='form_entry_form_values_photon_output_calibration_18MV_diff' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['photon_output_calibration_18MV_diff'])."'")."/></td>
+              <td class='control-group'><input name='form_entry[form_values][photon_output_calibration_6XFFF_diff]' class='span12 form_entry_form_values_photon_output_calibration_diff' id='form_entry_form_values_photon_output_calibration_6XFFF_diff' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['photon_output_calibration_6XFFF_diff'])."'")."/></td>
+              <td class='control-group'><input name='form_entry[form_values][photon_output_calibration_10XFFF_diff]' class='span12 form_entry_form_values_photon_output_calibration_diff' id='form_entry_form_values_photon_output_calibration_10XFFF_diff' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['photon_output_calibration_10XFFF_diff'])."'")."/></td>
             </tr>
           </tbody>
         </table>
-        <div id='photon_output_calibration_adjustment' style='display:none;'>
-          <h3 class='center-horizontal'>Adjusted Output Calibration</h3>
-          <table class='table table-bordered table-striped'>
-            <thead>
-              <tr>
-                <th>Photon Energy</th>
-                <th>6MV</th>
-                <th>18MV</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>Q<sub>1</sub></td>
-                <td class='control-group'><input name='form_entry[form_values][photon_output_calibration_adjusted_6MV_q1]' class='form_entry_form_values_photon_output_calibration_adjusted_6MV span12' id='form_entry_form_values_photon_output_calibration_adjusted_6MV_q1' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['photon_output_calibration_adjusted_6MV_q1'])."'")."/></td>
-                <td class='control-group'><input name='form_entry[form_values][photon_output_calibration_adjusted_18MV_q1]' class='form_entry_form_values_photon_output_calibration_adjusted_18MV span12' id='form_entry_form_values_photon_output_calibration_adjusted_18MV_q1' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['photon_output_calibration_adjusted_18MV_q1'])."'")."/></td>
-              </tr>
-              <tr>
-                <td>Q<sub>2</sub></td>
-                <td class='control-group'><input name='form_entry[form_values][photon_output_calibration_adjusted_6MV_q2]' class='form_entry_form_values_photon_output_calibration_adjusted_6MV span12' id='form_entry_form_values_photon_output_calibration_adjusted_6MV_q2' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['photon_output_calibration_adjusted_6MV_q2'])."'")."/></td>
-                <td class='control-group'><input name='form_entry[form_values][photon_output_calibration_adjusted_18MV_q2]' class='form_entry_form_values_photon_output_calibration_adjusted_18MV span12' id='form_entry_form_values_photon_output_calibration_adjusted_18MV_q2' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['photon_output_calibration_adjusted_18MV_q2'])."'")."/></td>
-              </tr>
-              <tr>
-                <td>Q<sub>3</sub></td>
-                <td class='control-group'><input name='form_entry[form_values][photon_output_calibration_adjusted_6MV_q3]' class='form_entry_form_values_photon_output_calibration_adjusted_6MV span12' id='form_entry_form_values_photon_output_calibration_adjusted_6MV_q3' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['photon_output_calibration_adjusted_6MV_q3'])."'")."/></td>
-                <td class='control-group'><input name='form_entry[form_values][photon_output_calibration_adjusted_18MV_q3]' class='form_entry_form_values_photon_output_calibration_adjusted_18MV span12' id='form_entry_form_values_photon_output_calibration_adjusted_18MV_q3' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['photon_output_calibration_adjusted_18MV_q3'])."'")."/></td>
-              </tr>
-              <tr>
-                <td>Avg</td>
-                <td class='control-group'><input name='form_entry[form_values][photon_output_calibration_adjusted_6MV_avg]' class='span12' id='form_entry_form_values_photon_output_calibration_adjusted_6MV_avg' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['photon_output_calibration_adjusted_6MV_avg'])."'")."/></td>
-                <td class='control-group'><input name='form_entry[form_values][photon_output_calibration_adjusted_18MV_avg]' class='span12' id='form_entry_form_values_photon_output_calibration_adjusted_18MV_avg' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['photon_output_calibration_adjusted_18MV_avg'])."'")."/></td>
-              </tr>
-              <tr>
-                <td>M</td>
-                <td class='control-group'><input name='form_entry[form_values][photon_output_calibration_adjusted_6MV_M]' class='span12' id='form_entry_form_values_photon_output_calibration_adjusted_6MV_M' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['photon_output_calibration_adjusted_6MV_M'])."'")."/></td>
-                <td class='control-group'><input name='form_entry[form_values][photon_output_calibration_adjusted_18MV_M]' class='span12' id='form_entry_form_values_photon_output_calibration_adjusted_18MV_M' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['photon_output_calibration_adjusted_18MV_M'])."'")."/></td>
-              </tr>
-              <tr>
-                <td>Dw</td>
-                <td class='control-group'><input name='form_entry[form_values][photon_output_calibration_adjusted_6MV_Dw]' class='span12' id='form_entry_form_values_photon_output_calibration_adjusted_6MV_Dw' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['photon_output_calibration_adjusted_6MV_Dw'])."'")."/></td>
-                <td class='control-group'><input name='form_entry[form_values][photon_output_calibration_adjusted_18MV_Dw]' class='span12' id='form_entry_form_values_photon_output_calibration_adjusted_18MV_Dw' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['photon_output_calibration_adjusted_18MV_Dw'])."'")."/></td>
-              </tr>
-              <tr>
-                <td>Dw(abs)</td>
-                <td class='control-group'><input name='form_entry[constants][photon_output_calibration_adjusted_6MV_Dw_abs]' class='span12' id='form_entry_form_values_photon_output_calibration_adjusted_6MV_Dw_abs' /></td>
-                <td class='control-group'><input name='form_entry[constants][photon_output_calibration_adjusted_18MV_Dw_abs]' class='span12' id='form_entry_form_values_photon_output_calibration_adjusted_18MV_Dw_abs' /></td>
-              </tr>
-              <tr>
-                <td>%diff</td>
-                <td class='control-group'><input name='form_entry[form_values][photon_output_calibration_adjusted_6MV_diff]' class='span12 form_entry_form_values_photon_output_calibration_adjusted_diff' id='form_entry_form_values_photon_output_calibration_adjusted_6MV_diff' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['photon_output_calibration_adjusted_6MV_diff'])."'")."/></td>
-                <td class='control-group'><input name='form_entry[form_values][photon_output_calibration_adjusted_18MV_diff]' class='span12 form_entry_form_values_photon_output_calibration_adjusted_diff' id='form_entry_form_values_photon_output_calibration_adjusted_18MV_diff' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['photon_output_calibration_adjusted_18MV_diff'])."'")."/></td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
       </div>
-      <div class='span3'>
+      <div class='span6'>
         <h3 class='center-horizontal'>TPR Check</h3>
         <table class='table table-bordered table-striped'>
           <thead>
             <tr>
               <th>Photon Energy</th>
               <th>6MV</th>
+              <th>10MV</th>
+              <th>15MV</th>
               <th>18MV</th>
+              <th>6XFFF</th>
+              <th>10XFFF</th>
             </tr>
           </thead>
           <tbody>
             <tr>
               <td>Q<sub>1</sub></td>
               <td class='control-group'><input name='form_entry[form_values][tpr_6MV_q1]' class='form_entry_form_values_tpr_6MV span12' id='form_entry_form_values_tpr_6MV_q1' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['tpr_6MV_q1'])."'")."/></td>
+              <td class='control-group'><input name='form_entry[form_values][tpr_10MV_q1]' class='form_entry_form_values_tpr_10MV span12' id='form_entry_form_values_tpr_10MV_q1' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['tpr_10MV_q1'])."'")."/></td>
+              <td class='control-group'><input name='form_entry[form_values][tpr_15MV_q1]' class='form_entry_form_values_tpr_15MV span12' id='form_entry_form_values_tpr_15MV_q1' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['tpr_15MV_q1'])."'")."/></td>
               <td class='control-group'><input name='form_entry[form_values][tpr_18MV_q1]' class='form_entry_form_values_tpr_18MV span12' id='form_entry_form_values_tpr_18MV_q1' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['tpr_18MV_q1'])."'")."/></td>
+              <td class='control-group'><input name='form_entry[form_values][tpr_6XFFF_q1]' class='form_entry_form_values_tpr_6XFFF span12' id='form_entry_form_values_tpr_6XFFF_q1' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['tpr_6XFFF_q1'])."'")."/></td>
+              <td class='control-group'><input name='form_entry[form_values][tpr_10XFFF_q1]' class='form_entry_form_values_tpr_10XFFF span12' id='form_entry_form_values_tpr_10XFFF_q1' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['tpr_10XFFF_q1'])."'")."/></td>
             </tr>
             <tr>
               <td>Q<sub>2</sub></td>
               <td class='control-group'><input name='form_entry[form_values][tpr_6MV_q2]' class='form_entry_form_values_tpr_6MV span12' id='form_entry_form_values_tpr_6MV_q2' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['tpr_6MV_q2'])."'")."/></td>
+              <td class='control-group'><input name='form_entry[form_values][tpr_10MV_q2]' class='form_entry_form_values_tpr_10MV span12' id='form_entry_form_values_tpr_10MV_q2' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['tpr_10MV_q2'])."'")."/></td>
+              <td class='control-group'><input name='form_entry[form_values][tpr_15MV_q2]' class='form_entry_form_values_tpr_15MV span12' id='form_entry_form_values_tpr_15MV_q2' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['tpr_15MV_q2'])."'")."/></td>
               <td class='control-group'><input name='form_entry[form_values][tpr_18MV_q2]' class='form_entry_form_values_tpr_18MV span12' id='form_entry_form_values_tpr_18MV_q2' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['tpr_18MV_q2'])."'")."/></td>
+              <td class='control-group'><input name='form_entry[form_values][tpr_6XFFF_q2]' class='form_entry_form_values_tpr_6XFFF span12' id='form_entry_form_values_tpr_6XFFF_q2' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['tpr_6XFFF_q2'])."'")."/></td>
+              <td class='control-group'><input name='form_entry[form_values][tpr_10XFFF_q2]' class='form_entry_form_values_tpr_10XFFF span12' id='form_entry_form_values_tpr_10XFFF_q2' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['tpr_10XFFF_q2'])."'")."/></td>
             </tr>
             <tr>
               <td>Q<sub>3</sub></td>
               <td class='control-group'><input name='form_entry[form_values][tpr_6MV_q3]' class='form_entry_form_values_tpr_6MV span12' id='form_entry_form_values_tpr_6MV_q3' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['tpr_6MV_q3'])."'")."/></td>
+              <td class='control-group'><input name='form_entry[form_values][tpr_10MV_q3]' class='form_entry_form_values_tpr_10MV span12' id='form_entry_form_values_tpr_10MV_q3' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['tpr_10MV_q3'])."'")."/></td>
+              <td class='control-group'><input name='form_entry[form_values][tpr_15MV_q3]' class='form_entry_form_values_tpr_15MV span12' id='form_entry_form_values_tpr_15MV_q3' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['tpr_15MV_q3'])."'")."/></td>
               <td class='control-group'><input name='form_entry[form_values][tpr_18MV_q3]' class='form_entry_form_values_tpr_18MV span12' id='form_entry_form_values_tpr_18MV_q3' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['tpr_18MV_q3'])."'")."/></td>
+              <td class='control-group'><input name='form_entry[form_values][tpr_6XFFF_q3]' class='form_entry_form_values_tpr_6XFFF span12' id='form_entry_form_values_tpr_6XFFF_q3' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['tpr_6XFFF_q3'])."'")."/></td>
+              <td class='control-group'><input name='form_entry[form_values][tpr_10XFFF_q3]' class='form_entry_form_values_tpr_10XFFF span12' id='form_entry_form_values_tpr_10XFFF_q3' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['tpr_10XFFF_q3'])."'")."/></td>
             </tr>
             <tr>
               <td>Avg</td>
-              <td class='control-group'><input name='form_entry[form_values][tpr_6MV_avg]' class='span12' id='form_entry_form_values_tpr_6MV_avg' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['tpr_6MV_avg'])."'")."/></td>
-              <td class='control-group'><input name='form_entry[form_values][tpr_18MV_avg]' class='span12' id='form_entry_form_values_tpr_18MV_avg' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['tpr_18MV_avg'])."'")."/></td>
+              <td class='control-group'><input name='form_entry[form_values][tpr_6MV_avg]' class='form_entry_form_values_tpr_6MV span12' id='form_entry_form_values_tpr_6MV_avg' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['tpr_6MV_avg'])."'")."/></td>
+              <td class='control-group'><input name='form_entry[form_values][tpr_10MV_avg]' class='form_entry_form_values_tpr_10MV span12' id='form_entry_form_values_tpr_10MV_avg' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['tpr_10MV_avg'])."'")."/></td>
+              <td class='control-group'><input name='form_entry[form_values][tpr_15MV_avg]' class='form_entry_form_values_tpr_15MV span12' id='form_entry_form_values_tpr_15MV_avg' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['tpr_15MV_avg'])."'")."/></td>
+              <td class='control-group'><input name='form_entry[form_values][tpr_18MV_avg]' class='form_entry_form_values_tpr_18MV span12' id='form_entry_form_values_tpr_18MV_avg' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['tpr_18MV_avg'])."'")."/></td>
+              <td class='control-group'><input name='form_entry[form_values][tpr_6XFFF_avg]' class='form_entry_form_values_tpr_6XFFF span12' id='form_entry_form_values_tpr_6XFFF_avg' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['tpr_6XFFF_avg'])."'")."/></td>
+              <td class='control-group'><input name='form_entry[form_values][tpr_10XFFF_avg]' class='form_entry_form_values_tpr_10XFFF span12' id='form_entry_form_values_tpr_10XFFF_avg' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['tpr_10XFFF_avg'])."'")."/></td>
             </tr>
             <tr>
               <td>TPR</td>
-              <td class='control-group'><input name='form_entry[form_values][tpr_6MV_TPR]' class='span12' id='form_entry_form_values_tpr_6MV_TPR' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['tpr_6MV_TPR'])."'")."/></td>
-              <td class='control-group'><input name='form_entry[form_values][tpr_18MV_TPR]' class='span12' id='form_entry_form_values_tpr_18MV_TPR' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['tpr_18MV_TPR'])."'")."/></td>
+              <td class='control-group'><input name='form_entry[form_values][tpr_6MV_tpr]' class='form_entry_form_values_tpr_6MV span12' id='form_entry_form_values_tpr_6MV_TPR' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['tpr_6MV_tpr'])."'")."/></td>
+              <td class='control-group'><input name='form_entry[form_values][tpr_10MV_tpr]' class='form_entry_form_values_tpr_10MV span12' id='form_entry_form_values_tpr_10MV_TPR' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['tpr_10MV_tpr'])."'")."/></td>
+              <td class='control-group'><input name='form_entry[form_values][tpr_15MV_tpr]' class='form_entry_form_values_tpr_15MV span12' id='form_entry_form_values_tpr_15MV_TPR' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['tpr_15MV_tpr'])."'")."/></td>
+              <td class='control-group'><input name='form_entry[form_values][tpr_18MV_tpr]' class='form_entry_form_values_tpr_18MV span12' id='form_entry_form_values_tpr_18MV_TPR' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['tpr_18MV_tpr'])."'")."/></td>
+              <td class='control-group'><input name='form_entry[form_values][tpr_6XFFF_tpr]' class='form_entry_form_values_tpr_6XFFF span12' id='form_entry_form_values_tpr_6XFFF_TPR' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['tpr_6XFFF_tpr'])."'")."/></td>
+              <td class='control-group'><input name='form_entry[form_values][tpr_10XFFF_tpr]' class='form_entry_form_values_tpr_10XFFF span12' id='form_entry_form_values_tpr_10XFFF_TPR' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['tpr_10XFFF_tpr'])."'")."/></td>
             </tr>
             <tr>
               <td>TPR(ref)</td>
               <td class='control-group'><input name='form_entry[constants][tpr_6MV_TPR_abs]' class='span12' id='form_entry_form_values_tpr_6MV_TPR_abs' /></td>
+              <td class='control-group'><input name='form_entry[constants][tpr_10MV_TPR_abs]' class='span12' id='form_entry_form_values_tpr_10MV_TPR_abs' /></td>
+              <td class='control-group'><input name='form_entry[constants][tpr_15MV_TPR_abs]' class='span12' id='form_entry_form_values_tpr_15MV_TPR_abs' /></td>
               <td class='control-group'><input name='form_entry[constants][tpr_18MV_TPR_abs]' class='span12' id='form_entry_form_values_tpr_18MV_TPR_abs' /></td>
+              <td class='control-group'><input name='form_entry[constants][tpr_6XFFF_TPR_abs]' class='span12' id='form_entry_form_values_tpr_6XFFF_TPR_abs' /></td>
+              <td class='control-group'><input name='form_entry[constants][tpr_10XFFF_TPR_abs]' class='span12' id='form_entry_form_values_tpr_10XFFF_TPR_abs' /></td>
             </tr>
             <tr>
               <td>%diff</td>
-              <td class='control-group'><input name='form_entry[form_values][tpr_6MV_diff]' class='span12' id='form_entry_form_values_tpr_6MV_diff' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['tpr_6MV_diff'])."'")."/></td>
-              <td class='control-group'><input name='form_entry[form_values][tpr_18MV_diff]' class='span12' id='form_entry_form_values_tpr_18MV_diff' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['tpr_18V_diff'])."'")."/></td>
+              <td class='control-group'><input name='form_entry[form_values][tpr_6MV_diff]' class='form_entry_form_values_tpr_6MV span12' id='form_entry_form_values_tpr_6MV_diff' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['tpr_6MV_diff'])."'")."/></td>
+              <td class='control-group'><input name='form_entry[form_values][tpr_10MV_diff]' class='form_entry_form_values_tpr_10MV span12' id='form_entry_form_values_tpr_10MV_diff' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['tpr_10MV_diff'])."'")."/></td>
+              <td class='control-group'><input name='form_entry[form_values][tpr_15MV_diff]' class='form_entry_form_values_tpr_15MV span12' id='form_entry_form_values_tpr_15MV_diff' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['tpr_15MV_diff'])."'")."/></td>
+              <td class='control-group'><input name='form_entry[form_values][tpr_18MV_diff]' class='form_entry_form_values_tpr_18MV span12' id='form_entry_form_values_tpr_18MV_diff' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['tpr_18MV_diff'])."'")."/></td>
+              <td class='control-group'><input name='form_entry[form_values][tpr_6XFFF_diff]' class='form_entry_form_values_tpr_6XFFF span12' id='form_entry_form_values_tpr_6XFFF_diff' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['tpr_6XFFF_diff'])."'")."/></td>
+              <td class='control-group'><input name='form_entry[form_values][tpr_10XFFF_diff]' class='form_entry_form_values_tpr_10XFFF span12' id='form_entry_form_values_tpr_10XFFF_diff' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['tpr_10XFFF_diff'])."'")."/></td>
             </tr>
           </tbody>
         </table>
       </div>
-      <div class='span3'>
+    </div>
+    <div class='row-fluid'>
+      <div class='span6' id='photon_output_calibration_adjustment' style='display:none;'>
+        <h3 class='center-horizontal'>Adjusted Output Calibration</h3>
+        <table class='table table-bordered table-striped'>
+          <thead>
+            <tr>
+              <th>Photon Energy</th>
+              <th>6MV</th>
+              <th>10MV</th>
+              <th>15MV</th>
+              <th>18MV</th>
+              <th>6XFFF</th>
+              <th>10XFFF</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Q<sub>1</sub></td>
+              <td class='control-group'><input name='form_entry[form_values][photon_output_calibration_adjusted_6MV_q1]' class='form_entry_form_values_photon_output_calibration_adjusted_6MV span12' id='form_entry_form_values_photon_output_calibration_adjusted_6MV_q1' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['photon_output_calibration_adjusted_6MV_q1'])."'")."/></td>
+              <td class='control-group'><input name='form_entry[form_values][photon_output_calibration_adjusted_10MV_q1]' class='form_entry_form_values_photon_output_calibration_adjusted_10MV span12' id='form_entry_form_values_photon_output_calibration_adjusted_10MV_q1' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['photon_output_calibration_adjusted_10MV_q1'])."'")."/></td>
+              <td class='control-group'><input name='form_entry[form_values][photon_output_calibration_adjusted_15MV_q1]' class='form_entry_form_values_photon_output_calibration_adjusted_15MV span12' id='form_entry_form_values_photon_output_calibration_adjusted_15MV_q1' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['photon_output_calibration_adjusted_15MV_q1'])."'")."/></td>
+              <td class='control-group'><input name='form_entry[form_values][photon_output_calibration_adjusted_18MV_q1]' class='form_entry_form_values_photon_output_calibration_adjusted_18MV span12' id='form_entry_form_values_photon_output_calibration_adjusted_18MV_q1' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['photon_output_calibration_adjusted_18MV_q1'])."'")."/></td>
+              <td class='control-group'><input name='form_entry[form_values][photon_output_calibration_adjusted_6XFFF_q1]' class='form_entry_form_values_photon_output_calibration_adjusted_6XFFF span12' id='form_entry_form_values_photon_output_calibration_adjusted_6XFFF_q1' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['photon_output_calibration_adjusted_6XFFF_q1'])."'")."/></td>
+              <td class='control-group'><input name='form_entry[form_values][photon_output_calibration_adjusted_10XFFF_q1]' class='form_entry_form_values_photon_output_calibration_adjusted_10XFFF span12' id='form_entry_form_values_photon_output_calibration_adjusted_10XFFF_q1' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['photon_output_calibration_adjusted_10XFFF_q1'])."'")."/></td>
+            </tr>
+            <tr>
+              <td>Q<sub>2</sub></td>
+              <td class='control-group'><input name='form_entry[form_values][photon_output_calibration_adjusted_6MV_q2]' class='form_entry_form_values_photon_output_calibration_adjusted_6MV span12' id='form_entry_form_values_photon_output_calibration_adjusted_6MV_q2' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['photon_output_calibration_adjusted_6MV_q2'])."'")."/></td>
+              <td class='control-group'><input name='form_entry[form_values][photon_output_calibration_adjusted_10MV_q2]' class='form_entry_form_values_photon_output_calibration_adjusted_10MV span12' id='form_entry_form_values_photon_output_calibration_adjusted_10MV_q2' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['photon_output_calibration_adjusted_10MV_q2'])."'")."/></td>
+              <td class='control-group'><input name='form_entry[form_values][photon_output_calibration_adjusted_15MV_q2]' class='form_entry_form_values_photon_output_calibration_adjusted_15MV span12' id='form_entry_form_values_photon_output_calibration_adjusted_15MV_q2' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['photon_output_calibration_adjusted_15MV_q2'])."'")."/></td>
+              <td class='control-group'><input name='form_entry[form_values][photon_output_calibration_adjusted_18MV_q2]' class='form_entry_form_values_photon_output_calibration_adjusted_18MV span12' id='form_entry_form_values_photon_output_calibration_adjusted_18MV_q2' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['photon_output_calibration_adjusted_18MV_q2'])."'")."/></td>
+              <td class='control-group'><input name='form_entry[form_values][photon_output_calibration_adjusted_6XFFF_q2]' class='form_entry_form_values_photon_output_calibration_adjusted_6XFFF span12' id='form_entry_form_values_photon_output_calibration_adjusted_6XFFF_q2' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['photon_output_calibration_adjusted_6XFFF_q2'])."'")."/></td>
+              <td class='control-group'><input name='form_entry[form_values][photon_output_calibration_adjusted_10XFFF_q2]' class='form_entry_form_values_photon_output_calibration_adjusted_10XFFF span12' id='form_entry_form_values_photon_output_calibration_adjusted_10XFFF_q2' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['photon_output_calibration_adjusted_10XFFF_q2'])."'")."/></td>
+            </tr>
+            <tr>
+              <td>Q<sub>3</sub></td>
+              <td class='control-group'><input name='form_entry[form_values][photon_output_calibration_adjusted_6MV_q3]' class='form_entry_form_values_photon_output_calibration_adjusted_6MV span12' id='form_entry_form_values_photon_output_calibration_adjusted_6MV_q3' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['photon_output_calibration_adjusted_6MV_q3'])."'")."/></td>
+              <td class='control-group'><input name='form_entry[form_values][photon_output_calibration_adjusted_10MV_q3]' class='form_entry_form_values_photon_output_calibration_adjusted_10MV span12' id='form_entry_form_values_photon_output_calibration_adjusted_10MV_q3' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['photon_output_calibration_adjusted_10MV_q3'])."'")."/></td>
+              <td class='control-group'><input name='form_entry[form_values][photon_output_calibration_adjusted_15MV_q3]' class='form_entry_form_values_photon_output_calibration_adjusted_15MV span12' id='form_entry_form_values_photon_output_calibration_adjusted_15MV_q3' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['photon_output_calibration_adjusted_15MV_q3'])."'")."/></td>
+              <td class='control-group'><input name='form_entry[form_values][photon_output_calibration_adjusted_18MV_q3]' class='form_entry_form_values_photon_output_calibration_adjusted_18MV span12' id='form_entry_form_values_photon_output_calibration_adjusted_18MV_q3' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['photon_output_calibration_adjusted_18MV_q3'])."'")."/></td>
+              <td class='control-group'><input name='form_entry[form_values][photon_output_calibration_adjusted_6XFFF_q3]' class='form_entry_form_values_photon_output_calibration_adjusted_6XFFF span12' id='form_entry_form_values_photon_output_calibration_adjusted_6XFFF_q3' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['photon_output_calibration_adjusted_6XFFF_q3'])."'")."/></td>
+              <td class='control-group'><input name='form_entry[form_values][photon_output_calibration_adjusted_10XFFF_q3]' class='form_entry_form_values_photon_output_calibration_adjusted_10XFFF span12' id='form_entry_form_values_photon_output_calibration_adjusted_10XFFF_q3' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['photon_output_calibration_adjusted_10XFFF_q3'])."'")."/></td>
+            </tr>
+            <tr>
+              <td>Avg</td>
+              <td class='control-group'><input name='form_entry[form_values][photon_output_calibration_adjusted_6MV_avg]' class='span12' id='form_entry_form_values_photon_output_calibration_adjusted_6MV_avg' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['photon_output_calibration_adjusted_6MV_avg'])."'")."/></td>
+              <td class='control-group'><input name='form_entry[form_values][photon_output_calibration_adjusted_10MV_avg]' class='span12' id='form_entry_form_values_photon_output_calibration_adjusted_10MV_avg' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['photon_output_calibration_adjusted_10MV_avg'])."'")."/></td>
+              <td class='control-group'><input name='form_entry[form_values][photon_output_calibration_adjusted_15MV_avg]' class='span12' id='form_entry_form_values_photon_output_calibration_adjusted_15MV_avg' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['photon_output_calibration_adjusted_15MV_avg'])."'")."/></td>
+              <td class='control-group'><input name='form_entry[form_values][photon_output_calibration_adjusted_18MV_avg]' class='span12' id='form_entry_form_values_photon_output_calibration_adjusted_18MV_avg' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['photon_output_calibration_adjusted_18MV_avg'])."'")."/></td>
+              <td class='control-group'><input name='form_entry[form_values][photon_output_calibration_adjusted_6XFFF_avg]' class='span12' id='form_entry_form_values_photon_output_calibration_adjusted_6XFFF_avg' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['photon_output_calibration_adjusted_6XFFF_avg'])."'")."/></td>
+              <td class='control-group'><input name='form_entry[form_values][photon_output_calibration_adjusted_10XFFF_avg]' class='span12' id='form_entry_form_values_photon_output_calibration_adjusted_10XFFF_avg' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['photon_output_calibration_adjusted_10XFFF_avg'])."'")."/></td>
+            </tr>
+            <tr>
+              <td>M</td>
+              <td class='control-group'><input name='form_entry[form_values][photon_output_calibration_adjusted_6MV_M]' class='span12' id='form_entry_form_values_photon_output_calibration_adjusted_6MV_M' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['photon_output_calibration_adjusted_6MV_M'])."'")."/></td>
+              <td class='control-group'><input name='form_entry[form_values][photon_output_calibration_adjusted_10MV_M]' class='span12' id='form_entry_form_values_photon_output_calibration_adjusted_10MV_M' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['photon_output_calibration_adjusted_10MV_M'])."'")."/></td>
+              <td class='control-group'><input name='form_entry[form_values][photon_output_calibration_adjusted_15MV_M]' class='span12' id='form_entry_form_values_photon_output_calibration_adjusted_15MV_M' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['photon_output_calibration_adjusted_15MV_M'])."'")."/></td>
+              <td class='control-group'><input name='form_entry[form_values][photon_output_calibration_adjusted_18MV_M]' class='span12' id='form_entry_form_values_photon_output_calibration_adjusted_18MV_M' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['photon_output_calibration_adjusted_18MV_M'])."'")."/></td>
+              <td class='control-group'><input name='form_entry[form_values][photon_output_calibration_adjusted_6XFFF_M]' class='span12' id='form_entry_form_values_photon_output_calibration_adjusted_6XFFF_M' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['photon_output_calibration_adjusted_6XFFF_M'])."'")."/></td>
+              <td class='control-group'><input name='form_entry[form_values][photon_output_calibration_adjusted_10XFFF_M]' class='span12' id='form_entry_form_values_photon_output_calibration_adjusted_10XFFF_M' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['photon_output_calibration_adjusted_10XFFF_M'])."'")."/></td>
+            </tr>
+            <tr>
+              <td>Dw</td>
+              <td class='control-group'><input name='form_entry[form_values][photon_output_calibration_adjusted_6MV_Dw]' class='span12' id='form_entry_form_values_photon_output_calibration_adjusted_6MV_Dw' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['photon_output_calibration_adjusted_6MV_Dw'])."'")."/></td>
+              <td class='control-group'><input name='form_entry[form_values][photon_output_calibration_adjusted_10MV_Dw]' class='span12' id='form_entry_form_values_photon_output_calibration_adjusted_10MV_Dw' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['photon_output_calibration_adjusted_10MV_Dw'])."'")."/></td>
+              <td class='control-group'><input name='form_entry[form_values][photon_output_calibration_adjusted_15MV_Dw]' class='span12' id='form_entry_form_values_photon_output_calibration_adjusted_15MV_Dw' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['photon_output_calibration_adjusted_15MV_Dw'])."'")."/></td>
+              <td class='control-group'><input name='form_entry[form_values][photon_output_calibration_adjusted_18MV_Dw]' class='span12' id='form_entry_form_values_photon_output_calibration_adjusted_18MV_Dw' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['photon_output_calibration_adjusted_18MV_Dw'])."'")."/></td>
+              <td class='control-group'><input name='form_entry[form_values][photon_output_calibration_adjusted_6XFFF_Dw]' class='span12' id='form_entry_form_values_photon_output_calibration_adjusted_6XFFF_Dw' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['photon_output_calibration_adjusted_6XFFF_Dw'])."'")."/></td>
+              <td class='control-group'><input name='form_entry[form_values][photon_output_calibration_adjusted_10XFFF_Dw]' class='span12' id='form_entry_form_values_photon_output_calibration_adjusted_10XFFF_Dw' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['photon_output_calibration_adjusted_10XFFF_Dw'])."'")."/></td>
+            </tr>
+            <tr>
+              <td>Dw(abs)</td>
+              <td class='control-group'><input name='form_entry[form_constants][photon_output_calibration_adjusted_6MV_Dw_abs]' class='span12' id='form_entry_form_values_photon_output_calibration_adjusted_6MV_Dw_abs' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['photon_output_calibration_adjusted_6MV_Dw_abs'])."'")."/></td>
+              <td class='control-group'><input name='form_entry[form_constants][photon_output_calibration_adjusted_10MV_Dw_abs]' class='span12' id='form_entry_form_values_photon_output_calibration_adjusted_10MV_Dw_abs' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['photon_output_calibration_adjusted_10MV_Dw_abs'])."'")."/></td>
+              <td class='control-group'><input name='form_entry[form_constants][photon_output_calibration_adjusted_15MV_Dw_abs]' class='span12' id='form_entry_form_values_photon_output_calibration_adjusted_15MV_Dw_abs' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['photon_output_calibration_adjusted_15MV_Dw_abs'])."'")."/></td>
+              <td class='control-group'><input name='form_entry[form_constants][photon_output_calibration_adjusted_18MV_Dw_abs]' class='span12' id='form_entry_form_values_photon_output_calibration_adjusted_18MV_Dw_abs' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['photon_output_calibration_adjusted_18MV_Dw_abs'])."'")."/></td>
+              <td class='control-group'><input name='form_entry[form_constants][photon_output_calibration_adjusted_6XFFF_Dw_abs]' class='span12' id='form_entry_form_values_photon_output_calibration_adjusted_6XFFF_Dw_abs' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['photon_output_calibration_adjusted_6XFFF_Dw_abs'])."'")."/></td>
+              <td class='control-group'><input name='form_entry[form_constants][photon_output_calibration_adjusted_10XFFF_Dw_abs]' class='span12' id='form_entry_form_values_photon_output_calibration_adjusted_10XFFF_Dw_abs' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['photon_output_calibration_adjusted_10XFFF_Dw_abs'])."'")."/></td>
+            </tr>
+            <tr>
+              <td>%diff</td>
+              <td class='control-group'><input name='form_entry[form_values][photon_output_calibration_adjusted_6MV_diff]' class='span12' id='form_entry_form_values_photon_output_calibration_adjusted_6MV_diff' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['photon_output_calibration_adjusted_6MV_diff'])."'")."/></td>
+              <td class='control-group'><input name='form_entry[form_values][photon_output_calibration_adjusted_10MV_diff]' class='span12' id='form_entry_form_values_photon_output_calibration_adjusted_10MV_diff' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['photon_output_calibration_adjusted_10MV_diff'])."'")."/></td>
+              <td class='control-group'><input name='form_entry[form_values][photon_output_calibration_adjusted_15MV_diff]' class='span12' id='form_entry_form_values_photon_output_calibration_adjusted_15MV_diff' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['photon_output_calibration_adjusted_15MV_diff'])."'")."/></td>
+              <td class='control-group'><input name='form_entry[form_values][photon_output_calibration_adjusted_18MV_diff]' class='span12' id='form_entry_form_values_photon_output_calibration_adjusted_18MV_diff' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['photon_output_calibration_adjusted_18MV_diff'])."'")."/></td>
+              <td class='control-group'><input name='form_entry[form_values][photon_output_calibration_adjusted_6XFFF_diff]' class='span12' id='form_entry_form_values_photon_output_calibration_adjusted_6XFFF_diff' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['photon_output_calibration_adjusted_6XFFF_diff'])."'")."/></td>
+              <td class='control-group'><input name='form_entry[form_values][photon_output_calibration_adjusted_10XFFF_diff]' class='span12' id='form_entry_form_values_photon_output_calibration_adjusted_10XFFF_diff' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['photon_output_calibration_adjusted_10XFFF_diff'])."'")."/></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class='span2'>
         <h3 class='center-horizontal'>Gating</h3>
         <table class='table table-bordered table-striped'>
           <thead>
@@ -261,7 +367,7 @@
             </tr>
             <tr>
               <td>Avg</td>
-              <td class='control-group'><input name='form_entry[form_values][gating_6MV_avg]' id='form_entry_form_values_gating_6MV_avg' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['gating_6MV_avg'])."'")."/></td>
+              <td class='control-group'><input name='form_entry[form_values][gating_6MV_avg]' class='span12' id='form_entry_form_values_gating_6MV_avg' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['gating_6MV_avg'])."'")."/></td>
             </tr>
             <tr>
               <td>TPR</td>
@@ -278,13 +384,15 @@
           </tbody>
         </table>
       </div>
-      <div class='span3'>
+      <div class='span4'>
         <h3 class='center-horizontal'>EDW</h3>
         <table class='table table-bordered table-striped'>
           <thead>
             <tr>
               <th>Photon Energy</th>
               <th>6MV</th>
+              <th>10MV</th>
+              <th>15MV</th>
               <th>18MV</th>
             </tr>
           </thead>
@@ -292,36 +400,50 @@
             <tr>
               <td>Q<sub>1</sub></td>
               <td class='control-group'><input name='form_entry[form_values][edw_6MV_q1]' class='form_entry_form_values_edw_6MV span12' id='form_entry_form_values_edw_6MV_q1' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['edw_6MV_q1'])."'")."/></td>
+              <td class='control-group'><input name='form_entry[form_values][edw_10MV_q1]' class='form_entry_form_values_edw_10MV span12' id='form_entry_form_values_edw_10MV_q1' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['edw_10MV_q1'])."'")."/></td>
+              <td class='control-group'><input name='form_entry[form_values][edw_15MV_q1]' class='form_entry_form_values_edw_15MV span12' id='form_entry_form_values_edw_15MV_q1' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['edw_15MV_q1'])."'")."/></td>
               <td class='control-group'><input name='form_entry[form_values][edw_18MV_q1]' class='form_entry_form_values_edw_18MV span12' id='form_entry_form_values_edw_18MV_q1' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['edw_18MV_q1'])."'")."/></td>
             </tr>
             <tr>
               <td>Q<sub>2</sub></td>
               <td class='control-group'><input name='form_entry[form_values][edw_6MV_q2]' class='form_entry_form_values_edw_6MV span12' id='form_entry_form_values_edw_6MV_q2' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['edw_6MV_q2'])."'")."/></td>
+              <td class='control-group'><input name='form_entry[form_values][edw_10MV_q2]' class='form_entry_form_values_edw_10MV span12' id='form_entry_form_values_edw_10MV_q2' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['edw_10MV_q2'])."'")."/></td>
+              <td class='control-group'><input name='form_entry[form_values][edw_15MV_q2]' class='form_entry_form_values_edw_15MV span12' id='form_entry_form_values_edw_15MV_q2' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['edw_15MV_q2'])."'")."/></td>
               <td class='control-group'><input name='form_entry[form_values][edw_18MV_q2]' class='form_entry_form_values_edw_18MV span12' id='form_entry_form_values_edw_18MV_q2' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['edw_18MV_q2'])."'")."/></td>
             </tr>
             <tr>
               <td>Q<sub>3</sub></td>
               <td class='control-group'><input name='form_entry[form_values][edw_6MV_q3]' class='form_entry_form_values_edw_6MV span12' id='form_entry_form_values_edw_6MV_q3' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['edw_6MV_q3'])."'")."/></td>
+              <td class='control-group'><input name='form_entry[form_values][edw_10MV_q3]' class='form_entry_form_values_edw_10MV span12' id='form_entry_form_values_edw_10MV_q3' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['edw_10MV_q3'])."'")."/></td>
+              <td class='control-group'><input name='form_entry[form_values][edw_15MV_q3]' class='form_entry_form_values_edw_15MV span12' id='form_entry_form_values_edw_15MV_q3' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['edw_15MV_q3'])."'")."/></td>
               <td class='control-group'><input name='form_entry[form_values][edw_18MV_q3]' class='form_entry_form_values_edw_18MV span12' id='form_entry_form_values_edw_18MV_q3' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['edw_18MV_q3'])."'")."/></td>
             </tr>
             <tr>
               <td>Avg</td>
               <td class='control-group'><input name='form_entry[form_values][edw_6MV_avg]' class='span12' id='form_entry_form_values_edw_6MV_avg' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['edw_6MV_avg'])."'")."/></td>
+              <td class='control-group'><input name='form_entry[form_values][edw_10MV_avg]' class='span12' id='form_entry_form_values_edw_10MV_avg' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['edw_10MV_avg'])."'")."/></td>
+              <td class='control-group'><input name='form_entry[form_values][edw_15MV_avg]' class='span12' id='form_entry_form_values_edw_15MV_avg' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['edw_15MV_avg'])."'")."/></td>
               <td class='control-group'><input name='form_entry[form_values][edw_18MV_avg]' class='span12' id='form_entry_form_values_edw_18MV_avg' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['edw_18MV_avg'])."'")."/></td>
             </tr>
             <tr>
               <td>WF</td>
               <td class='control-group'><input name='form_entry[form_values][edw_6MV_WF]' class='span12' id='form_entry_form_values_edw_6MV_WF' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['edw_6MV_WF'])."'")."/></td>
+              <td class='control-group'><input name='form_entry[form_values][edw_10MV_WF]' class='span12' id='form_entry_form_values_edw_10MV_WF' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['edw_10MV_WF'])."'")."/></td>
+              <td class='control-group'><input name='form_entry[form_values][edw_15MV_WF]' class='span12' id='form_entry_form_values_edw_15MV_WF' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['edw_15MV_WF'])."'")."/></td>
               <td class='control-group'><input name='form_entry[form_values][edw_18MV_WF]' class='span12' id='form_entry_form_values_edw_18MV_WF' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['edw_18MV_WF'])."'")."/></td>
             </tr>
             <tr>
               <td>WF(ref)</td>
               <td class='control-group'><input name='form_entry[constants][edw_6MV_WF_abs]' class='span12' id='form_entry_form_values_edw_6MV_WF_abs' /></td>
+              <td class='control-group'><input name='form_entry[constants][edw_10MV_WF_abs]' class='span12' id='form_entry_form_values_edw_10MV_WF_abs' /></td>
+              <td class='control-group'><input name='form_entry[constants][edw_15MV_WF_abs]' class='span12' id='form_entry_form_values_edw_15MV_WF_abs' /></td>
               <td class='control-group'><input name='form_entry[constants][edw_18MV_WF_abs]' class='span12' id='form_entry_form_values_edw_18MV_WF_abs' /></td>
             </tr>
             <tr>
               <td>%diff</td>
               <td class='control-group'><input name='form_entry[form_values][edw_6MV_diff]' class='span12' id='form_entry_form_values_edw_6MV_diff' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['edw_6MV_diff'])."'")."/></td>
+              <td class='control-group'><input name='form_entry[form_values][edw_10MV_diff]' class='span12' id='form_entry_form_values_edw_10MV_diff' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['edw_10MV_diff'])."'")."/></td>
+              <td class='control-group'><input name='form_entry[form_values][edw_15MV_diff]' class='span12' id='form_entry_form_values_edw_15MV_diff' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['edw_15MV_diff'])."'")."/></td>
               <td class='control-group'><input name='form_entry[form_values][edw_18MV_diff]' class='span12' id='form_entry_form_values_edw_18MV_diff' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['edw_18MV_diff'])."'")."/></td>
             </tr>
           </tbody>
