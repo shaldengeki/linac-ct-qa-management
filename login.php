@@ -8,9 +8,6 @@ if (!isset($_POST['username']) || !isset($_POST['password'])) {
 $username=$_POST['username']; 
 $password=$_POST['password'];
 
-if (!$user->logIn($database, $username, $password)) {
-  redirect_to("index.php", "Could not log in with the supplied credentials.");
-} else {
-  redirect_to("main.php", "Successfully logged in.");
-}
+$loginResult = $user->logIn($database, $username, $password);
+redirect_to($loginResult['location'], $loginResult['status']);
 ?>

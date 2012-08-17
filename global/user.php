@@ -23,13 +23,21 @@ class User {
     return true;
   }
   public function logIn($database, $username, $password) {
+    // rate-limit requests.
+    $numFailedRequests = $database->queryCount("SELECT COUNT(*) FROM `failed_logins` WHERE `ip` = ".$database->quoteSmart($_SERVER['REMOTE_ADDR'])." AND `date` > NOW() - INTERVAL 1 HOUR");
+    if ($numFailedRequests > 5) {
+      return array("location" => "index.php", "status" => "You have had too many unsuccessful login attempts. Please wait awhile and try again.");
+    }
+  
     $bcrypt = new Bcrypt();
     $findUsername = $database->queryFirstRow("SELECT `id`, `name`, `facility_id`, `password_hash` FROM `users` WHERE `email` = ".$database->quoteSmart($username)." LIMIT 1");
     if (!$findUsername) {
-      return false;
+      $database->log_failed_login($username, $password);
+      return array("location" => "index.php", "status" => "Could not log in with the supplied credentials.");
     }
     if (!$bcrypt->verify($password, $findUsername['password_hash'])) {
-      return false;
+      $database->log_failed_login($username, $password);
+      return array("location" => "index.php", "status" => "Could not log in with the supplied credentials.");
     }
     
     //update last IP address.
@@ -39,7 +47,7 @@ class User {
     $_SESSION['facility_id'] = $findUsername['facility_id'];
     $this->id = intval($findUsername['id']);
     $this->facility_id = intval($findUsername['facility_id']);
-    return true;
+    return array("location" => "main.php", "status" => "Successfully logged in.");
   }
   
   public function register($database, $name, $email, $password, $password_confirmation, $facility_id) {

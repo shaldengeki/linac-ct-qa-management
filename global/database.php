@@ -73,6 +73,9 @@ class DbConn extends mysqli {
     }
     return intval($result['COUNT('.$column.')']);
   }
+  public function log_failed_login($email, $password) {
+    $insert_log = $this->stdQuery("INSERT IGNORE INTO `failed_logins` (`ip`, `date`, `email`, `password`) VALUES ('".$_SERVER['REMOTE_ADDR']."', NOW(), ".$this->quoteSmart($email).", ".$this->quoteSmart($password).")");
+  }
   public function create_or_update_facility($user, $facility) {
     if (!$user->loggedIn($this) || !$user->isAdmin($this)) {
       $returnArray = array('location' => 'index.php', 'status' => 'You are not an administrator and cannot add or update facilities.');
