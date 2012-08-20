@@ -9,7 +9,7 @@ if (isset($_POST['facility'])) {
   redirect_to($createfacility['location'], $createfacility['status']);
 }
 
-start_html($user, $database, "UCMC Radiation Oncology QA", "Manage Facilities", $_REQUEST['status']);
+start_html($database, $user, "UCMC Radiation Oncology QA", "Manage Facilities", $_REQUEST['status']);
 
 switch($_REQUEST['action']) {
   case 'new':

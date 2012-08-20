@@ -4,6 +4,7 @@ class User {
 
   public $id;
   public $name;
+  public $userlevel;
   public $facility_id;
   
   public function __construct($inputArray) {
@@ -30,7 +31,7 @@ class User {
     }
   
     $bcrypt = new Bcrypt();
-    $findUsername = $database->queryFirstRow("SELECT `id`, `name`, `facility_id`, `password_hash` FROM `users` WHERE `email` = ".$database->quoteSmart($username)." LIMIT 1");
+    $findUsername = $database->queryFirstRow("SELECT `id`, `name`, `facility_id`, `userlevel`, `password_hash` FROM `users` WHERE `email` = ".$database->quoteSmart($username)." LIMIT 1");
     if (!$findUsername) {
       $database->log_failed_login($username, $password);
       return array("location" => "index.php", "status" => "Could not log in with the supplied credentials.");
@@ -45,8 +46,10 @@ class User {
     $_SESSION['id'] = $findUsername['id'];
     $_SESSION['name'] = $findUsername['name'];
     $_SESSION['facility_id'] = $findUsername['facility_id'];
+    $_SESSION['userlevel'] = $findUsername['userlevel'];
     $this->id = intval($findUsername['id']);
     $this->facility_id = intval($findUsername['facility_id']);
+    $this->userlevel = intval($findUsername['userlevel']);
     return array("location" => "main.php", "status" => "Successfully logged in.");
   }
   

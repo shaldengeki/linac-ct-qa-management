@@ -9,7 +9,7 @@ if (isset($_POST['form_entry'])) {
   redirect_to($createFormEntry['location'], $createFormEntry['status']);
 }
 
-start_html($user, $database, "UCMC Radiation Oncology QA", "Manage Form Entries", $_REQUEST['status']);
+start_html($database, $user, "UCMC Radiation Oncology QA", "Manage Form Entries", $_REQUEST['status']);
 
 switch($_REQUEST['action']) {
   case 'new':

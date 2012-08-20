@@ -3,7 +3,7 @@ include_once("global/includes.php");
 if (!$user->loggedIn($database)) {
   header("Location: index.php");
 }
-start_html($user, $database, "UCMC Radiation Oncology QA", "", $_REQUEST['status']);
+start_html($database, $user, "UCMC Radiation Oncology QA", "", $_REQUEST['status']);
 ?>
 <div class="hero-unit">
   <h1>Welcome!</h1>
@@ -18,7 +18,10 @@ start_html($user, $database, "UCMC Radiation Oncology QA", "", $_REQUEST['status
     <li>CT image upload</li>
     <li><s>Backups</s></li>
     <li><s>Revise forms for TrueBeam</s></li>
-    <li><s>Enter TrueBeam data</s></li>
+    <li><s>Enter TrueBeam2 data</s></li>
+    <li><s>Review TrueBeam2 data</s></li>
+    <li><s>Enter TrueBeam1 data</s></li>
+    <li>Review TrueBeam1 data</li>
     <li>Large-graph view</li>
   </ol>
 </div>

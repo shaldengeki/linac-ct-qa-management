@@ -26,5 +26,20 @@ function get_numeric($val) {
   } else {
     return false;
   }
-} 
+}
+
+function convert_userlevel_to_text($userlevel) {
+  switch(intval($userlevel)) {
+    case 0:
+      return 'Guest';
+      break;
+    case 1:
+      return 'Normal';
+      break;
+    case 2:
+      return 'Administrator';
+    default:
+      return 'Unknown';
+  }
+}
 ?>

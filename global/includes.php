@@ -1,10 +1,10 @@
 <?php
-include_once("config.php");
-include_once("database.php");
-include_once("bcrypt.php");
-include_once("user.php");
-include_once("display.php");
-include_once("misc.php");
+include_once("./global/config.php");
+include_once("./global/database.php");
+include_once("./global/bcrypt.php");
+include_once("./global/user.php");
+include_once("./global/display.php");
+include_once("./global/misc.php");
 
 $database = new DbConn(MYSQL_HOST, MYSQL_USERNAME, MYSQL_PASSWORD, MYSQL_DATABASE);
 session_start();

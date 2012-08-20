@@ -309,7 +309,7 @@ class DbConn extends mysqli {
               return array('location' => 'form_entry.php?action=new'.((isset($form_entry['form_id'])) ? "&form_id=".intval($form_entry['form_id']) : ""), 'status' => "The image file you uploaded is invalid.");
             }
             $imageSize = getimagesize($file_array['tmp_name']);
-            if ($imageSize[0] > 2000 || $imageSize[1] > 2000) {
+            if ($imageSize[0] > 5000 || $imageSize[1] > 5000) {
               return array('location' => 'form_entry.php?action=new'.((isset($form_entry['form_id'])) ? "&form_id=".intval($form_entry['form_id']) : ""), 'status' => "The maximum allowed size for images is 2000x2000 pixels.");
             }
             // move file to destination and save path in db.
@@ -328,10 +328,72 @@ class DbConn extends mysqli {
       }
     }
   }
+  public function create_or_update_user($user, $user_entry) {
+    //check to see if we have permissions to insert/update this user.
+    if (!$user->loggedIn($this)) {
+      return array('location' => 'user.php', 'status' => 'You are not allowed to modify or create users without first logging in.');
+    }
+    if (!isset($user_entry['id']) && !$user->isAdmin($this)) {
+      return array('location' => 'user.php', 'status' => 'Only administrators are allowed to register new users. Please contact your facility administrator.');
+    }
+    if (isset($user_entry['id']) && intval($user_entry['id']) != $user->id && !$user->isAdmin($this)) {
+      return array('location' => 'user.php', 'status' => 'You are not allowed to modify another user.');
+    }
+    
+    //if changing userlevel, check to ensure that they are setting it equal to or less than their current userlevel.
+    if (isset($user_entry['userlevel']) && intval($user_entry['userlevel']) > $user->userlevel) {
+      return array('location' => 'user.php', 'status' => 'You are not allowed to set userlevels beyond your current userlevel.');
+    }
+    //if changing facility, check to ensure that they are an administrator.
+    if (isset($user_entry['facility_id']) && !$user->isAdmin($this)) {
+      return array('location' => 'user.php', 'status' => 'You are not allowed to change your facility. Please contact a facility administrator.');
+    }
+    
+    //check to ensure that email and password are well-formed and valid.
+    $email_regex = "/[0-9A-Za-z\\+\\-\\%\\.]+@[0-9A-Za-z\\.\\-]+\\.[A-Za-z]{2,4}/";
+    if (!preg_match($email_regex, $user_entry['email'])) {
+      return array("location" => "user.php", "status" => "The email address you have entered is malformed. Please check it and try again.");
+    }
+    if ($user_entry['password'] != $user_entry['password_confirmation']) {
+      return array("location" => "user.php", "status" => "The passwords you have entered do not match. Please check them and try again.");
+    }
+    
+    //go ahead and register or update this user.
+    if (isset($user_entry['id'])) {
+      //update this user.
+      $optionalFields = "";
+      $userDbObject = False;
+      if (isset($user_entry['password']) && $user_entry['password'] != '') {
+        $bcrypt = new Bcrypt();
+        $optionalFields .= ", `password_hash` = ".$this->quoteSmart($bcrypt->hash($user_entry['password']));
+      }
+      if (isset($user_entry['userlevel']) && intval($user_entry['userlevel']) != 0) {
+        $optionalFields .= ", `userlevel` = ".intval($user_entry['userlevel']);
+      }
+      if (isset($user_entry['facility_id']) && intval($user_entry['facility_id']) != 0) {
+        $optionalFields .= ", `facility_id` = ".intval($user_entry['facility_id']);
+      }
+      $updateUser = $this->stdQuery("UPDATE `users` SET `name` = ".$this->quoteSmart($user_entry['name']).", 
+                                      `email` = ".$this->quoteSmart($user_entry['email']).$optionalFields."
+                                      WHERE `id` = ".intval($user_entry['id'])."
+                                      LIMIT 1");
+      if (!$updateUser) {
+        return array('location' => 'user.php?action=edit&id='.intval($user_entry['id']), 'status' => "Error while updating user. Please try again.");
+      }
+    } else {
+      //insert this user.
+      $bcrypt = new Bcrypt();
+      $insertUser = $this->stdQuery("INSERT INTO `users` (`name`, `email`, `password_hash`, `userlevel`, `facility_id`) VALUES (".$this->quoteSmart($user_entry['name']).", ".$this->quoteSmart($user_entry['email']).", ".$this->quoteSmart($bcrypt->hash($user_entry['password'])).", ".intval($user_entry['userlevel']).", ".intval($user_entry['facility_id']).")");
+      if (!$insertUser) {
+        return array('location' => 'user.php?action=new', 'status' => "Error while creating user. Please try again.");
+      }
+    }
+    return array('location' => 'user.php', 'status' => 'Successfully created user.');
+  }
   public function generate_backup($user, $backup) {
     //generates a backup according to submitted parameters.
-    if (!$user->isAdmin($this)) {
-      return array('location' => 'main.php', 'status' => 'You are not allowed to generate backups.');
+    if (!$user->loggedIn($this)) {
+      return array('location' => 'main.php', 'status' => 'Please log in to generate backups.');
     }
     if (!isset($backup['contents']) || !is_array($backup['contents']) || count($backup['contents']) < 1) {
       return array('location' => 'backup.php', 'status' => 'Please select at least one option for backup contents.');
@@ -341,18 +403,19 @@ class DbConn extends mysqli {
     }
     //create the individual backup files.
     $output_files = array();
+    $dateObject = new DateTime();
     foreach ($backup['contents'] as $content) {
       switch($content) {
         case 'database':
-          $backup_file_name = 'backup-database-'.date('Y-m-d-H-i-s-u').'.sql';
-          exec('mysqldump -u'.MYSQL_USERNAME.' -p'.MYSQL_PASSWORD.' '.MYSQL_DATABASE.' > '.APP_ROOT.'/backups/'.$backup_file_name, $file_output, $file_return);
+          $backup_file_name = 'backup-database-'.$dateObject->format('Y-m-d-H-i-s-u').'.sql';
+          exec('mysqldump -u'.addslashes(MYSQL_USERNAME).' -p'.addslashes(MYSQL_PASSWORD).' --ignore-table='.addslashes(MYSQL_DATABASE).'.users '.addslashes(MYSQL_DATABASE).' > '.APP_ROOT.'/backups/'.$backup_file_name, $file_output, $file_return);
           if (intval($file_return) != 0) {
             return array('location' => 'backup.php', 'status' => 'There was an error (code '.intval($file_return).') while creating a backup of the database structure. Please try again.');
           }
           $output_files[] = $backup_file_name;
           break;
         case 'files':
-          $backup_file_name = 'backup-files-'.date('Y-m-d-H-i-s-u').'.tar.gz';
+          $backup_file_name = 'backup-files-'.$dateObject->format('Y-m-d-H-i-s-u').'.tar.gz';
           exec('cd '.APP_ROOT.' && tar cf ./backups/'.$backup_file_name.' --exclude "backups/*.tar.gz" *', $file_output, $file_return);
           if (intval($file_return) != 0) {
             return array('location' => 'backup.php', 'status' => 'There was an error (code '.intval($file_return).') while creating a backup of the files. Please try again.');
@@ -367,7 +430,7 @@ class DbConn extends mysqli {
       return array('location' => 'backup.php', 'status' => 'Nothing was successfully backed up. Please try again.');      
     }
     //create a single backup tarball.
-    $backup_file_name = 'backup-'.date('Y-m-d-H-i-s-u').'.tar.gz';
+    $backup_file_name = 'backup-'.$dateObject->format('Y-m-d-H-i-s-u').'.tar.gz';
     $tar_command = 'cd '.APP_ROOT.'/backups/ && tar cf '.$backup_file_name.' '.implode(' ', $output_files);
     $cleanup_command = 'cd '.APP_ROOT.'/backups/ && rm '.implode(' ', $output_files);
     exec($tar_command, $tar_output, $tar_return);

@@ -30,7 +30,7 @@ function redirect_to($location, $status="") {
   header("Location: ".$location.$status);
 }
 
-function start_html($user, $database, $title="UCMC Radiation Oncology QA", $subtitle="", $status="") {
+function start_html($database, $user, $title="UCMC Radiation Oncology QA", $subtitle="", $status="") {
 echo '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
         "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 	
@@ -72,7 +72,9 @@ echo '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
         <a href="./index.php" class="brand">UCMC Equipment QA</a>
         <div class="nav-collapse">
           <ul class="nav">
-              <li class="dropdown">
+';
+  if ($user->loggedIn($database)) {
+  echo '              <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                   Linac
                   <b class="caret"></b>
@@ -93,6 +95,7 @@ echo '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
                 </ul>
               </li>
 ';
+  }
   if ($user->isAdmin($database)) {
   echo '              <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
@@ -104,7 +107,7 @@ echo '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
                   <li><a href="machine_type.php">Machine Types</a></li>
                   <li><a href="machine.php">Machines</a></li>
                   <li><a href="facility.php">Facilities</a></li>
-                  <li><a href="#">Users</a></li>
+                  <li><a href="user.php">Users</a></li>
                   <li><a href="backup.php">Backup</a></li>
                 </ul>
               </li>
@@ -218,13 +221,16 @@ function display_facility_dropdown($database, $select_id="facility_id", $selecte
 
 function display_facility_edit_form($database, $user, $id=false) {
   // displays a form to edit facility type parameters.
-  if (!($id === false)) {
-    $facilityObject = $database->queryFirstRow("SELECT * FROM `facilities` WHERE `id` = ".intval($id)." LIMIT 1");
-    if (!$facilityObject) {
-      $id = false;
+  if (!$user->isAdmin($database)) {
+    echo "You must be an administrator to modify facilities.";
+  } else {
+    if (!($id === false)) {
+      $facilityObject = $database->queryFirstRow("SELECT * FROM `facilities` WHERE `id` = ".intval($id)." LIMIT 1");
+      if (!$facilityObject) {
+        $id = false;
+      }
     }
-  }
-  echo "<form action='facility.php".(($id === false) ? "" : "?id=".intval($id))."' method='POST' class='form-horizontal'>
+    echo "<form action='facility.php".(($id === false) ? "" : "?id=".intval($id))."' method='POST' class='form-horizontal'>
 ".(($id === false) ? "" : "<input type='hidden' name='facility[id]' value='".intval($id)."' />")."
   <fieldset>
     <div class='control-group'>
@@ -240,6 +246,7 @@ function display_facility_edit_form($database, $user, $id=false) {
   </fieldset>
 </form>
 ";
+  }
 }
 
 function display_register_form($database, $action=".") {
@@ -343,14 +350,17 @@ function display_machine_type_dropdown($database, $select_id="machine_type_id", 
 }
 
 function display_machine_type_edit_form($database, $user, $id=false) {
-  // displays a form to edit machine type parameters.
-  if (!($id === false)) {
-    $machineTypeObject = $database->queryFirstRow("SELECT * FROM `machine_types` WHERE `id` = ".intval($id)." LIMIT 1");
-    if (!$machineTypeObject) {
-      $id = false;
+  if (!$user->isAdmin($database)) {
+    echo "You must be an administrator to modify machine types.";
+  } else {
+    // displays a form to edit machine type parameters.
+    if (!($id === false)) {
+      $machineTypeObject = $database->queryFirstRow("SELECT * FROM `machine_types` WHERE `id` = ".intval($id)." LIMIT 1");
+      if (!$machineTypeObject) {
+        $id = false;
+      }
     }
-  }
-  echo "<form action='machine_type.php".(($id === false) ? "" : "?id=".intval($id))."' method='POST' class='form-horizontal'>
+    echo "<form action='machine_type.php".(($id === false) ? "" : "?id=".intval($id))."' method='POST' class='form-horizontal'>
   <fieldset>
     <div class='control-group'>
       <label class='control-label' for='machine_type[name]'>Name</label>
@@ -371,6 +381,7 @@ function display_machine_type_edit_form($database, $user, $id=false) {
   </fieldset>
 </form>
 ";
+  }
 }
 
 function display_machine_type_info($database, $user, $machine_type_id, $graph_div_prefix = "machine_type_info") {
@@ -440,18 +451,21 @@ function display_machine_dropdown($database, $user, $select_id="machine_id", $se
 
 function display_machine_edit_form($database, $user, $id=false) {
   // displays a form to edit machine type parameters.
-  if (!($id === false)) {
-    $machineObject = $database->queryFirstRow("SELECT * FROM `machines` WHERE `id` = ".intval($id)." LIMIT 1");
-    if (!$machineObject) {
-      $id = false;
+  if (!$user->isAdmin($database)) {
+    echo "You must be an administrator to modify machines.";
+  } else {
+    if (!($id === false)) {
+      $machineObject = $database->queryFirstRow("SELECT * FROM `machines` WHERE `id` = ".intval($id)." LIMIT 1");
+      if (!$machineObject) {
+        $id = false;
+      }
     }
-  }
-  $facility = $database->queryFirstValue("SELECT `name` FROM `facilities` WHERE `id` = ".intval($user->facility_id)." LIMIT 1");
-  if (!$facility) {
-    $facility = "None";
-  }
-  
-  echo "<form action='machine.php".(($id === false) ? "" : "?id=".intval($id))."' method='POST' class='form-horizontal'>
+    $facility = $database->queryFirstValue("SELECT `name` FROM `facilities` WHERE `id` = ".intval($user->facility_id)." LIMIT 1");
+    if (!$facility) {
+      $facility = "None";
+    }
+    
+    echo "<form action='machine.php".(($id === false) ? "" : "?id=".intval($id))."' method='POST' class='form-horizontal'>
 ".(($id === false) ? "" : "<input type='hidden' name='machine[id]' value='".intval($id)."' />")."
   <fieldset>
     <div class='control-group'>
@@ -464,8 +478,8 @@ function display_machine_edit_form($database, $user, $id=false) {
       <label class='control-label' for='machine[facility_id]'>Facility</label>
       <div class='controls'>
 ";
-  display_machine_type_dropdown($database, "machine[machine_type_id]", ($id === false) ? 0 : $machineObject['machine_type_id']);
-  echo "      </div>
+    display_machine_type_dropdown($database, "machine[machine_type_id]", ($id === false) ? 0 : $machineObject['machine_type_id']);
+    echo "      </div>
     </div>
     <div class='control-group'>
       <label class='control-label' for='machine[facility_id]'>Facility</label>
@@ -481,6 +495,7 @@ function display_machine_edit_form($database, $user, $id=false) {
   </fieldset>
 </form>
 ";
+  }
 }
 
 function display_machine_info($database, $user, $machine_id, $graph_div_prefix = "machine_info") {
@@ -694,10 +709,119 @@ function display_form_entry_edit_form($database, $user, $id=false, $form_id=fals
   }
 }
 
+function display_users($database, $user) {
+  //lists all users.
+  echo "<table class='table table-striped table-bordered dataTable'>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Email</th>
+      <th>Role</th>
+      <th>Facility</th>
+    </tr>
+  </thead>
+  <tbody>
+";
+  if ($user->isAdmin($database)) {
+    $users = $database->stdQuery("SELECT `users`.`id`, `users`.`name`, `users`.`email`, `users`.`userlevel`, `facilities`.`name` AS `facility_name` FROM `users` LEFT OUTER JOIN `facilities` ON `users`.`facility_id` = `facilities`.`id` ORDER BY `users`.`name` ASC");
+  } else {
+    $users = $database->stdQuery("SELECT `users`.`id`, `users`.`name`, `users`.`email`, `users`.`userlevel`, `facilities`.`name` AS `facility_name` FROM `users` LEFT OUTER JOIN `facilities` ON `users`.`facility_id` = `facilities`.`id` WHERE `users`.`facility_id` = ".intval($user->facility_id)." ORDER BY `users`.`name` ASC");
+  }
+  while ($user = mysqli_fetch_assoc($users)) {
+    echo "    <tr>
+      <td><a href='user.php?action=edit&id=".intval($user['id'])."'>".escape_output($user['name'])."</a></td>
+      <td>".escape_output($user['email'])."</td>
+      <td>".escape_output(convert_userlevel_to_text($user['userlevel']))."</td>
+      <td>".escape_output($user['facility_name'])."</td>
+    </tr>
+";
+  }
+  echo "  </tbody>
+</table>
+";
+}
+
+function display_userlevel_dropdown($database, $select_id="userlevel", $selected=0) {
+  echo "<select id='".escape_output($select_id)."' name='".escape_output($select_id)."'>
+";
+  for ($userlevel = 0; $userlevel <= 2; $userlevel++) {
+    echo "  <option value='".intval($userlevel)."'".(($selected == intval($userlevel)) ? "selected='selected'" : "").">".escape_output(convert_userlevel_to_text($userlevel))."</option>
+";
+  }
+  echo "</select>
+";
+}
+
+function display_user_edit_form($database, $user, $id=false) {
+  // displays a form to edit user parameters.
+  if (!$user->isAdmin($database) && $user->id != intval($id)) {
+    echo "You must be an administrator to modify this user.";
+  } else {
+    if (!($id === false)) {
+      $userObject = $database->queryFirstRow("SELECT * FROM `users` WHERE `id` = ".intval($id)." LIMIT 1");
+      if (!$userObject) {
+        $id = false;
+      }
+    }    
+    echo "<form action='user.php".(($id === false) ? "" : "?id=".intval($id))."' method='POST' class='form-horizontal'>
+".(($id === false) ? "" : "<input type='hidden' name='user[id]' value='".intval($id)."' />")."
+  <fieldset>
+    <div class='control-group'>
+      <label class='control-label' for='user[name]'>Name</label>
+      <div class='controls'>
+        <input name='user[name]' type='text' class='input-xlarge' id='user[name]'".(($id === false) ? "" : " value='".escape_output($userObject['name'])."'").">
+      </div>
+    </div>
+    <div class='control-group'>
+      <label class='control-label' for='user[password]'>Password</label>
+      <div class='controls'>
+        <input name='user[password]' type='password' class='input-xlarge' id='user[password]' />
+      </div>
+    </div>
+    <div class='control-group'>
+      <label class='control-label' for='user[password_confirmation]'>Confirm Password</label>
+      <div class='controls'>
+        <input name='user[password_confirmation]' type='password' class='input-xlarge' id='user[password_confirmation]' />
+      </div>
+    </div>
+    <div class='control-group'>
+      <label class='control-label' for='user[name]'>Email</label>
+      <div class='controls'>
+        <input name='user[email]' type='email' class='input-xlarge' id='user[email]'".(($id === false) ? "" : " value='".escape_output($userObject['email'])."'").">
+      </div>
+    </div>
+";
+    if ($user->isAdmin($database)) {
+      echo "    <div class='control-group'>
+      <label class='control-label' for='user[facility_id]'>Facility</label>
+      <div class='controls'>
+";
+    display_facility_dropdown($database, "user[facility_id]", ($id === false) ? 0 : $userObject['facility_id']);
+    echo "      </div>
+    </div>
+    <div class='control-group'>
+      <label class='control-label' for='user[userlevel]'>Role</label>
+      <div class='controls'>
+";
+    display_userlevel_dropdown($database, "user[userlevel]", ($id === false) ? 0 : $userObject['userlevel']);
+    echo "      </div>
+    </div>
+";
+    }
+    echo "    <div class='form-actions'>
+      <button type='submit' class='btn btn-primary'>".(($id === false) ? "Add User" : "Save changes")."</button>
+      <a href='#' onClick='window.location.replace(document.referrer);' class='btn'>".(($id === false) ? "Go back" : "Discard changes")."</a>
+    </div>
+  </fieldset>
+</form>
+";
+  }
+}
+
 function display_backups($database, $user) {
   //lists all backups.
-  if (!$user->isAdmin($database)) {
-    echo "You must be an administrator to view backups.";
+  if (!$user->loggedIn($database)) {
+    echo "You must be logged in to view backups.";
   } else {
     echo "<table class='table table-striped table-bordered dataTable'>
   <thead>
@@ -724,7 +848,7 @@ function display_backups($database, $user) {
     }
     echo "  </tbody>
 </table>
-<a href='backup.php?action=create'>Create a backup</a>
+<a class='btn btn-primary' href='backup.php?action=create'>Create a backup</a>
 ";
   }
 }

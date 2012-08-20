@@ -9,7 +9,7 @@ if (isset($_POST['machine'])) {
   redirect_to($createmachine['location'], $createmachine['status']);
 }
 
-start_html($user, $database, "UCMC Radiation Oncology QA", "Manage Machines", $_REQUEST['status']);
+start_html($database, $user, "UCMC Radiation Oncology QA", "Manage Machines", $_REQUEST['status']);
 
 switch($_REQUEST['action']) {
   case 'new':

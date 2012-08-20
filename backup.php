@@ -1,7 +1,7 @@
 <?php
 include_once("global/includes.php");
-if (!$user->isAdmin($database)) {
-  header("Location: main.php");
+if (!$user->loggedIn($database)) {
+  redirect_to('index.php', 'Please log in to manage backups.');
 }
 
 if (isset($_POST['backup'])) {
@@ -10,7 +10,7 @@ if (isset($_POST['backup'])) {
   redirect_to($generateBackup['location'], $generateBackup['status']);
 }
 
-start_html($user, $database, "UCMC Radiation Oncology QA", "Generate Backup", $_REQUEST['status']);
+start_html($database, $user, "UCMC Radiation Oncology QA", "Generate Backup", $_REQUEST['status']);
 
 switch($_REQUEST['action']) {
   case 'create':

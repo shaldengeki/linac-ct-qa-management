@@ -8,12 +8,14 @@ function displayFormFieldLineGraph(data, title, div_id) {
       maxDate = getDate(data[data.length-1]),
       minValue = Math.min.apply(Math,data.map(function(o){return o.y;})),
       maxValue = Math.max.apply(Math,data.map(function(o){return o.y;}));
-
   var w = 300,
   h = 200,
   p = 30,
   y = d3.scale.linear().domain([minValue, maxValue]).range([h, 0]),
   x = d3.time.scale().domain([minDate, maxDate]).range([0, w]);
+  /*if (title == 'Energy Ratio 9mev Diff') {
+    alert(minValue + " | " + maxValue + y.ticks(10));
+  }*/
 
   var vis = d3.select("#"+div_id)
   .data([data])
@@ -37,7 +39,7 @@ function displayFormFieldLineGraph(data, title, div_id) {
 
    rules.append("svg:line")
     .attr("class", function(d) { return d ? null : "axis"; })
-    .data(y.ticks(5))
+    .data(y.ticks(10))
     .attr("y1", y)
     .attr("y2", y)
     .attr("x1", 0)
