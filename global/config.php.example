@@ -1,0 +1,9 @@
+<?php
+define('MYSQL_HOST', 'localhost');
+define('MYSQL_USERNAME', 'MYSQL_USERNAME');
+define('MYSQL_PASSWORD', 'MYSQL_PASSWORD');
+define('MYSQL_DATABASE', 'MYSQL_DATABASE');
+define('APP_ROOT', '/var/www'); // no trailing backslash!
+date_default_timezone_set('America/Chicago');
+error_reporting(E_ALL ^ E_NOTICE);
+?>
