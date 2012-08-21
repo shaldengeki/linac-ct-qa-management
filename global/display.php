@@ -841,8 +841,8 @@ function display_backups($database, $user) {
       }
       echo "    <tr>
       <td>".escape_output($user)."</td>
-      <td><a href='".escape_output($backup['path'])."'>".escape_output($backup['path'])."</a></td>
-      <td>".escape_output(date('n/j/Y', strtotime($backup['created_at'])))."</td>
+      <td><a href='backup.php?action=download&id=".intval($backup['id'])."'>".escape_output(basename($backup['path']))."</a></td>
+      <td>".escape_output(date('Y/m/d H:i', strtotime($backup['created_at'])))."</td>
     </tr>
 ";
     }

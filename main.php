@@ -22,6 +22,7 @@ start_html($database, $user, "UCMC Radiation Oncology QA", "", $_REQUEST['status
     <li><s>Review TrueBeam2 data</s></li>
     <li><s>Enter TrueBeam1 data</s></li>
     <li>Review TrueBeam1 data</li>
+    <li><s>User creation and modification</s></li>
     <li>Large-graph view</li>
   </ol>
 </div>

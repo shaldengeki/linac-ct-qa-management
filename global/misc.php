@@ -42,4 +42,41 @@ function convert_userlevel_to_text($userlevel) {
       return 'Unknown';
   }
 }
+
+function stream_large_file($filename, $mimeType='text/plain; charset="UTF-8"', $chunkSize=1048576, $retbytes = TRUE) {
+  // Read a file and display its content chunk by chunk
+  header('Content-Type: '.$mimeType );
+  header('Content-Disposition: attachment; filename='.escape_output(basename($filename)));
+  $buffer = '';
+  $cnt =0;
+  // $handle = fopen($filename, 'rb');
+  $handle = fopen($filename, 'rb');
+  if ($handle === false) {
+    return false;
+  }
+  while (!feof($handle)) {
+    $buffer = fread($handle, $chunkSize);
+    echo $buffer;
+    ob_flush();
+    flush();
+    if ($retbytes) {
+      $cnt += strlen($buffer);
+    }
+  }
+  $status = fclose($handle);
+  if ($retbytes && $status) {
+    return $cnt; // return num. bytes delivered like readfile() does.
+  }
+  return $status;
+}
+
+function udate($format, $utimestamp = null) {
+  
+  if (is_null($utimestamp)) {
+    $utimestamp = microtime(true);
+  }
+  $timestamp = floor($utimestamp);
+  $milliseconds = round(($utimestamp - $timestamp) * 1000000);
+  return date(preg_replace('`(?<!\\\\)u`', $milliseconds, $format), $timestamp);
+}
 ?>

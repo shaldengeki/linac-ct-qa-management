@@ -403,11 +403,11 @@ class DbConn extends mysqli {
     }
     //create the individual backup files.
     $output_files = array();
-    $dateObject = new DateTime();
+    $timestamp = udate('Y-m-d-H-i-s-u');
     foreach ($backup['contents'] as $content) {
       switch($content) {
         case 'database':
-          $backup_file_name = 'backup-database-'.$dateObject->format('Y-m-d-H-i-s-u').'.sql';
+          $backup_file_name = 'backup-database-'.$timestamp.'.sql';
           exec('mysqldump -u'.addslashes(MYSQL_USERNAME).' -p'.addslashes(MYSQL_PASSWORD).' --ignore-table='.addslashes(MYSQL_DATABASE).'.users '.addslashes(MYSQL_DATABASE).' > '.APP_ROOT.'/backups/'.$backup_file_name, $file_output, $file_return);
           if (intval($file_return) != 0) {
             return array('location' => 'backup.php', 'status' => 'There was an error (code '.intval($file_return).') while creating a backup of the database structure. Please try again.');
@@ -415,7 +415,7 @@ class DbConn extends mysqli {
           $output_files[] = $backup_file_name;
           break;
         case 'files':
-          $backup_file_name = 'backup-files-'.$dateObject->format('Y-m-d-H-i-s-u').'.tar.gz';
+          $backup_file_name = 'backup-files-'.$timestamp.'.tar.gz';
           exec('cd '.APP_ROOT.' && tar cf ./backups/'.$backup_file_name.' --exclude "backups/*.tar.gz" *', $file_output, $file_return);
           if (intval($file_return) != 0) {
             return array('location' => 'backup.php', 'status' => 'There was an error (code '.intval($file_return).') while creating a backup of the files. Please try again.');
@@ -430,7 +430,7 @@ class DbConn extends mysqli {
       return array('location' => 'backup.php', 'status' => 'Nothing was successfully backed up. Please try again.');      
     }
     //create a single backup tarball.
-    $backup_file_name = 'backup-'.$dateObject->format('Y-m-d-H-i-s-u').'.tar.gz';
+    $backup_file_name = 'backup-'.$timestamp.'.tar.gz';
     $tar_command = 'cd '.APP_ROOT.'/backups/ && tar cf '.$backup_file_name.' '.implode(' ', $output_files);
     $cleanup_command = 'cd '.APP_ROOT.'/backups/ && rm '.implode(' ', $output_files);
     exec($tar_command, $tar_output, $tar_return);
@@ -447,6 +447,7 @@ class DbConn extends mysqli {
     if (!$insert_backup) {
       return array('location' => 'backup.php', 'status' => 'There was an error while logging the backup. Please try again.');
     }
+    $insert_id = $this->insert_id;
     
     //now do what the user has requested with these backup files.
     foreach ($backup['action'] as $action) {
@@ -454,7 +455,7 @@ class DbConn extends mysqli {
         case 'local':
           break;
         case 'remote':
-          return array('location' => 'backups/'.$backup_file_name, 'status' => '');
+          return array('location' => 'backup.php?action=download&id='.intval($insert_id), 'status' => '');
           break;
         default:
           break;
