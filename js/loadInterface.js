@@ -132,7 +132,7 @@ function drawLargeD3Plot() {
     colors = d3.scale.category20();
     
     x = d3.time.scale().domain([d3.min(json, getLineMinX), d3.max(json, getLineMaxX)]).range([0, w - legend_width]);
-    y = d3.scale.linear().domain([d3.min(json, getLineMinY) - (graph_padding * graph_domain_y), d3.max(json, getLineMaxY) + (graph_padding * graph_domain_y)]).range([0,h]);
+    y = d3.scale.linear().domain([d3.min(json, getLineMinY) - (graph_padding * graph_domain_y), d3.max(json, getLineMaxY) + (graph_padding * graph_domain_y)]).range([h,0]);
     
     var vis = d3.select("#vis")
       .append("svg:svg")

@@ -1020,6 +1020,9 @@ function display_history_plot($database, $user, $form_id) {
         </div>
       </div>
     </div>
+    <div class='row-fluid'>
+      <div class='span12' style='text-align:center;'>As a reminder, you can highlight multiple fields by either clicking and dragging, or holding down Control and clicking on the fields you want.</div>
+    </div>
     <div class='form-actions'>
       <a class='btn btn-xlarge btn-primary' href='#' onClick='drawLargeD3Plot();'>Redraw Plot</a>
     </div>
