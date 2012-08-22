@@ -4,8 +4,7 @@ $.extend( $.fn.dataTableExt.oStdClasses, {
 } );
 
 /* API method to get paging information */
-$.fn.dataTableExt.oApi.fnPagingInfo = function ( oSettings )
-{
+$.fn.dataTableExt.oApi.fnPagingInfo = function ( oSettings ) {
 	return {
 		"iStart":         oSettings._iDisplayStart,
 		"iEnd":           oSettings.fnDisplayEnd(),
@@ -94,6 +93,25 @@ $.extend( $.fn.dataTableExt.oPagination, {
 	}
 } );
 
+/* line d3 plots */
+function initializeLargeD3Plot() {
+  var form_id = parseInt($('#form_id').val());
+  d3.json("../graph.php?action=json&form_id=" + toString(form_id), function(json) {
+    return;
+  });
+	w = 1000,
+	h = 400;
+  var vis = d3.select("#vis")
+      .append("svg:svg")
+      .attr("width", w)
+      .attr("height", h)
+      .append("svg:g");
+}
+
+function redrawLargeD3Plot() {
+  
+}
+
 $(document).ready(function () {
   $('.dropdown-toggle').dropdown();
   /* Table initialisation */
@@ -106,4 +124,5 @@ $(document).ready(function () {
       }
     });
   });
+  initializeLargeD3Plot();
 });

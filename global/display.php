@@ -74,27 +74,21 @@ echo '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
           <ul class="nav">
 ';
   if ($user->loggedIn($database)) {
-  echo '              <li class="dropdown">
+    $forms = $database->stdQuery("SELECT `id`, `name` FROM `forms` ORDER BY `id` ASC");
+    while ($form = mysqli_fetch_assoc($forms)) {
+      echo '              <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                  Linac
+                  '.escape_output($form['name']).'
                   <b class="caret"></b>
                 </a>
                 <ul class="dropdown-menu">
-                  <li><a href="form_entry.php?action=new&form_id=1">Submit new record</a></li>
-                  <li><a href="form_entry.php?action=index&form_id=1">View history</a></li>
-                </ul>
-              </li>
-              <li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                  CT
-                  <b class="caret"></b>
-                </a>
-                <ul class="dropdown-menu">
-                  <li><a href="form_entry.php?action=new&form_id=2">Submit new record</a></li>
-                  <li><a href="form_entry.php?action=index&form_id=2">View history</a></li>
+                  <li><a href="form_entry.php?action=new&form_id='.intval($form['id']).'">Submit new record</a></li>
+                  <li><a href="form_entry.php?action=index&form_id='.intval($form['id']).'">View history</a></li>
+                  <li><a href="graph.php?action=show&form_id='.intval($form['id']).'">Plot history</a></li>
                 </ul>
               </li>
 ';
+    }
   }
   if ($user->isAdmin($database)) {
   echo '              <li class="dropdown">
@@ -120,7 +114,7 @@ echo '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
   if ($user->loggedIn($database)) {
     echo '              <a href="#" class="dropdown-toggle" data-toggle="dropdown">'.escape_output($user->name).'<b class="caret"></b></a>
               <ul class="dropdown-menu">
-                <a href="/profile.php">Profile</a>
+                <a href="/user.php?action=show&id='.intval($user->id).'">Profile</a>
                 <a href="/logout.php">Sign out</a>
               </ul>
 ';
@@ -718,6 +712,7 @@ function display_users($database, $user) {
       <th>Email</th>
       <th>Role</th>
       <th>Facility</th>
+      <th></th>
     </tr>
   </thead>
   <tbody>
@@ -729,10 +724,11 @@ function display_users($database, $user) {
   }
   while ($user = mysqli_fetch_assoc($users)) {
     echo "    <tr>
-      <td><a href='user.php?action=edit&id=".intval($user['id'])."'>".escape_output($user['name'])."</a></td>
+      <td><a href='user.php?action=show&id=".intval($user['id'])."'>".escape_output($user['name'])."</a></td>
       <td>".escape_output($user['email'])."</td>
       <td>".escape_output(convert_userlevel_to_text($user['userlevel']))."</td>
       <td>".escape_output($user['facility_name'])."</td>
+      <td><a href='user.php?action=edit&id=".intval($user['id'])."'>Edit</a></td>
     </tr>
 ";
   }
@@ -818,6 +814,62 @@ function display_user_edit_form($database, $user, $id=false) {
   }
 }
 
+function display_user_profile($database, $user, $user_id) {
+  if (!$user->loggedIn($database)) {
+    echo "You must log in in order to view user profiles.
+";
+  } else {
+    $userObject = $database->queryFirstRow("SELECT * FROM `users` WHERE `id` = ".intval($user_id)." ORDER BY `id` ASC LIMIT 1");
+    if ($userObject['facility_id'] != $user->facility_id && !$user->isAdmin($database)) {
+      echo "You must be an administrator to view users from other facilities.
+";
+    } else {
+      $facility = $database->queryFirstValue("SELECT `name` FROM `facilities` WHERE `id` = ".intval($userObject['facility_id'])." LIMIT 1");
+      $form_entries = $database->stdQuery("SELECT `form_entries`.*, `forms`.`name` AS `form_name`, `machines`.`name` AS `machine_name` FROM `form_entries` 
+                                            LEFT OUTER JOIN `forms` ON `forms`.`id` = `form_entries`.`form_id`
+                                            LEFT OUTER JOIN `machines` ON `machines`.`id` = `form_entries`.`machine_id`
+                                            WHERE `user_id` = ".intval($user_id)." 
+                                            ORDER BY `updated_at` DESC");
+      echo "<dl class='dl-horizontal'>
+    <dt>Email</dt>
+    <dd>".escape_output($userObject['email'])."</dd>
+    <dt>Facility</dt>
+    <dd>".escape_output($facility)."</dd>
+    <dt>Email</dt>
+    <dd>".escape_output(convert_userlevel_to_text($userObject['userlevel']))."</dd>
+  </dl>
+  <h3>Form Entries</h3>
+  <table class='table table-striped table-bordered dataTable'>
+    <thead>
+      <tr>
+        <th>Form</th>
+        <th>Machine</th>
+        <th>Comments</th>
+        <th>QA Date</th>
+        <th>Submitted on</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+";
+    while ($form_entry = mysqli_fetch_assoc($form_entries)) {
+      echo "    <tr>
+      <td><a href='form.php?action=show&id=".intval($form_entry['form_id'])."'>".escape_output($form_entry['form_name'])."</a></td>
+      <td><a href='form.php?action=show&id=".intval($form_entry['machine_id'])."'>".escape_output($form_entry['machine_name'])."</a></td>
+      <td>".escape_output($form_entry['comments'])."</td>
+      <td>".escape_output($form_entry['qa_year']."/".$form_entry['qa_month'])."</td>
+      <td>".escape_output(date('n/j/Y', strtotime($form_entry['updated_at'])))."</td>
+      <td><a href='form_entry.php?action=edit&id=".intval($form_entry['id'])."'>View</a></td>
+    </tr>
+";
+    }
+    echo "    </tbody>
+  </table>
+";
+    }
+  }
+}
+
 function display_backups($database, $user) {
   //lists all backups.
   if (!$user->loggedIn($database)) {
@@ -889,6 +941,65 @@ function display_backup_form($database) {
   </fieldset>
 </form>
 ";
+}
+
+function display_history_json($database, $user, $form_id, $machines=array(), $fields = array()) {
+  header('Content-type: application/json');
+  echo "{}";
+}
+
+function display_history_plot($database, $user, $form_id) {
+  //displays plot for a particular form.
+  $formObject = $database->queryFirstRow("SELECT * FROM `forms` WHERE `id` = ".intval($form_id)." LIMIT 1");
+  if (!$formObject) {
+    echo "The form ID you provided was invalid. Please try again.
+";
+  } else {
+    $formFields = $database->stdQuery("SELECT `id`, `name` FROM `form_fields`
+                                        WHERE `form_id` = ".intval($form_id));
+    $machines = $database->stdQuery("SELECT `id`, `name` FROM `machines`
+                                        WHERE `machine_type_id` = ".intval($formObject['machine_type_id']));
+    echo "<div id='vis'></div>
+  <form action='#'>
+    <input type='hidden' id='form_id' name='form_id' value='".intval($form_id)."' />
+    <div class='row-fluid'>
+      <div class='span4'>
+        <div class='row-fluid'><h3 class='span12' style='text-align:center;'>Machines</h3></div>
+        <div class='row-fluid'>
+          <select multiple='multiple' id='machines' class='span12' size='10' name='machines[]'>
+";
+    while ($machine = mysqli_fetch_assoc($machines)) {
+      echo "           <option value='".intval($machine['id'])."'>".escape_output($machine['name'])."</option>
+";
+    }
+    echo "         </select>
+        </div>
+      </div>
+      <div class='span4'>
+        <div class='row-fluid'><h3 class='span12' style='text-align:center;'>Fields</h3></div>
+        <div class='row-fluid'>
+          <select multiple='multiple' id='form_fields' class='span12' size='10' name='form_fields[]'>
+";
+    while ($field = mysqli_fetch_assoc($formFields)) {
+      echo "            <option value='".intval($field['id'])."'>".escape_output($field['name'])."</option>
+";
+    }
+    echo "          </select>
+        </div>
+      </div>
+      <div class='span4'>
+        <div class='row-fluid'><h3 class='span12' style='text-align:center;'>Time Range</h3></div>
+        <div class='row-fluid'>
+          <div class='span12' style='text-align:center;'>(Coming soon)</div>
+        </div>
+      </div>
+    </div>
+    <div class='form-actions'>
+      <a class='btn btn-xlarge btn-primary' href='#' onClick='redrawLargeD3Plot();'>Redraw Plot</a>
+    </div>
+  </form>
+";
+  }
 }
 
 function display_footer() {

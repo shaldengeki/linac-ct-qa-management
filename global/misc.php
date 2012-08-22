@@ -11,13 +11,13 @@ function joinPaths() {
     return join(DIRECTORY_SEPARATOR, $paths);
 }
 
-function getNormalizedFILES() { 
-    $newfiles = array(); 
-    foreach($_FILES as $fieldname => $fieldvalue) 
-        foreach($fieldvalue as $paramname => $paramvalue) 
-            foreach((array)$paramvalue as $index => $value) 
-                $newfiles[$fieldname][$index][$paramname] = $value; 
-    return $newfiles; 
+function getNormalizedFILES() {
+    $newfiles = array();
+    foreach($_FILES as $fieldname => $fieldvalue)
+        foreach($fieldvalue as $paramname => $paramvalue)
+            foreach((array)$paramvalue as $index => $value)
+                $newfiles[$fieldname][$index][$paramname] = $value;
+    return $newfiles;
 }
 
 function get_numeric($val) { 
@@ -71,7 +71,6 @@ function stream_large_file($filename, $mimeType='text/plain; charset="UTF-8"', $
 }
 
 function udate($format, $utimestamp = null) {
-  
   if (is_null($utimestamp)) {
     $utimestamp = microtime(true);
   }
