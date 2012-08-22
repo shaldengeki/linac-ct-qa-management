@@ -6,7 +6,7 @@ if (!$user->loggedIn($database)) {
 
 switch($_REQUEST['action']) {
   case 'json':
-    display_history_json($database, $user, $_REQUEST['form_id']);
+    display_history_json($database, $user, explode(",", $_REQUEST['form_fields']), explode(",", $_REQUEST['machines']));
     exit;
     break;
   

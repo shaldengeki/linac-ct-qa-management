@@ -16,7 +16,10 @@ body {
 }
 path {
   fill: none;
-  stroke: maroon;
+}
+
+#vis {
+  text-align: center;
 }
 
 /* css for forms. */

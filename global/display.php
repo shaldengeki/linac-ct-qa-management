@@ -943,9 +943,35 @@ function display_backup_form($database) {
 ";
 }
 
-function display_history_json($database, $user, $form_id, $machines=array(), $fields = array()) {
+function display_history_json($database, $user, $fields = array(), $machines=array()) {
   header('Content-type: application/json');
-  echo "{}";
+  $return_array = array();
+  
+  if (!$user->loggedIn($database)) {
+    $return_array['error'] = "You must be logged in to view history data.";
+  } elseif (!is_array($fields) || !is_array($machines)) {
+    $return_array['error'] = "Please provide a valid list of fields and machines.";  
+  } else {
+    foreach ($fields as $field) {
+      foreach ($machines as $machine) {
+        $line_array = array();
+        $values = $database->stdQuery("SELECT `form_field_id`, `form_entries`.`machine_id`, `form_entries`.`qa_month`, `form_entries`.`qa_year`, `value` FROM `form_values`
+                                    LEFT OUTER JOIN `form_entries` ON `form_entry_id` = `form_entries`.`id`
+                                    WHERE `form_field_id` = ".intval($field)." && `machine_id` = ".intval($machine)."
+                                    ORDER BY `qa_year` ASC, `qa_month` ASC");
+        while ($value = mysqli_fetch_assoc($values)) {
+          $line_array[] = array('x' => intval($value['qa_month'])."/".intval($value['qa_year']),
+                                  'y' => doubleval($value['value']),
+                                  'machine' => intval($value['machine_id']),
+                                  'field' => intval($value['form_field_id']));
+        }
+        if (count($line_array) > 1) {
+          $return_array[] = $line_array;
+        }
+      }
+    }
+  }
+  echo json_encode($return_array);
 }
 
 function display_history_plot($database, $user, $form_id) {
@@ -995,7 +1021,7 @@ function display_history_plot($database, $user, $form_id) {
       </div>
     </div>
     <div class='form-actions'>
-      <a class='btn btn-xlarge btn-primary' href='#' onClick='redrawLargeD3Plot();'>Redraw Plot</a>
+      <a class='btn btn-xlarge btn-primary' href='#' onClick='drawLargeD3Plot();'>Redraw Plot</a>
     </div>
   </form>
 ";
