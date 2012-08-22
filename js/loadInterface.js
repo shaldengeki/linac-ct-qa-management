@@ -210,16 +210,18 @@ function drawLargeD3Plot() {
         .attr("stroke-width", 2)
         .attr("d", line);
     
+    circleData = [];
     for (i = 0; i < json.length; i++) {
-      vis.selectAll("circle.line")
-        .data(json[i])
-        .enter().append("svg:circle")
-          .attr("class", "line")
-          .attr("d", circle)
-          .attr("cx", function(d) { return x(getDate(d)); })
-          .attr("cy", function(d) { return y(d.y); })
-          .attr("r", 3.5);
+      circleData.push.apply(circleData, json[i])
     }
+    vis.selectAll("circle.line")
+      .data(circleData)
+      .enter().append("svg:circle")
+        .attr("class", "line")
+        .attr("d", circle)
+        .attr("cx", function(d) { return x(getDate(d)); })
+        .attr("cy", function(d) { return y(d.y); })
+        .attr("r", 3.5);
   });
 }
 
