@@ -149,7 +149,7 @@ echo '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 function display_login_form() {
   echo '<form accept-charset="UTF-8" action="/login.php" method="post">
   <label for="Email">Email</label>
-  <input id="username" name="username" size="30" type="text" />
+  <input id="username" name="username" size="30" type="email" />
   <label for="password">Password</label>
   <input id="password" name="password" size="30" type="password" />
   <input class="btn btn-small btn-primary" name="commit" type="submit" value="Sign in" />
