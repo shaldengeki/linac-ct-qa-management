@@ -221,7 +221,7 @@ function drawLargeD3Plot() {
         .attr("d", circle)
         .attr("cx", function(d) { return x(getDate(d)); })
         .attr("cy", function(d) { return y(d.y); })
-        .attr("r", 3.5);
+        .attr("r", 2.5);
   });
 }
 

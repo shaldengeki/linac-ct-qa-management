@@ -982,9 +982,11 @@ function display_history_plot($database, $user, $form_id) {
 ";
   } else {
     $formFields = $database->stdQuery("SELECT `id`, `name` FROM `form_fields`
-                                        WHERE `form_id` = ".intval($form_id));
+                                        WHERE `form_id` = ".intval($form_id)."
+                                        ORDER BY `name` ASC");
     $machines = $database->stdQuery("SELECT `id`, `name` FROM `machines`
-                                        WHERE `machine_type_id` = ".intval($formObject['machine_type_id']));
+                                        WHERE `machine_type_id` = ".intval($formObject['machine_type_id'])."
+                                        ORDER BY `name` ASC");
     echo "<div id='vis'></div>
   <form action='#'>
     <input type='hidden' id='form_id' name='form_id' value='".intval($form_id)."' />
