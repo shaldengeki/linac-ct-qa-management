@@ -15,7 +15,7 @@ start_html($database, $user, "UCMC Radiation Oncology QA", "", $_REQUEST['status
     <li><s>Linac image upload</s></li>
     <li><s>CT form entry submission</s></li>
     <li><s>CT form entry history</s></li>
-    <li>CT image upload</li>
+    <li><s>CT image upload</s></li>
     <li><s>Backups</s></li>
     <li><s>Revise forms for TrueBeam</s></li>
     <li><s>Enter TrueBeam2 data</s></li>
@@ -24,6 +24,11 @@ start_html($database, $user, "UCMC Radiation Oncology QA", "", $_REQUEST['status
     <li>Review TrueBeam1 data</li>
     <li><s>User creation and modification</s></li>
     <li>Large-graph view</li>
+    <li>Imaging fields</li>
+    <li><s>Entry approval/review</s></li>
+    <li>Red input boxes</li>
+    <li>Python image analysis</li>
+    <li>Print to PDF</li>
   </ol>
 </div>
 <?php

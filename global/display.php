@@ -38,7 +38,7 @@ echo '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 <head>
 	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>'.escape_output($title).($subtitle != "" ? " - ".$subtitle : "").'</title>
+	<title>'.escape_output($title).($subtitle != "" ? " - ".escape_output($subtitle) : "").'</title>
 	<link rel="shortcut icon" href="/favicon.ico" />
 	<link rel="stylesheet" href="css/bootstrap.min.css" type="text/css" />
 	<link rel="stylesheet" href="css/bootstrap-responsive.min.css" type="text/css" />
@@ -61,7 +61,7 @@ echo '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 	<script type="text/javascript" language="javascript" src="js/loadInterface.js"></script>
 </head>
 <body>
-  <div class="navbar navbar-fixed-top">
+  <div class="navbar navbar-inverse navbar-fixed-top">
     <div class="navbar-inner">
       <div class="container-fluid">
         <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
@@ -87,6 +87,7 @@ echo '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
                   <li><a href="graph.php?action=show&form_id='.intval($form['id']).'">Plot history</a></li>
                 </ul>
               </li>
+              <li class="divider-vertical"></li>
 ';
     }
   }
@@ -105,16 +106,19 @@ echo '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
                   <li><a href="backup.php">Backup</a></li>
                 </ul>
               </li>
+              <li class="divider-vertical"></li>
 ';
   }
   echo '          </ul>
           <ul class="nav pull-right">
+            <li class="divider-vertical"></li>
             <li class="dropdown">
 ';
   if ($user->loggedIn($database)) {
-    echo '              <a href="#" class="dropdown-toggle" data-toggle="dropdown">'.escape_output($user->name).'<b class="caret"></b></a>
+    echo '              <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="icon-user icon-white"></i>'.escape_output($user->name).'<b class="caret"></b></a>
               <ul class="dropdown-menu">
                 <a href="/user.php?action=show&id='.intval($user->id).'">Profile</a>
+                <a href="/user.php?action=edit&id='.intval($user->id).'">User Settings</a>
                 <a href="/logout.php">Sign out</a>
               </ul>
 ';
@@ -124,9 +128,6 @@ echo '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 ';
     display_login_form();
     echo '              </ul>
-            </li>
-            <li>
-              <a href="register.php">Register</a>
 ';
   }
   echo '            </li>
@@ -147,7 +148,7 @@ echo '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 }
 
 function display_login_form() {
-  echo '<form accept-charset="UTF-8" action="/login.php" method="post">
+  echo '<form id="login_form" accept-charset="UTF-8" action="/login.php" method="post">
   <label for="Email">Email</label>
   <input id="username" name="username" size="30" type="email" />
   <label for="password">Password</label>
@@ -172,6 +173,15 @@ echo "</select>
 ";
   }
 echo "</select>
+";
+}
+
+function display_ok_notok_dropdown($select_id="ok_notok", $selected=0) {
+  echo "<select id='".escape_output($select_id)."' name='".escape_output($select_id)."'>
+                    <option value=''".(($selected == 'NULL' || $selected == '') ? " selected='selected'" : "")."></option>
+                    <option value=1".((intval($selected) == 1) ? " selected='selected'" : "").">OK</option>
+                    <option value=0".((intval($selected) == 0) ? " selected='selected'" : "").">NOT OK</option>
+</select>
 ";
 }
 
@@ -626,11 +636,12 @@ function display_form_entries($database, $user, $form_id=false) {
   echo "<table class='table table-striped table-bordered dataTable'>
   <thead>
     <tr>
-      <th>Form</th>
       <th>Machine</th>
       <th>User</th>
       <th>QA Month</th>
       <th>Submitted on</th>
+      <th>Approved By</th>
+      <th>Approved On</th>
       <th>Comments</th>
       <th></th>
       <th></th>
@@ -643,14 +654,24 @@ function display_form_entries($database, $user, $form_id=false) {
   } else {
     $form_id = "`form_entries`.`form_id`";
   }
-  $form_entries = $database->stdQuery("SELECT `form_entries`.`id`, `form_entries`.`form_id`, `forms`.`name` AS `form_name`, `form_entries`.`machine_id`, `machines`.`name` AS `machine_name`, `form_entries`.`user_id`, `users`.`name` AS `user_name`, `created_at`, `qa_month`, `qa_year`, `comments` FROM `form_entries` LEFT OUTER JOIN `forms` ON `forms`.`id` = `form_entries`.`form_id` LEFT OUTER JOIN `machines` ON `machines`.`id` = `form_entries`.`machine_id` LEFT OUTER JOIN `users` ON `users`.`id` = `form_entries`.`user_id` WHERE `form_entries`.`form_id` = ".$form_id." ORDER BY `id` ASC");
+  $form_entries = $database->stdQuery("SELECT `form_entries`.`id`, `form_entries`.`machine_id`, `machines`.`name` AS `machine_name`, `form_entries`.`user_id`, `users`.`name` AS `user_name`, `created_at`, `qa_month`, `qa_year`, `approved_on`, `approved_user_id`, `approved_user`.`name` AS `approved_user_name`, `comments` FROM `form_entries` LEFT OUTER JOIN `forms` ON `forms`.`id` = `form_entries`.`form_id` LEFT OUTER JOIN `machines` ON `machines`.`id` = `form_entries`.`machine_id` LEFT OUTER JOIN `users` ON `users`.`id` = `form_entries`.`user_id` LEFT OUTER JOIN `users` AS `approved_user` ON `approved_user`.`id` = `form_entries`.`approved_user_id` WHERE `form_entries`.`form_id` = ".$form_id." ORDER BY `id` ASC");
   while ($form_entry = mysqli_fetch_assoc($form_entries)) {
-    echo "    <tr>
-      <td><a href='form.php?action=show&id=".intval($form_entry['form_id'])."'>".escape_output($form_entry['form_name'])."</a></td>
+    if ($form_entry['approved_on'] == '') {
+      $row_class = " class='error'";
+      $approval_user = "Unapproved";
+      $approval_date = "";
+    } else {
+      $row_class = "";
+      $approval_user = "<a href='user.php?action=show&id=".intval($form_entry['approved_user_id'])."'>".escape_output($form_entry['approved_user_name'])."</a>";
+      $approval_date = escape_output(date('n/j/Y', strtotime($form_entry['approved_on'])));
+    }
+    echo "    <tr".$row_class.">
       <td><a href='machine.php?action=show&id=".intval($form_entry['machine_id'])."'>".escape_output($form_entry['machine_name'])."</a></td>
       <td><a href='user.php?action=show&id=".intval($form_entry['user_id'])."'>".escape_output($form_entry['user_name'])."</a></td>
       <td>".intval($form_entry['qa_year'])."/".((intval($form_entry['qa_month']) >= 10) ? "" : "0").intval($form_entry['qa_month'])."</td>
       <td>".escape_output(date('n/j/Y', strtotime($form_entry['created_at'])))."</td>
+      <td>".$approval_user."</td>
+      <td>".$approval_date."</td>
       <td>".escape_output($form_entry['comments'])."</td>
       <td><a href='form_entry.php?action=edit&id=".intval($form_entry['id'])."'>Edit</a></td>
       <td></td>
@@ -713,6 +734,7 @@ function display_users($database, $user) {
       <th>Role</th>
       <th>Facility</th>
       <th></th>
+      <th></th>
     </tr>
   </thead>
   <tbody>
@@ -722,13 +744,14 @@ function display_users($database, $user) {
   } else {
     $users = $database->stdQuery("SELECT `users`.`id`, `users`.`name`, `users`.`email`, `users`.`userlevel`, `facilities`.`name` AS `facility_name` FROM `users` LEFT OUTER JOIN `facilities` ON `users`.`facility_id` = `facilities`.`id` WHERE `users`.`facility_id` = ".intval($user->facility_id)." ORDER BY `users`.`name` ASC");
   }
-  while ($user = mysqli_fetch_assoc($users)) {
+  while ($thisUser = mysqli_fetch_assoc($users)) {
     echo "    <tr>
-      <td><a href='user.php?action=show&id=".intval($user['id'])."'>".escape_output($user['name'])."</a></td>
-      <td>".escape_output($user['email'])."</td>
-      <td>".escape_output(convert_userlevel_to_text($user['userlevel']))."</td>
-      <td>".escape_output($user['facility_name'])."</td>
-      <td><a href='user.php?action=edit&id=".intval($user['id'])."'>Edit</a></td>
+      <td><a href='user.php?action=show&id=".intval($thisUser['id'])."'>".escape_output($thisUser['name'])."</a></td>
+      <td>".escape_output($thisUser['email'])."</td>
+      <td>".escape_output(convert_userlevel_to_text($thisUser['userlevel']))."</td>
+      <td>".escape_output($thisUser['facility_name'])."</td>
+      <td>"; if ($user->isAdmin($database)) { echo "<a href='user.php?action=edit&id=".intval($thisUser['id'])."'>Edit</a>"; } echo "</td>
+      <td>"; if ($user->isAdmin($database)) { echo "<a href='user.php?action=delete&id=".intval($thisUser['id'])."'>Delete</a>"; } echo "</td>
     </tr>
 ";
   }
@@ -740,7 +763,7 @@ function display_users($database, $user) {
 function display_userlevel_dropdown($database, $select_id="userlevel", $selected=0) {
   echo "<select id='".escape_output($select_id)."' name='".escape_output($select_id)."'>
 ";
-  for ($userlevel = 0; $userlevel <= 2; $userlevel++) {
+  for ($userlevel = 0; $userlevel <= 3; $userlevel++) {
     echo "  <option value='".intval($userlevel)."'".(($selected == intval($userlevel)) ? "selected='selected'" : "").">".escape_output(convert_userlevel_to_text($userlevel))."</option>
 ";
   }
@@ -757,6 +780,9 @@ function display_user_edit_form($database, $user, $id=false) {
       $userObject = $database->queryFirstRow("SELECT * FROM `users` WHERE `id` = ".intval($id)." LIMIT 1");
       if (!$userObject) {
         $id = false;
+      } elseif (intval($userObject['facility_id']) != $user->facility_id) {
+        echo "You may only modify users under your own facility.";
+        return;
       }
     }    
     echo "<form action='user.php".(($id === false) ? "" : "?id=".intval($id))."' method='POST' class='form-horizontal'>
@@ -799,7 +825,7 @@ function display_user_edit_form($database, $user, $id=false) {
       <label class='control-label' for='user[userlevel]'>Role</label>
       <div class='controls'>
 ";
-    display_userlevel_dropdown($database, "user[userlevel]", ($id === false) ? 0 : $userObject['userlevel']);
+    display_userlevel_dropdown($database, "user[userlevel]", ($id === false) ? 0 : intval($userObject['userlevel']));
     echo "      </div>
     </div>
 ";

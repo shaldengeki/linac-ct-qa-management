@@ -37,6 +37,8 @@ function convert_userlevel_to_text($userlevel) {
       return 'Normal';
       break;
     case 2:
+      return 'Physicist';
+    case 3:
       return 'Administrator';
     default:
       return 'Unknown';
@@ -47,6 +49,7 @@ function stream_large_file($filename, $mimeType='text/plain; charset="UTF-8"', $
   // Read a file and display its content chunk by chunk
   header('Content-Type: '.$mimeType );
   header('Content-Disposition: attachment; filename='.escape_output(basename($filename)));
+  header('Content-Length: '.filesize($filename));
   $buffer = '';
   $cnt =0;
   // $handle = fopen($filename, 'rb');

@@ -7,6 +7,12 @@ if (!$user->loggedIn($database)) {
 if (isset($_POST['form_entry'])) {
   $createFormEntry = $database->create_or_update_form_entry($user, $_POST['form_entry']);
   redirect_to($createFormEntry['location'], $createFormEntry['status']);
+} elseif ($_REQUEST['action'] == 'approve') {
+  $approveFormEntry = $database->approve_form_entry($user, intval($_REQUEST['id']), 1);
+  redirect_to($approveFormEntry['location'], $approveFormEntry['status']);
+} elseif ($_REQUEST['action'] == 'unapprove') {
+  $approveFormEntry = $database->approve_form_entry($user, intval($_REQUEST['id']), 0);
+  redirect_to($approveFormEntry['location'], $approveFormEntry['status']);
 }
 
 start_html($database, $user, "UCMC Radiation Oncology QA", "Manage Form Entries", $_REQUEST['status']);

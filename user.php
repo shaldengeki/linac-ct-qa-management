@@ -7,6 +7,9 @@ if (!$user->loggedIn($database)) {
 if (isset($_POST['user'])) {
   $createUser = $database->create_or_update_user($user, $_POST['user']);
   redirect_to($createUser['location'], $createUser['status']);
+} elseif ($_REQUEST['action'] == 'delete' && isset($_REQUEST['id'])) {
+  $deleteUser = $database->delete_user($user, intval($_REQUEST['id']));
+  redirect_to($deleteUser['location'], $deleteUser['status']);
 }
 
 start_html($database, $user, "UCMC Radiation Oncology QA", "Manage Users", $_REQUEST['status']);

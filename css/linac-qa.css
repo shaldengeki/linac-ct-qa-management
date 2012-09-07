@@ -38,3 +38,7 @@ path {
 table > tbody > tr > td.control-group > input[class*="span"] {
   display: inline;
 }
+
+#login_form {
+  margin: 5px 8px;
+}

@@ -1,12 +1,10 @@
 <?php
 
 class User {
-
   public $id;
   public $name;
   public $userlevel;
   public $facility_id;
-  
   public function __construct($inputArray) {
     foreach ($inputArray as $key=>$value) {
       $this->{$key}= $value;
@@ -52,7 +50,6 @@ class User {
     $this->userlevel = intval($findUsername['userlevel']);
     return array("location" => "main.php", "status" => "Successfully logged in.");
   }
-  
   public function register($database, $name, $email, $password, $password_confirmation, $facility_id) {
     //registration is closed to all non-admin users.
     if (!$this->loggedIn($database) || !$this->isAdmin($database)) {
@@ -92,18 +89,26 @@ class User {
     }
     return $returnArray;
   }
-  
+  public function isPhysicist($database) {
+    if (!$this->loggedIn($database)) {
+      return false;
+    }
+    $checkUserlevel = $database->queryFirstValue("SELECT `userlevel` FROM `users` WHERE `id` = ".intval($this->id));
+    if (!$checkUserlevel or intval($checkUserlevel) != 2) {
+      return false;
+    }
+    return true;
+  }
   public function isAdmin($database) {
     if (!$this->loggedIn($database)) {
       return false;
     }
     $checkUserlevel = $database->queryFirstValue("SELECT `userlevel` FROM `users` WHERE `id` = ".intval($this->id));
-    if (!$checkUserlevel or intval($checkUserlevel) < 2) {
+    if (!$checkUserlevel or intval($checkUserlevel) < 3) {
       return false;
     }
     return true;
   }
-  
   public function facility($database) {
     if (!$this->facility_id) {
       return false;

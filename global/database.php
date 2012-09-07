@@ -210,7 +210,7 @@ class DbConn extends mysqli {
   }
   public function create_or_update_form_entry($user, $form_entry) {
     if (!$user->loggedIn($this)) {
-      return array('location' => 'index.php', 'status' => 'You are not allowed to modify or create forms without first logging in.');
+      return array('location' => 'index.php', 'status' => 'You are not allowed to modify or create form entries without first logging in.');
     }
     if (!isset($form_entry['machine_id']) || !isset($form_entry['form_id']) || !isset($form_entry['created_at']) || intval($form_entry['machine_id']) == 0 || intval($form_entry['form_id']) == 0 || intval($form_entry['created_at']) == 0) {
       return array('location' => 'form_entry.php'.((isset($form_entry['id'])) ? "?id=".intval($form_entry['id']) : ""), 'status' => 'Please specify a machine ID, form ID, and recording time and try again.');
@@ -221,14 +221,20 @@ class DbConn extends mysqli {
       } else {
         $get_form_entry_id = intval($this->queryFirstValue("SELECT `id` FROM `form_entries` WHERE `id` = ".intval($form_entry['id'])." LIMIT 1"));
         if ($get_form_entry_id) {
-          // updating a form entry.
+          // updating a form entry. check to ensure that this user has permissions to update this form.
           $checkUser = $this->queryFirstValue("SELECT `user_id` FROM `form_entries` WHERE `id` = ".intval($get_form_entry_id)." && `form_id` = ".intval($form_entry['form_id']));
           if (!$checkUser) {
-            return array('location' => 'form_entry.php'.((isset($get_form_entry_id)) ? "?id=".intval($get_form_entry_id) : ""), 'status' => 'Cannot find that form entry to update.');          
+            return array('location' => 'form_entry.php?action=edit&id='.intval($get_form_entry_id), 'status' => 'Cannot find that form entry to update.');          
           }
-          if ($user->id != intval($checkUser) && !$user->isAdmin($this)) {
-            return array('location' => 'form_entry.php'.((isset($get_form_entry_id)) ? "?id=".intval($get_form_entry_id) : ""), 'status' => "You don't have permissions to update that form entry.");
+          if ($user->id != intval($checkUser) && !$user->isPhysicist($this) && !$user->isAdmin($this)) {
+            return array('location' => 'form_entry.php?action=edit&id='.intval($get_form_entry_id), 'status' => "You don't have permissions to update that form entry.");
           }
+          // check to make sure this form entry hasn't already been approved.
+          $checkApproval = $this->queryFirstValue("SELECT `approved_on` FROM `form_entries` WHERE `id` = ".intval($get_form_entry_id)." LIMIT 1");
+          if ($checkApproval != '') {
+            return array('location' => 'form_entry.php?action=edit&id='.intval($get_form_entry_id), 'status' => "This form entry has already been approved and must be un-approved to make changes.");
+          }
+          //otherwise, update this form entry.
           foreach ($form_entry['form_values'] as $name=>$value) {
             if ($value == 'NULL') {
               continue;
@@ -328,6 +334,37 @@ class DbConn extends mysqli {
       }
     }
   }
+  public function approve_form_entry($user, $form_entry_id, $direction) {
+    if (!$user->isPhysicist($this)) {
+      return array('location' => 'main.php', 'status' => 'You are not allowed to approve form entries.');
+    }
+    //check to ensure that this form entry exists and is part of this physicist's facility.
+    $form_entry = $this->queryFirstRow("SELECT * FROM `form_entries` WHERE `id` = ".intval($form_entry_id)." LIMIT 1");
+    if (!$form_entry) {
+      return array('location' => 'main.php', 'status' => 'The specified form entry does not exist. Please try again.');    
+    }
+    $machine = $this->queryFirstRow("SELECT * FROM `machines` WHERE `id` = ".intval($form_entry['machine_id'])." LIMIT 1");
+    if (!$machine) {
+      return array('location' => 'main.php', 'status' => 'The specified form entry does not belong to a valid machine. Please notify your facility adminstrator.');
+    } elseif (intval($machine['facility_id']) != $user->facility_id) {
+      return array('location' => 'main.php', 'status' => 'You cannot approve a form entry from another facility.');
+    }
+    
+    //otherwise, go ahead and perform (un)approve action on this entry.
+    switch($direction) {
+      case 1:
+        $modifyEntry = $this->stdQuery("UPDATE `form_entries` SET `approved_on` = ".$this->quoteSmart(date('Y-m-d H:i:s')).", `approved_user_id` = ".intval($user->id)." WHERE `id` = ".intval($form_entry['id'])." LIMIT 1");
+        break;
+      case 0:
+      default:
+        $modifyEntry = $this->stdQuery("UPDATE `form_entries` SET `approved_on` = NULL, `approved_user_id` = NULL WHERE `id` = ".intval($form_entry['id'])." LIMIT 1");
+        break;
+    }
+    if (!$modifyEntry) {
+      return array('location' => 'form_entry.php?action=edit&id='.intval($form_entry['id']), 'status' => 'An error occurred while approving this entry. Please try again.');      
+    }
+    return array('location' => 'form_entry.php?action=edit&id='.intval($form_entry['id']), 'status' => 'Successfully modified form entry.');
+  }
   public function create_or_update_user($user, $user_entry) {
     //check to see if we have permissions to insert/update this user.
     if (!$user->loggedIn($this)) {
@@ -339,7 +376,15 @@ class DbConn extends mysqli {
     if (isset($user_entry['id']) && intval($user_entry['id']) != $user->id && !$user->isAdmin($this)) {
       return array('location' => 'user.php', 'status' => 'You are not allowed to modify another user.');
     }
-    
+    if (isset($user_entry['id'])) {
+      //get this user object in the db.
+      $userObject = $this->queryFirstRow("SELECT * FROM `users` WHERE `id` = ".intval($user_entry['id'])." LIMIT 1");
+      if (!$userObject) {
+        return array('location' => 'user.php', 'status' => 'The requested user was not found.');
+      } elseif (intval($userObject['facility_id']) != $user->facility_id) {
+        return array('location' => 'user.php', 'status' => 'You may only modify users from your own facility.');
+      }
+    }
     //if changing userlevel, check to ensure that they are setting it equal to or less than their current userlevel.
     if (isset($user_entry['userlevel']) && intval($user_entry['userlevel']) > $user->userlevel) {
       return array('location' => 'user.php', 'status' => 'You are not allowed to set userlevels beyond your current userlevel.');
@@ -379,6 +424,8 @@ class DbConn extends mysqli {
                                       LIMIT 1");
       if (!$updateUser) {
         return array('location' => 'user.php?action=edit&id='.intval($user_entry['id']), 'status' => "Error while updating user. Please try again.");
+      } else {
+        return array('location' => 'user.php', 'status' => 'Successfully updated user.');
       }
     } else {
       //insert this user.
@@ -389,6 +436,27 @@ class DbConn extends mysqli {
       }
     }
     return array('location' => 'user.php', 'status' => 'Successfully created user.');
+  }
+  public function delete_user($user, $user_id) {
+    // ensure that this user is an admin.
+    if (!$user->isAdmin($this)) {
+      return array('location' => 'user.php', 'status' => 'Only facility administrators are allowed to delete users.');
+    }
+    // get this user entry.
+    $userObject = $this->queryFirstRow("SELECT * FROM `users` WHERE `id` = ".intval($user_id)." LIMIT 1");
+    if (!$userObject) {
+      return array('location' => 'user.php', 'status' => 'The requested user was not found. Please try again.');
+    }
+    // ensure that this user is an admin of the facility that the requested user belongs to.
+    if (intval($userObject['facility_id']) != $user->facility_id) {
+      return array('location' => 'user.php', 'status' => 'You may only delete users from your administrated facility.');
+    }
+    // otherwise, delete this user.
+    $deleteUser = $this->stdQuery("DELETE FROM `users` WHERE `id` = ".intval($userObject['id'])." LIMIT 1");
+    if (!$deleteUser) {
+      return array('location' => 'user.php', 'status' => 'An error occurred when deleting this user. Please try again.');
+    }
+    return array('location' => 'user.php', 'status' => 'Successfully deleted user.');
   }
   public function generate_backup($user, $backup) {
     //generates a backup according to submitted parameters.
@@ -415,8 +483,9 @@ class DbConn extends mysqli {
           $output_files[] = $backup_file_name;
           break;
         case 'files':
-          $backup_file_name = 'backup-files-'.$timestamp.'.tar.gz';
-          exec('cd '.APP_ROOT.' && tar cf ./backups/'.$backup_file_name.' --exclude "backups/*.tar.gz" *', $file_output, $file_return);
+          $backup_file_name = 'backup-files-'.$timestamp.'.zip';
+          $backup_file_command = 'cd '.APP_ROOT.' && zip -q --compression-method bzip2 -9 -x backups/\* -r backups/'.$backup_file_name.' .';
+          exec($backup_file_command, $file_output, $file_return);
           if (intval($file_return) != 0) {
             return array('location' => 'backup.php', 'status' => 'There was an error (code '.intval($file_return).') while creating a backup of the files. Please try again.');
           }
@@ -430,8 +499,8 @@ class DbConn extends mysqli {
       return array('location' => 'backup.php', 'status' => 'Nothing was successfully backed up. Please try again.');      
     }
     //create a single backup tarball.
-    $backup_file_name = 'backup-'.$timestamp.'.tar.gz';
-    $tar_command = 'cd '.APP_ROOT.'/backups/ && tar cf '.$backup_file_name.' '.implode(' ', $output_files);
+    $backup_file_name = 'backup-'.$timestamp.'.zip';
+    $tar_command = 'cd '.APP_ROOT.'/backups/ && zip -q --compression-method bzip2 '.$backup_file_name.' '.implode(' ', $output_files);
     $cleanup_command = 'cd '.APP_ROOT.'/backups/ && rm '.implode(' ', $output_files);
     exec($tar_command, $tar_output, $tar_return);
     if (intval($tar_return) != 0) {
