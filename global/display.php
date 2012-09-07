@@ -154,7 +154,7 @@ echo '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 ';
   if ($status != "") {
     echo '<div class="alert alert-'.escape_output($statusClass).'">
-  <button class="close" data-dismiss="'.escape_output($statusClass).'" href="#">×</button>
+  <button class="close" data-dismiss="alert" href="#">×</button>
   '.escape_output($status).'
 </div>
 ';

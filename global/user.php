@@ -26,18 +26,18 @@ class User {
     // rate-limit requests.
     $numFailedRequests = $database->queryCount("SELECT COUNT(*) FROM `failed_logins` WHERE `ip` = ".$database->quoteSmart($_SERVER['REMOTE_ADDR'])." AND `date` > NOW() - INTERVAL 1 HOUR");
     if ($numFailedRequests > 5) {
-      return array("location" => "index.php", "status" => "You have had too many unsuccessful login attempts. Please wait awhile and try again.");
+      return array("location" => "index.php", "status" => "You have had too many unsuccessful login attempts. Please wait awhile and try again.", 'class' => 'error');
     }
   
     $bcrypt = new Bcrypt();
     $findUsername = $database->queryFirstRow("SELECT `id`, `name`, `facility_id`, `userlevel`, `password_hash` FROM `users` WHERE `email` = ".$database->quoteSmart($username)." LIMIT 1");
     if (!$findUsername) {
       $database->log_failed_login($username, $password);
-      return array("location" => "index.php", "status" => "Could not log in with the supplied credentials.");
+      return array("location" => "index.php", "status" => "Could not log in with the supplied credentials.", 'class' => 'error');
     }
     if (!$bcrypt->verify($password, $findUsername['password_hash'])) {
       $database->log_failed_login($username, $password);
-      return array("location" => "index.php", "status" => "Could not log in with the supplied credentials.");
+      return array("location" => "index.php", "status" => "Could not log in with the supplied credentials.", 'class' => 'error');
     }
     
     //update last IP address.
@@ -49,7 +49,7 @@ class User {
     $this->id = intval($findUsername['id']);
     $this->facility_id = intval($findUsername['facility_id']);
     $this->userlevel = intval($findUsername['userlevel']);
-    return array("location" => "main.php", "status" => "Successfully logged in.");
+    return array("location" => "main.php", "status" => "Successfully logged in.", 'class' => 'success');
   }
   public function register($database, $name, $email, $password, $password_confirmation, $facility_id) {
     //registration is closed to all non-admin users.
@@ -73,15 +73,15 @@ class User {
             //check if this facility exists.
             $checkFacilityExists = intval($database->queryCount("SELECT COUNT(*) FROM `facilities` WHERE `id` = ".intval($facility_id)));
             if ($checkFacilityExists < 1) {
-              $returnArray = array("location" => "register.php", "status" => "That facility does not exist. Please try again.");
+              $returnArray = array("location" => "register.php", "status" => "That facility does not exist. Please try again.", 'class' => 'error');
             } else {
               //register this user.
               $bcrypt = new Bcrypt();
               $registerUser = $database->stdQuery("INSERT INTO `users` SET `name` = ".$database->quoteSmart($name).", `email` = ".$database->quoteSmart($email).", `password_hash` = ".$database->quoteSmart($bcrypt->hash($password)).", `userlevel` = 1, `last_ip` = ".$database->quoteSmart($_SERVER['REMOTE_ADDR']).", `facility_id` = ".intval($facility_id));
               if (!$registerUser) {
-                $returnArray = array("location" => "register.php", "status" => "Database errors were encountered during registration. Please try again later.");
+                $returnArray = array("location" => "register.php", "status" => "Database errors were encountered during registration. Please try again later.", 'class' => 'error');
               } else {
-                $returnArray = array("location" => "register.php", "status" => "Registration successful. ".escape_output($name)." can now log in.");
+                $returnArray = array("location" => "register.php", "status" => "Registration successful. ".escape_output($name)." can now log in.", 'class' => 'success');
               }
             }
           }
