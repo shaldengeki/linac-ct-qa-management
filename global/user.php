@@ -5,9 +5,10 @@ class User {
   public $name;
   public $userlevel;
   public $facility_id;
+  public $email;
   public function __construct($inputArray) {
     foreach ($inputArray as $key=>$value) {
-      $this->{$key}= $value;
+      @$this->{$key}= $value;
     }
   }
   public function loggedIn($database) {

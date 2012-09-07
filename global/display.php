@@ -34,7 +34,7 @@ function redirect_to($location, $status="") {
   header("Location: ".$location.$status);
 }
 
-function start_html($database, $user, $title="UCMC Radiation Oncology QA", $subtitle="", $status="") {
+function start_html($database, $user, $title="UC Medicine QA", $subtitle="", $status="") {
 echo '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
         "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 	
@@ -73,7 +73,7 @@ echo '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
         </a>
-        <a href="./index.php" class="brand">UCMC Equipment QA</a>
+        <a href="./index.php" class="brand">UC Medicine QA</a>
         <div class="nav-collapse">
           <ul class="nav">
 ';
@@ -853,7 +853,8 @@ function display_user_profile($database, $user, $user_id) {
       echo "You must be an administrator to view users from other facilities.
 ";
     } else {
-      $facility = $database->queryFirstValue("SELECT `name` FROM `facilities` WHERE `id` = ".intval($userObject['facility_id'])." LIMIT 1");
+      $userObject = new User($userObject);
+      $facility = $database->queryFirstValue("SELECT `name` FROM `facilities` WHERE `id` = ".intval($userObject->facility_id)." LIMIT 1");
       $form_entries = $database->stdQuery("SELECT `form_entries`.*, `forms`.`name` AS `form_name`, `machines`.`name` AS `machine_name` FROM `form_entries` 
                                             LEFT OUTER JOIN `forms` ON `forms`.`id` = `form_entries`.`form_id`
                                             LEFT OUTER JOIN `machines` ON `machines`.`id` = `form_entries`.`machine_id`
@@ -861,13 +862,41 @@ function display_user_profile($database, $user, $user_id) {
                                             ORDER BY `updated_at` DESC");
       echo "<dl class='dl-horizontal'>
     <dt>Email</dt>
-    <dd>".escape_output($userObject['email'])."</dd>
+    <dd>".escape_output($userObject->email)."</dd>
     <dt>Facility</dt>
     <dd>".escape_output($facility)."</dd>
-    <dt>Email</dt>
-    <dd>".escape_output(convert_userlevel_to_text($userObject['userlevel']))."</dd>
+    <dt>User Role</dt>
+    <dd>".escape_output(convert_userlevel_to_text($userObject->userlevel))."</dd>
   </dl>
-  <h3>Form Entries</h3>
+";
+  if (convert_userlevel_to_text($userObject->userlevel) == 'Physicist') {
+    $form_approvals = $database->stdQuery("SELECT `form_entries`.`id`, `qa_month`, `qa_year`, `machine_id`, `machines`.`name` AS `machine_name`, `user_id`, `users`.`name` AS `user_name`, `approved_on` FROM `form_entries` LEFT OUTER JOIN `machines` ON `machines`.`id` = `form_entries`.`machine_id` LEFT OUTER JOIN `users` ON `users`.`id` = `form_entries`.`user_id` WHERE `approved_user_id` = ".intval($userObject->id)." ORDER BY `approved_on` DESC");
+    echo "  <h3>Approvals</h3>
+  <table class='table table-striped table-bordered dataTable'>
+    <thead>
+      <tr>
+        <th>QA Date</th>
+        <th>Machine</th>
+        <th>Submitter</th>
+        <th>Approval Date</th>
+      </tr>
+    </thead>
+    <tbody>
+";
+    while ($approval = mysqli_fetch_assoc($form_approvals)) {
+      echo "      <tr>
+        <td><a href='form_entry.php?action=edit&id=".intval($approval['id'])."'>".escape_output($approval['qa_year']."/".$approval['qa_month'])."</a></td>
+        <td><a href='form.php?action=show&id=".intval($approval['machine_id'])."'>".escape_output($approval['machine_name'])."</a></td>
+        <td><a href='user.php?action=show&id=".intval($approval['user_id'])."'>".escape_output($approval['user_name'])."</a></td>
+        <td>".escape_output(format_mysql_timestamp($approval['approved_on']))."</td>
+      </tr>
+";
+    }
+    echo "    </tbody>
+  </table>
+";
+  }
+  echo "  <h3>Form Entries</h3>
   <table class='table table-striped table-bordered dataTable'>
     <thead>
       <tr>
@@ -887,7 +916,7 @@ function display_user_profile($database, $user, $user_id) {
       <td><a href='form.php?action=show&id=".intval($form_entry['machine_id'])."'>".escape_output($form_entry['machine_name'])."</a></td>
       <td>".escape_output($form_entry['comments'])."</td>
       <td>".escape_output($form_entry['qa_year']."/".$form_entry['qa_month'])."</td>
-      <td>".escape_output(format_mysql_timestamp($form_entry['updated_at']))."</td>
+      <td>".escape_output(format_mysql_timestamp($form_entry['created_at']))."</td>
       <td><a href='form_entry.php?action=edit&id=".intval($form_entry['id'])."'>View</a></td>
     </tr>
 ";

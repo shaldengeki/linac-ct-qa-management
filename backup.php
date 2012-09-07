@@ -26,7 +26,7 @@ switch($_REQUEST['action']) {
     stream_large_file($backup_path, 'application/x-gtar', 1024*1024, False);
     break;
   case 'create':
-    start_html($database, $user, "UCMC Radiation Oncology QA", "Generate Backup", $_REQUEST['status']);
+    start_html($database, $user, "UC Medicine QA", "Generate Backup", $_REQUEST['status']);
     echo "<h1>Generate a Backup</h1>
 ";
     display_backup_form($database);
@@ -35,7 +35,7 @@ switch($_REQUEST['action']) {
 
   default:
   case 'index':
-    start_html($database, $user, "UCMC Radiation Oncology QA", "Generate Backup", $_REQUEST['status']);
+    start_html($database, $user, "UC Medicine QA", "Generate Backup", $_REQUEST['status']);
     echo "<h1>Backups</h1>
 ";
     display_backups($database, $user);

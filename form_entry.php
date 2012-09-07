@@ -15,7 +15,7 @@ if (isset($_POST['form_entry'])) {
   redirect_to($approveFormEntry['location'], $approveFormEntry['status']);
 }
 
-start_html($database, $user, "UCMC Radiation Oncology QA", "Manage Form Entries", $_REQUEST['status']);
+start_html($database, $user, "UC Medicine QA", "Manage Form Entries", $_REQUEST['status']);
 
 switch($_REQUEST['action']) {
   case 'new':

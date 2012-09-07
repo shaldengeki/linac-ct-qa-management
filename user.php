@@ -12,7 +12,7 @@ if (isset($_POST['user'])) {
   redirect_to($deleteUser['location'], $deleteUser['status']);
 }
 
-start_html($database, $user, "UCMC Radiation Oncology QA", "Manage Users", $_REQUEST['status']);
+start_html($database, $user, "UC Medicine QA", "Manage Users", $_REQUEST['status']);
 
 switch($_REQUEST['action']) {
   case 'new':
