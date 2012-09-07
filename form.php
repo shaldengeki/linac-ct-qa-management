@@ -6,18 +6,26 @@ if (!$user->loggedIn($database)) {
 
 if (isset($_POST['form'])) {
   $createForm = $database->create_or_update_form($user, $_POST['form']);
-  redirect_to($createForm['location'], $createForm['status']);
+  redirect_to($createForm);
 }
 
-start_html($database, $user, "UC Medicine QA", "Manage Forms", $_REQUEST['status']);
+start_html($database, $user, "UC Medicine QA", "Manage Forms", $_REQUEST['status'], $_REQUEST['class']);
 
 switch($_REQUEST['action']) {
   case 'new':
+    if (!$user->isAdmin($database)) {
+      display_error("Error: Insufficient privileges", "You must be an administrator to create forms.");
+      break;
+    }
     echo "<h1>Create a form</h1>
 ";
     display_form_edit_form($database, $user);
     break;
   case 'edit':
+    if (!$user->isAdmin($database)) {
+      display_error("Error: Insufficient privileges", "You must be an administrator to modify forms.");
+      break;
+    }
     echo "<h1>Modify a form</h1>
 ";
     display_form_edit_form($database, $user, intval($_REQUEST['id']));
@@ -36,7 +44,7 @@ switch($_REQUEST['action']) {
   case 'index':
     echo "<h1>Forms</h1>
 ";
-    display_forms($database);
+    display_forms($database, $user);
     echo "<a href='form.php?action=new'>Add a new form</a><br />
 ";
     break;

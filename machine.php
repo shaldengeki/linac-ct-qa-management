@@ -5,32 +5,61 @@ if (!$user->loggedIn($database)) {
 }
 
 if (isset($_POST['machine'])) {
-  $createmachine = $database->create_or_update_machine($user, $_POST['machine']);
-  redirect_to($createmachine['location'], $createmachine['status']);
+  $createMachine = $database->create_or_update_machine($user, $_POST['machine']);
+  redirect_to($createmachine);
 }
 
-start_html($database, $user, "UC Medicine QA", "Manage Machines", $_REQUEST['status']);
+start_html($database, $user, "UC Medicine QA", "Manage Machines", $_REQUEST['status'], $_REQUEST['class']);
 
 switch($_REQUEST['action']) {
   case 'new':
+    if (!$user->isAdmin($database)) {
+      display_error("Error: Insufficient privileges", "You must be an administrator to add machines.");
+      break;
+    }
     echo "<h1>Add a machine</h1>
 ";
     display_machine_edit_form($database, $user);
     break;
   case 'edit':
+    if (!isset($_REQUEST['id']) || !is_numeric($_REQUEST['id'])) {
+      display_error("Error: Invalid machine ID", "Please check your ID and try again.");
+      break;
+    }
+    //ensure that user has sufficient privileges to modify this machine.
+    if (!$user->isAdmin($database)) {
+      display_error("Error: Insufficient privileges", "You must be an administrator to modify machines.");
+      break;
+    }
+    $facility_id = $database->queryFirstValue("SELECT `facility_id` FROM `machines` WHERE `id` = ".intval($_REQUEST['id'])." LIMIT 1");
+    if (!$facility_id) {
+      display_error("Error: Invalid machine ID", "Please check your ID and try again.");
+      break;    
+    } elseif (intval($facility_id) != $user->facility_id) {
+      display_error("Error: Insufficient privileges", "You may only modify your own facility's machines.");
+      break;
+    }
     echo "<h1>Modify a machine</h1>
 ";
     display_machine_edit_form($database, $user, intval($_REQUEST['id']));
     break;
   case 'show':
-    $machineName = $database->queryFirstValue("SELECT `name` FROM `machines` WHERE `id` = ".intval($_REQUEST['id'])." LIMIT 1");
-    if (!$machineName) {
-      echo "This machine was not found. Please select another machine and try again.";
-    } else {
-      echo "<h1>".escape_output($machineName)." - History</h1> (<a href='machine.php?action=edit&id=".intval($_REQUEST['id'])."'>edit</a>)
-";
-      display_machine_info($database, $user, intval($_REQUEST['id']));
+    if (!isset($_REQUEST['id']) || !is_numeric($_REQUEST['id'])) {
+      display_error("Error: Invalid machine ID", "Please check your ID and try again.");
+      break;
     }
+    //ensure that user has sufficient privileges to view this machine.
+    $machineObject = $database->queryFirstValue("SELECT * FROM `machines` WHERE `id` = ".intval($_REQUEST['id'])." LIMIT 1");
+    if (!$machineObject) {
+      display_error("Error: Invalid machine ID", "Please check your ID and try again.");
+      break;    
+    } elseif (intval($machineObject['facility_id']) != $user->facility_id) {
+      display_error("Error: Insufficient privileges", "You may only view your own facility's machines.");
+      break;
+    }
+    echo "<h1>".escape_output($machineObject['name'])." - History</h1> (<a href='machine.php?action=edit&id=".intval($_REQUEST['id'])."'>edit</a>)
+";
+    display_machine_info($database, $user, intval($_REQUEST['id']));
     break;
   default:
   case 'index':

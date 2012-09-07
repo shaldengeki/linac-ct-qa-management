@@ -3,7 +3,7 @@ include_once("global/includes.php");
 if (!$user->loggedIn($database)) {
   header("Location: index.php");
 }
-start_html($database, $user, "UC Medicine QA", "", $_REQUEST['status']);
+start_html($database, $user, "UC Medicine QA", "", $_REQUEST['status'], $_REQUEST['class']);
 
 ?>
 <div class="row-fluid">

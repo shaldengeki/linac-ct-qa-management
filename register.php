@@ -4,8 +4,8 @@ if (!$user->isAdmin($database)) {
   header("Location: index.php?status=Registration is closed to non-administrator users. Please contact your facility admin.");
 }
 if (isset($_POST['name']) && isset($_POST['email']) && isset($_POST['password']) && isset($_POST['password_confirmation'])) {
-  $register_user = $user->register($database, $_POST['name'], $_POST['email'], $_POST['password'], $_POST['password_confirmation'], $_POST['facility_id']);
-  redirect_to($register_user['location'], $register_user['status']);
+  $registerUser = $user->register($database, $_POST['name'], $_POST['email'], $_POST['password'], $_POST['password_confirmation'], $_POST['facility_id']);
+  redirect_to($registerUser);
 } else {
   start_html($database, $user, "UC Medicine QA", "", $_REQUEST['status']);
 ?>

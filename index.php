@@ -3,7 +3,7 @@ include_once("global/includes.php");
 if ($user->loggedIn($database)) {
   header("Location: main.php");
 }
-start_html($database, $user, "UC Medicine QA", "", $_REQUEST['status']);
+start_html($database, $user, "UC Medicine QA", "", $_REQUEST['status'], $_REQUEST['class']);
 ?>
 <div class="hero-unit">
   <h1>Welcome!</h1>

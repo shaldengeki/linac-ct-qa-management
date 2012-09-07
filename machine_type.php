@@ -6,18 +6,26 @@ if (!$user->loggedIn($database)) {
 
 if (isset($_POST['machine_type'])) {
   $createMachineType = $database->create_or_update_machine_type($user, $_POST['machine_type']);
-  redirect_to($createMachineType['location'], $createMachineType['status']);
+  redirect_to($createMachineType);
 }
 
-start_html($database, $user, "UC Medicine QA", "Manage Machine Types", $_REQUEST['status']);
+start_html($database, $user, "UC Medicine QA", "Manage Machine Types", $_REQUEST['status'], $_REQUEST['class']);
 
 switch($_REQUEST['action']) {
   case 'new':
+    if (!$user->isAdmin($database)) {
+      display_error("Error: Insufficient privileges", "You must be an administrator to add machine types.");
+      break;
+    }
     echo "<h1>Add a machine type</h1>
 ";
     display_machine_type_edit_form($database, $user);
     break;
   case 'edit':
+    if (!$user->isAdmin($database)) {
+      display_error("Error: Insufficient privileges", "You must be an administrator to modify machine types.");
+      break;
+    }
     echo "<h1>Modify a machine type</h1>
 ";
     display_machine_type_edit_form($database, $user, intval($_REQUEST['id']));
