@@ -182,7 +182,6 @@ echo "</select>
 
 function display_ok_notok_dropdown($select_id="ok_notok", $selected=0) {
   echo "<select id='".escape_output($select_id)."' name='".escape_output($select_id)."'>
-                    <option value=''".(($selected == 'NULL' || $selected == '') ? " selected='selected'" : "")."></option>
                     <option value=1".((intval($selected) == 1) ? " selected='selected'" : "").">OK</option>
                     <option value=0".((intval($selected) == 0) ? " selected='selected'" : "").">NOT OK</option>
 </select>

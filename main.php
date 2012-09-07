@@ -30,7 +30,7 @@ start_html($database, $user, "UCMC Radiation Oncology QA", "", $_REQUEST['status
       <li><s>Entry approval/review</s></li>
       <li><s>Change backups to zip</s></li>
       <li><s>User password changes</s></li>
-      <li>Red input boxes</li>
+      <li><s>Red input boxes</s></li>
       <li>Python image analysis</li>
       <li>Print to PDF</li>
     </ol>

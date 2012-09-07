@@ -2,6 +2,11 @@ body {
     padding-top: 42px;
 }
 
+.control-group.error input {
+  background-color: #B94A48;
+  color: white;
+}
+
 /* css for timepicker */
 .ui-timepicker-div .ui-widget-header { margin-bottom: 8px; }
 .ui-timepicker-div dl { text-align: left; }

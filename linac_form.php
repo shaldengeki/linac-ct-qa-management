@@ -467,7 +467,7 @@
 ";
   display_ok_notok_dropdown('form_entry[form_values][resolution_lp_mm_status]', ($id != false) ? $formEntryObject['form_values']['resolution_lp_mm'] : '');
   echo "              </td>
-              <td class='control-group'><input type='number' step='0.0000000000000001' name='form_entry[form_values][resolution_lp_mm_measurement]' class='span12' id='form_entry_form_values_resolution_lp_mm_measurement' ".(($id === false) ? " placeholder='>1.25'" : " value='".escape_output($formEntryObject['form_values']['resolution_lp_mm_measurement'])."'")."/></td>
+              <td class='control-group'><input type='number' step='0.01' name='form_entry[form_values][resolution_lp_mm_measurement]' class='span12' id='form_entry_form_values_resolution_lp_mm_measurement' ".(($id === false) ? " placeholder='>1.25'" : " value='".escape_output($formEntryObject['form_values']['resolution_lp_mm_measurement'])."'")."/></td>
               <td class='control-group'><input name='form_entry[form_values][resolution_lp_mm_row]' class='span12' id='form_entry_form_values_resolution_lp_mm_row' ".(($id === false) ? " placeholder='row 5'" : " value='".escape_output($formEntryObject['form_values']['resolution_lp_mm_row'])."'")."/></td>
             </tr>
             <tr>
@@ -476,20 +476,95 @@
 ";
   display_ok_notok_dropdown('form_entry[form_values][contrast_disks_status]', ($id != false) ? $formEntryObject['form_values']['contrast_disks'] : '');
   echo "              </td>
-              <td class='control-group'><input type='number' step='0.0000000000000001' name='form_entry[form_values][contrast_disks_measurement]' class='span12' id='form_entry_form_values_contrast_disks_measurement' ".(($id === false) ? " placeholder='18'" : " value='".escape_output($formEntryObject['form_values']['contrast_disks_measurement'])."'")."/></td>
+              <td class='control-group'><input type='number' step='1' name='form_entry[form_values][contrast_disks_measurement]' class='span12' id='form_entry_form_values_contrast_disks_measurement' ".(($id === false) ? " placeholder='18'" : " value='".escape_output($formEntryObject['form_values']['contrast_disks_measurement'])."'")."/></td>
               <td class='control-group'><input name='form_entry[form_values][contrast_disks_row]' class='span12' id='form_entry_form_values_contrast_disks_row' ".(($id === false) ? " placeholder='8mm disk'" : " value='".escape_output($formEntryObject['form_values']['contrast_disks_row'])."'")."/></td>
             </tr>
             <tr>
               <td>Scaling (mm)</td>
-              <td class='control-group'><input type='number' step='0.0000000000000001' name='form_entry[form_values][scaling_mv]' class='span12' id='form_entry_form_values_scaling_mv' ".(($id === false) ? " placeholder='97'" : " value='".escape_output($formEntryObject['form_values']['scaling_mv'])."'")."/></td>
-              <td class='control-group'><input type='number' step='0.0000000000000001' name='form_entry[form_values][scaling_kv]' class='span12' id='form_entry_form_values_scaling_kv' ".(($id === false) ? " placeholder='125'" : " value='".escape_output($formEntryObject['form_values']['scaling_kv'])."'")."/></td>
-              <td class='control-group'><input type='number' step='0.0000000000000001' name='form_entry[form_values][scaling_cbct]' class='span12' id='form_entry_form_values_scaling_cbct' ".(($id === false) ? " placeholder='50'" : " value='".escape_output($formEntryObject['form_values']['scaling_cbct'])."'")."/></td>
+              <td class='control-group'><input type='number' step='0.1' name='form_entry[form_values][scaling_mv]' class='span12' id='form_entry_form_values_scaling_mv' ".(($id === false) ? " placeholder='97'" : " value='".escape_output($formEntryObject['form_values']['scaling_mv'])."'")."/></td>
+              <td class='control-group'><input type='number' step='0.1' name='form_entry[form_values][scaling_kv]' class='span12' id='form_entry_form_values_scaling_kv' ".(($id === false) ? " placeholder='125'" : " value='".escape_output($formEntryObject['form_values']['scaling_kv'])."'")."/></td>
+              <td class='control-group'><input type='number' step='0.1' name='form_entry[form_values][scaling_cbct]' class='span12' id='form_entry_form_values_scaling_cbct' ".(($id === false) ? " placeholder='50'" : " value='".escape_output($formEntryObject['form_values']['scaling_cbct'])."'")."/></td>
             </tr>
             <tr>
               <td>Uniformity/HU</td>
-              <td class='control-group'><input type='number' step='0.0000000000000001' name='form_entry[form_values][center_mv]' class='span12' id='form_entry_form_values_center_mv' ".(($id === false) ? " placeholder='center'" : " value='".escape_output($formEntryObject['form_values']['center_mv'])."'")."/></td>
-              <td class='control-group'><input type='number' step='0.0000000000000001' name='form_entry[form_values][center_kv]' class='span12' id='form_entry_form_values_center_kv' ".(($id === false) ? " placeholder='center'" : " value='".escape_output($formEntryObject['form_values']['center_kv'])."'")."/></td>
-              <td class='control-group'><input type='number' step='0.0000000000000001' name='form_entry[form_values][max_diff_wr_cbct]' class='span12' id='form_entry_form_values_max_diff_wr_cbct' ".(($id === false) ? " placeholder='max diff w.r.'" : " value='".escape_output($formEntryObject['form_values']['max_diff_wr_cbct'])."'")."/></td>
+              <td class='control-group'></td>
+              <td class='control-group'></td>
+              <td class='control-group'><input type='number' step='0.0000000000000001' name='form_entry[form_values][uniformity_center_cbct]' class='span12' id='form_entry_form_values_max_diff_wr_cbct' ".(($id === false) ? " placeholder='center'" : " value='".escape_output($formEntryObject['form_values']['max_diff_wr_cbct'])."'")."/></td>
+            </tr>
+            <tr>
+              <td>Q<sub>1</sub></td>
+              <td class='control-group'><input type='number' step='1' name='form_entry[form_values][uniformity_mv_q1]' class='span12' id='form_entry_form_values_uniformity_mv_q1' ".(($id === false) ? " placeholder='1160&plusmn;30'" : " value='".escape_output($formEntryObject['form_values']['uniformity_mv_q1'])."'")."/></td>
+              <td class='control-group'><input type='number' step='1' name='form_entry[form_values][uniformity_kv_q1]' class='span12' id='form_entry_form_values_uniformity_kv_q1' ".(($id === false) ? " placeholder='203000&plusmn;3000'" : " value='".escape_output($formEntryObject['form_values']['uniformity_kv_q1'])."'")."/></td>
+              <td class='control-group'><input type='number' step='1' name='form_entry[form_values][uniformity_cbct_q1]' class='span12' id='form_entry_form_values_uniformity_cbct_q1' ".(($id === false) ? " placeholder=''" : " value='".escape_output($formEntryObject['form_values']['uniformity_cbct_q1'])."'")."/></td>
+            </tr>
+            <tr>
+              <td>Q<sub>2</sub></td>
+              <td class='control-group'><input type='number' step='1' name='form_entry[form_values][uniformity_mv_q2]' class='span12' id='form_entry_form_values_uniformity_mv_q2' ".(($id === false) ? " placeholder='1160&plusmn;30'" : " value='".escape_output($formEntryObject['form_values']['uniformity_mv_q2'])."'")."/></td>
+              <td class='control-group'><input type='number' step='1' name='form_entry[form_values][uniformity_kv_q2]' class='span12' id='form_entry_form_values_uniformity_kv_q2' ".(($id === false) ? " placeholder='203000&plusmn;3000'" : " value='".escape_output($formEntryObject['form_values']['uniformity_kv_q2'])."'")."/></td>
+              <td class='control-group'><input type='number' step='1' name='form_entry[form_values][uniformity_cbct_q2]' class='span12' id='form_entry_form_values_uniformity_cbct_q2' ".(($id === false) ? " placeholder=''" : " value='".escape_output($formEntryObject['form_values']['uniformity_cbct_q2'])."'")."/></td>
+            </tr>
+            <tr>
+              <td>Q<sub>3</sub></td>
+              <td class='control-group'><input type='number' step='1' name='form_entry[form_values][uniformity_mv_q3]' class='span12' id='form_entry_form_values_uniformity_mv_q3' ".(($id === false) ? " placeholder='1160&plusmn;30'" : " value='".escape_output($formEntryObject['form_values']['uniformity_mv_q3'])."'")."/></td>
+              <td class='control-group'><input type='number' step='1' name='form_entry[form_values][uniformity_kv_q3]' class='span12' id='form_entry_form_values_uniformity_kv_q3' ".(($id === false) ? " placeholder='203000&plusmn;3000'" : " value='".escape_output($formEntryObject['form_values']['uniformity_kv_q3'])."'")."/></td>
+              <td class='control-group'><input type='number' step='1' name='form_entry[form_values][uniformity_cbct_q3]' class='span12' id='form_entry_form_values_uniformity_cbct_q3' ".(($id === false) ? " placeholder=''" : " value='".escape_output($formEntryObject['form_values']['uniformity_cbct_q3'])."'")."/></td>
+            </tr>
+            <tr>
+              <td>Q<sub>4</sub></td>
+              <td class='control-group'><input type='number' step='1' name='form_entry[form_values][uniformity_mv_q4]' class='span12' id='form_entry_form_values_uniformity_mv_q4' ".(($id === false) ? " placeholder='1160&plusmn;30'" : " value='".escape_output($formEntryObject['form_values']['uniformity_mv_q4'])."'")."/></td>
+              <td class='control-group'><input type='number' step='1' name='form_entry[form_values][uniformity_kv_q4]' class='span12' id='form_entry_form_values_uniformity_kv_q4' ".(($id === false) ? " placeholder='203000&plusmn;3000'" : " value='".escape_output($formEntryObject['form_values']['uniformity_kv_q4'])."'")."/></td>
+              <td class='control-group'><input type='number' step='1' name='form_entry[form_values][uniformity_cbct_q4]' class='span12' id='form_entry_form_values_uniformity_cbct_q4' ".(($id === false) ? " placeholder=''" : " value='".escape_output($formEntryObject['form_values']['uniformity_cbct_q4'])."'")."/></td>
+            </tr>
+            <tr>
+              <td>Noise</td>
+              <td class='control-group'></td>
+              <td class='control-group'></td>
+              <td class='control-group'></td>
+            </tr>
+            <tr>
+              <td>Q<sub>1</sub></td>
+              <td class='control-group'><input type='number' step='0.01' name='form_entry[form_values][noise_mv_q1]' class='span12' id='form_entry_form_values_noise_mv_q1' ".(($id === false) ? " placeholder='1160&plusmn;30'" : " value='".escape_output($formEntryObject['form_values']['noise_mv_q1'])."'")."/></td>
+              <td class='control-group'><input type='number' step='1' name='form_entry[form_values][noise_kv_q1]' class='span12' id='form_entry_form_values_noise_kv_q1' ".(($id === false) ? " placeholder='203000&plusmn;3000'" : " value='".escape_output($formEntryObject['form_values']['noise_kv_q1'])."'")."/></td>
+              <td class='control-group'></td>
+            </tr>
+            <tr>
+              <td>Q<sub>2</sub></td>
+              <td class='control-group'><input type='number' step='0.01' name='form_entry[form_values][noise_mv_q2]' class='span12' id='form_entry_form_values_noise_mv_q2' ".(($id === false) ? " placeholder='1160&plusmn;30'" : " value='".escape_output($formEntryObject['form_values']['noise_mv_q2'])."'")."/></td>
+              <td class='control-group'><input type='number' step='1' name='form_entry[form_values][noise_kv_q2]' class='span12' id='form_entry_form_values_noise_kv_q2' ".(($id === false) ? " placeholder='203000&plusmn;3000'" : " value='".escape_output($formEntryObject['form_values']['noise_kv_q2'])."'")."/></td>
+              <td class='control-group'></td>
+            </tr>
+            <tr>
+              <td>Q<sub>3</sub></td>
+              <td class='control-group'><input type='number' step='0.01' name='form_entry[form_values][noise_mv_q3]' class='span12' id='form_entry_form_values_noise_mv_q3' ".(($id === false) ? " placeholder='1160&plusmn;30'" : " value='".escape_output($formEntryObject['form_values']['noise_mv_q3'])."'")."/></td>
+              <td class='control-group'><input type='number' step='1' name='form_entry[form_values][noise_kv_q3]' class='span12' id='form_entry_form_values_noise_kv_q3' ".(($id === false) ? " placeholder='203000&plusmn;3000'" : " value='".escape_output($formEntryObject['form_values']['noise_kv_q3'])."'")."/></td>
+              <td class='control-group'></td>
+            </tr>
+            <tr>
+              <td>Q<sub>4</sub></td>
+              <td class='control-group'><input type='number' step='0.01' name='form_entry[form_values][noise_mv_q4]' class='span12' id='form_entry_form_values_noise_mv_q4' ".(($id === false) ? " placeholder='1160&plusmn;30'" : " value='".escape_output($formEntryObject['form_values']['noise_mv_q4'])."'")."/></td>
+              <td class='control-group'><input type='number' step='1' name='form_entry[form_values][noise_kv_q4]' class='span12' id='form_entry_form_values_noise_kv_q4' ".(($id === false) ? " placeholder='203000&plusmn;3000'" : " value='".escape_output($formEntryObject['form_values']['noise_kv_q4'])."'")."/></td>
+              <td class='control-group'></td>
+            </tr>
+          </tbody>
+        </table>
+        <table class='table table-bordered table-striped'>
+          <thead>
+            <tr>
+              <th>CBCT</th>
+            </tr>
+            <tr>
+              <th>HU Calibration</th>
+              <th>Air</th>
+              <th>Acrylic</th>
+              <th>LDPE</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><input type='number' step='0.01' name='form_entry[form_values][hu_calibration_cbct]' class='span12' id='form_entry_form_values_hu_calibration_cbct' ".(($id === false) ? " placeholder=''" : " value='".escape_output($formEntryObject['form_values']['hu_calibration_cbct'])."'")."/></td>
+              <td><input type='number' step='1' name='form_entry[form_values][air_cbct]' class='span12' id='form_entry_form_values_air_cbct' ".(($id === false) ? " placeholder='-1000&plusmn;30'" : " value='".escape_output($formEntryObject['form_values']['air_cbct'])."'")."/></td>
+              <td><input type='number' step='1' name='form_entry[form_values][acrylic_cbct]' class='span12' id='form_entry_form_values_acrylic_cbct' ".(($id === false) ? " placeholder='120&plusmn;40'" : " value='".escape_output($formEntryObject['form_values']['acrylic_cbct'])."'")."/></td>
+              <td><input type='number' step='1' name='form_entry[form_values][ldpe_cbct]' class='span12' id='form_entry_form_values_ldpe_cbct' ".(($id === false) ? " placeholder='1160&plusmn;30'" : " value='".escape_output($formEntryObject['form_values']['ldpe_cbct'])."'")."/></td>
             </tr>
           </tbody>
         </table>
