@@ -12,6 +12,10 @@ function humanize($str) {
   return implode(' ', $str);
 }
 
+function format_mysql_timestamp($date) {
+  return date('n/j/Y', strtotime($date));
+}
+
 function escape_output($input) {
   if ($input == '' || $input == 'NULL') {
     return '';
@@ -663,13 +667,13 @@ function display_form_entries($database, $user, $form_id=false) {
     } else {
       $row_class = "";
       $approval_user = "<a href='user.php?action=show&id=".intval($form_entry['approved_user_id'])."'>".escape_output($form_entry['approved_user_name'])."</a>";
-      $approval_date = escape_output(date('n/j/Y', strtotime($form_entry['approved_on'])));
+      $approval_date = escape_output(format_mysql_timestamp($form_entry['approved_on']));
     }
     echo "    <tr".$row_class.">
       <td><a href='machine.php?action=show&id=".intval($form_entry['machine_id'])."'>".escape_output($form_entry['machine_name'])."</a></td>
       <td><a href='user.php?action=show&id=".intval($form_entry['user_id'])."'>".escape_output($form_entry['user_name'])."</a></td>
       <td>".intval($form_entry['qa_year'])."/".((intval($form_entry['qa_month']) >= 10) ? "" : "0").intval($form_entry['qa_month'])."</td>
-      <td>".escape_output(date('n/j/Y', strtotime($form_entry['created_at'])))."</td>
+      <td>".escape_output(format_mysql_timestamp($form_entry['created_at']))."</td>
       <td>".$approval_user."</td>
       <td>".$approval_date."</td>
       <td>".escape_output($form_entry['comments'])."</td>
@@ -884,7 +888,7 @@ function display_user_profile($database, $user, $user_id) {
       <td><a href='form.php?action=show&id=".intval($form_entry['machine_id'])."'>".escape_output($form_entry['machine_name'])."</a></td>
       <td>".escape_output($form_entry['comments'])."</td>
       <td>".escape_output($form_entry['qa_year']."/".$form_entry['qa_month'])."</td>
-      <td>".escape_output(date('n/j/Y', strtotime($form_entry['updated_at'])))."</td>
+      <td>".escape_output(format_mysql_timestamp($form_entry['updated_at']))."</td>
       <td><a href='form_entry.php?action=edit&id=".intval($form_entry['id'])."'>View</a></td>
     </tr>
 ";
