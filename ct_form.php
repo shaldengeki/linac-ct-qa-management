@@ -23,7 +23,7 @@
         <div class='control-group'>
           <label class='control-label' for='form_entry[created_at]'>Inspection Date</label>
           <div class='controls'>
-            <input name='form_entry[created_at]' type='datetime-local' class='input-xlarge' id='form_entry_created_at'".(($id === false) ? "" : " value='".escape_output($formEntryObject['created_at'])."'").">
+            <input name='form_entry[created_at]' type='datetime-local' readonly='true' class='input-xlarge' id='form_entry_created_at'".(($id === false) ? "" : " value='".escape_output($formEntryObject['created_at'])."'").">
           </div>
         </div>
       </div>
@@ -53,27 +53,27 @@
           <tbody>
             <tr>
               <td>1</td>
-              <td class='control-group'><input type='number' name='form_entry[form_values][contrast_scale_1_value]' class='form_entry_form_values_contrast_scale_1_value span5' id='form_entry_form_values_contrast_scale_1_value' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['contrast_scale_1_value'])."'")."/> &plusmn; <input type='number' name='form_entry[form_values][contrast_scale_1_plusmin]' class='form_entry_form_values_contrast_scale_1_plusmin span5' id='form_entry_form_values_contrast_scale_1_plusmin' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['contrast_scale_1_plusmin'])."'")."/></td>
+              <td class='control-group'><input type='number' scale='0.01' name='form_entry[form_values][contrast_scale_1_value]' class='form_entry_form_values_contrast_scale_1_value span5' id='form_entry_form_values_contrast_scale_1_value' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['contrast_scale_1_value'])."'")."/> &plusmn; <input type='number' scale='0.01' name='form_entry[form_values][contrast_scale_1_plusmin]' class='form_entry_form_values_contrast_scale_1_plusmin span5' id='form_entry_form_values_contrast_scale_1_plusmin' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['contrast_scale_1_plusmin'])."'")."/></td>
               <td>-95&plusmn;15</td>
             </tr>
             <tr>
               <td>2</td>
-              <td class='control-group'><input type='number' name='form_entry[form_values][contrast_scale_2_value]' class='form_entry_form_values_contrast_scale_2_value span5' id='form_entry_form_values_contrast_scale_2_value' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['contrast_scale_2_value'])."'")."/> &plusmn; <input type='number' name='form_entry[form_values][contrast_scale_2_plusmin]' class='form_entry_form_values_contrast_scale_2_plusmin span5' id='form_entry_form_values_contrast_scale_2_plusmin' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['contrast_scale_2_plusmin'])."'")."/></td>
+              <td class='control-group'><input type='number' scale='0.01' name='form_entry[form_values][contrast_scale_2_value]' class='form_entry_form_values_contrast_scale_2_value span5' id='form_entry_form_values_contrast_scale_2_value' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['contrast_scale_2_value'])."'")."/> &plusmn; <input type='number' scale='0.01' name='form_entry[form_values][contrast_scale_2_plusmin]' class='form_entry_form_values_contrast_scale_2_plusmin span5' id='form_entry_form_values_contrast_scale_2_plusmin' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['contrast_scale_2_plusmin'])."'")."/></td>
               <td>913&plusmn;50</td>
             </tr>
             <tr>
               <td>3</td>
-              <td class='control-group'><input type='number' name='form_entry[form_values][contrast_scale_3_value]' class='form_entry_form_values_contrast_scale_3_value span5' id='form_entry_form_values_contrast_scale_3_value' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['contrast_scale_3_value'])."'")."/>  &plusmn;  <input type='number' name='form_entry[form_values][contrast_scale_3_plusmin]' class='form_entry_form_values_contrast_scale_3_plusmin span5' id='form_entry_form_values_contrast_scale_3_plusmin' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['contrast_scale_3_plusmin'])."'")."/></td>
+              <td class='control-group'><input type='number' scale='0.01' name='form_entry[form_values][contrast_scale_3_value]' class='form_entry_form_values_contrast_scale_3_value span5' id='form_entry_form_values_contrast_scale_3_value' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['contrast_scale_3_value'])."'")."/>  &plusmn;  <input type='number' scale='0.01' name='form_entry[form_values][contrast_scale_3_plusmin]' class='form_entry_form_values_contrast_scale_3_plusmin span5' id='form_entry_form_values_contrast_scale_3_plusmin' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['contrast_scale_3_plusmin'])."'")."/></td>
               <td>-988&plusmn;5</td>
             </tr>
             <tr>
               <td>4</td>
-              <td class='control-group'><input type='number' name='form_entry[form_values][contrast_scale_4_value]' class='form_entry_form_values_contrast_scale_4_value span5' id='form_entry_form_values_contrast_scale_4_value' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['contrast_scale_4_value'])."'")."/> &plusmn; <input type='number' name='form_entry[form_values][contrast_scale_4_plusmin]' class='form_entry_form_values_contrast_scale_4_plusmin span5' id='form_entry_form_values_contrast_scale_4_plusmin' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['contrast_scale_4_plusmin'])."'")."/></td>
+              <td class='control-group'><input type='number' scale='0.01' name='form_entry[form_values][contrast_scale_4_value]' class='form_entry_form_values_contrast_scale_4_value span5' id='form_entry_form_values_contrast_scale_4_value' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['contrast_scale_4_value'])."'")."/> &plusmn; <input type='number' scale='0.01' name='form_entry[form_values][contrast_scale_4_plusmin]' class='form_entry_form_values_contrast_scale_4_plusmin span5' id='form_entry_form_values_contrast_scale_4_plusmin' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['contrast_scale_4_plusmin'])."'")."/></td>
               <td>120&plusmn;15</td>
             </tr>
             <tr>
               <td>5</td>
-              <td class='control-group'><input type='number' name='form_entry[form_values][contrast_scale_5_value]' class='form_entry_form_values_contrast_scale_5_value span5' id='form_entry_form_values_contrast_scale_5_value' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['contrast_scale_5_value'])."'")."/> &plusmn; <input type='number' name='form_entry[form_values][contrast_scale_5_plusmin]' class='form_entry_form_values_contrast_scale_5_plusmin span5' id='form_entry_form_values_contrast_scale_5_plusmin' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['contrast_scale_5_plusmin'])."'")."/></td>
+              <td class='control-group'><input type='number' scale='0.01' name='form_entry[form_values][contrast_scale_5_value]' class='form_entry_form_values_contrast_scale_5_value span5' id='form_entry_form_values_contrast_scale_5_value' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['contrast_scale_5_value'])."'")."/> &plusmn; <input type='number' scale='0.01' name='form_entry[form_values][contrast_scale_5_plusmin]' class='form_entry_form_values_contrast_scale_5_plusmin span5' id='form_entry_form_values_contrast_scale_5_plusmin' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['contrast_scale_5_plusmin'])."'")."/></td>
               <td>0&plusmn;4</td>
             </tr>
           </tbody>
@@ -104,7 +104,7 @@
           </thead>
           <tbody>
             <tr>
-              <td class='control-group'><input type='number' name='form_entry[form_values][spatial_integrity_bb_to_bb]' class='form_entry_form_values_spatial_integrity_bb_to_bb span12' id='form_entry_form_values_spatial_integrity_bb_to_bb' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['spatial_integrity_bb_to_bb'])."'")."/></td>
+              <td class='control-group'><input type='number' scale='0.01' name='form_entry[form_values][spatial_integrity_bb_to_bb]' class='form_entry_form_values_spatial_integrity_bb_to_bb span12' id='form_entry_form_values_spatial_integrity_bb_to_bb' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['spatial_integrity_bb_to_bb'])."'")."/></td>
               <td>100&plusmn;1</td>
             </tr>
           </tbody>
@@ -117,7 +117,7 @@
           <tbody>
             <tr>
               <td>highest lp/cm block</td>
-              <td class='control-group'><input type='number' name='form_entry[form_values][high_contrast_resolution_max_lp_cm_block]' class='form_entry_form_values_high_contrast_resolution_max_lp_cm_block span12' id='form_entry_form_values_high_contrast_resolution_max_lp_cm_block' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['high_contrast_resolution_max_lp_cm_block'])."'")."/></td>
+              <td class='control-group'><input type='number' scale='0.01' name='form_entry[form_values][high_contrast_resolution_max_lp_cm_block]' class='form_entry_form_values_high_contrast_resolution_max_lp_cm_block span12' id='form_entry_form_values_high_contrast_resolution_max_lp_cm_block' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['high_contrast_resolution_max_lp_cm_block'])."'")."/></td>
               <td>8</td>
             </tr>
           </tbody>
@@ -137,17 +137,17 @@
           <tbody>
             <tr>
               <td>Cor</td>
-              <td class='control-group'><input type='number' name='form_entry[form_values][laser_position_cor]' class='form_entry_form_values_laser_position_cor span12' id='form_entry_form_values_laser_position_cor' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['laser_position_cor'])."'")."/></td>
+              <td class='control-group'><input type='number' scale='0.01' name='form_entry[form_values][laser_position_cor]' class='form_entry_form_values_laser_position_cor span12' id='form_entry_form_values_laser_position_cor' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['laser_position_cor'])."'")."/></td>
               <td>0&plusmn;2</td>
             </tr>
             <tr>
               <td>Sag</td>
-              <td class='control-group'><input type='number' name='form_entry[form_values][laser_position_sag]' class='form_entry_form_values_laser_position_sag span12' id='form_entry_form_values_laser_position_sag' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['laser_position_sag'])."'")."/></td>
+              <td class='control-group'><input type='number' scale='0.01' name='form_entry[form_values][laser_position_sag]' class='form_entry_form_values_laser_position_sag span12' id='form_entry_form_values_laser_position_sag' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['laser_position_sag'])."'")."/></td>
               <td>0&plusmn;2</td>
             </tr>
             <tr>
               <td>Axial</td>
-              <td class='control-group'><input type='number' name='form_entry[form_values][laser_position_axial]' class='form_entry_form_values_laser_position_axial span12' id='form_entry_form_values_laser_position_axial' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['laser_position_axial'])."'")."/></td>
+              <td class='control-group'><input type='number' scale='0.01' name='form_entry[form_values][laser_position_axial]' class='form_entry_form_values_laser_position_axial span12' id='form_entry_form_values_laser_position_axial' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['laser_position_axial'])."'")."/></td>
               <td>0&plusmn;2</td>
             </tr>
           </tbody>
@@ -217,7 +217,7 @@
           <tbody>
             <tr>
               <td>Slice Thickness (mm)</td>
-              <td class='control-group'><input type='number' name='form_entry[form_values][slice_thickness]' class='form_entry_form_values_slice_thickness span12' id='form_entry_form_values_slice_thickness' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['slice_thickness'])."'")."/></td>
+              <td class='control-group'><input type='number' scale='0.01' name='form_entry[form_values][slice_thickness]' class='form_entry_form_values_slice_thickness span12' id='form_entry_form_values_slice_thickness' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['slice_thickness'])."'")."/></td>
               <td>3</td>
             </tr>
           </tbody>
@@ -239,27 +239,27 @@
           <tbody>
             <tr>
               <td>1</td>
-              <td class='control-group'><input type='number' name='form_entry[form_values][field_uniformity_1_value]' class='form_entry_form_values_field_uniformity_1_value span12' id='form_entry_form_values_field_uniformity_1_value' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['field_uniformity_1_value'])."'")."/></td>
+              <td class='control-group'><input type='number' scale='0.01' name='form_entry[form_values][field_uniformity_1_value]' class='form_entry_form_values_field_uniformity_1_value span12' id='form_entry_form_values_field_uniformity_1_value' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['field_uniformity_1_value'])."'")."/></td>
               <td>0&plusmn;5</td>
             </tr>
             <tr>
               <td>2</td>
-              <td class='control-group'><input type='number' name='form_entry[form_values][field_uniformity_2_value]' class='form_entry_form_values_field_uniformity_2_value span12' id='form_entry_form_values_field_uniformity_2_value' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['field_uniformity_2_value'])."'")."/></td>
+              <td class='control-group'><input type='number' scale='0.01' name='form_entry[form_values][field_uniformity_2_value]' class='form_entry_form_values_field_uniformity_2_value span12' id='form_entry_form_values_field_uniformity_2_value' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['field_uniformity_2_value'])."'")."/></td>
               <td>0&plusmn;5</td>
             </tr>
             <tr>
               <td>3</td>
-              <td class='control-group'><input type='number' name='form_entry[form_values][field_uniformity_3_value]' class='form_entry_form_values_field_uniformity_3_value span12' id='form_entry_form_values_field_uniformity_3_value' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['field_uniformity_3_value'])."'")."/></td>
+              <td class='control-group'><input type='number' scale='0.01' name='form_entry[form_values][field_uniformity_3_value]' class='form_entry_form_values_field_uniformity_3_value span12' id='form_entry_form_values_field_uniformity_3_value' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['field_uniformity_3_value'])."'")."/></td>
               <td>0&plusmn;5</td>
             </tr>
             <tr>
               <td>4</td>
-              <td class='control-group'><input type='number' name='form_entry[form_values][field_uniformity_4_value]' class='form_entry_form_values_field_uniformity_4_value span12' id='form_entry_form_values_field_uniformity_4_value' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['field_uniformity_4_value'])."'")."/></td>
+              <td class='control-group'><input type='number' scale='0.01' name='form_entry[form_values][field_uniformity_4_value]' class='form_entry_form_values_field_uniformity_4_value span12' id='form_entry_form_values_field_uniformity_4_value' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['field_uniformity_4_value'])."'")."/></td>
               <td>0&plusmn;5</td>
             </tr>
             <tr>
               <td>5</td>
-              <td class='control-group'><input type='number' name='form_entry[form_values][field_uniformity_5_value]' class='form_entry_form_values_field_uniformity_5_value span12' id='form_entry_form_values_field_uniformity_5_value' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['field_uniformity_5_value'])."'")."/></td>
+              <td class='control-group'><input type='number' scale='0.01' name='form_entry[form_values][field_uniformity_5_value]' class='form_entry_form_values_field_uniformity_5_value span12' id='form_entry_form_values_field_uniformity_5_value' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['field_uniformity_5_value'])."'")."/></td>
               <td>0&plusmn;5</td>
             </tr>
           </tbody>
@@ -279,27 +279,27 @@
           <tbody>
             <tr>
               <td>1</td>
-              <td class='control-group'><input type='number' name='form_entry[form_values][noise_1_stddev]' class='form_entry_form_values_noise_1_stddev span12' id='form_entry_form_values_noise_1_stddev' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['noise_1_stddev'])."'")."/></td>
+              <td class='control-group'><input type='number' scale='0.01' name='form_entry[form_values][noise_1_stddev]' class='form_entry_form_values_noise_1_stddev span12' id='form_entry_form_values_noise_1_stddev' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['noise_1_stddev'])."'")."/></td>
               <td>11&plusmn;2</td>
             </tr>
             <tr>
               <td>2</td>
-              <td class='control-group'><input type='number' name='form_entry[form_values][noise_2_stddev]' class='form_entry_form_values_noise_2_stddev span12' id='form_entry_form_values_noise_2_stddev' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['noise_2_stddev'])."'")."/></td>
+              <td class='control-group'><input type='number' scale='0.01' name='form_entry[form_values][noise_2_stddev]' class='form_entry_form_values_noise_2_stddev span12' id='form_entry_form_values_noise_2_stddev' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['noise_2_stddev'])."'")."/></td>
               <td>9&plusmn;2</td>
             </tr>
             <tr>
               <td>3</td>
-              <td class='control-group'><input type='number' name='form_entry[form_values][noise_3_stddev]' class='form_entry_form_values_noise_3_stddev span12' id='form_entry_form_values_noise_3_stddev' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['noise_3_stddev'])."'")."/></td>
+              <td class='control-group'><input type='number' scale='0.01' name='form_entry[form_values][noise_3_stddev]' class='form_entry_form_values_noise_3_stddev span12' id='form_entry_form_values_noise_3_stddev' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['noise_3_stddev'])."'")."/></td>
               <td>9&plusmn;2</td>
             </tr>
             <tr>
               <td>4</td>
-              <td class='control-group'><input type='number' name='form_entry[form_values][noise_4_stddev]' class='form_entry_form_values_noise_4_stddev span12' id='form_entry_form_values_noise_4_stddev' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['noise_4_stddev'])."'")."/></td>
+              <td class='control-group'><input type='number' scale='0.01' name='form_entry[form_values][noise_4_stddev]' class='form_entry_form_values_noise_4_stddev span12' id='form_entry_form_values_noise_4_stddev' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['noise_4_stddev'])."'")."/></td>
               <td>9&plusmn;2</td>
             </tr>
             <tr>
               <td>5</td>
-              <td class='control-group'><input type='number' name='form_entry[form_values][noise_5_stddev]' class='form_entry_form_values_noise_5_stddev span12' id='form_entry_form_values_noise_5_stddev' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['noise_5_stddev'])."'")."/></td>
+              <td class='control-group'><input type='number' scale='0.01' name='form_entry[form_values][noise_5_stddev]' class='form_entry_form_values_noise_5_stddev span12' id='form_entry_form_values_noise_5_stddev' ".(($id === false) ? "" : " value='".escape_output($formEntryObject['form_values']['noise_5_stddev'])."'")."/></td>
               <td>9&plusmn;2</td>
             </tr>
           </tbody>

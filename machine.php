@@ -49,7 +49,7 @@ switch($_REQUEST['action']) {
       break;
     }
     //ensure that user has sufficient privileges to view this machine.
-    $machineObject = $database->queryFirstValue("SELECT * FROM `machines` WHERE `id` = ".intval($_REQUEST['id'])." LIMIT 1");
+    $machineObject = $database->queryFirstRow("SELECT * FROM `machines` WHERE `id` = ".intval($_REQUEST['id'])." LIMIT 1");
     if (!$machineObject) {
       display_error("Error: Invalid machine ID", "Please check your ID and try again.");
       break;    
