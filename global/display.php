@@ -290,7 +290,7 @@ function display_facility_profile($database, $user, $facility_id) {
 ";
   while ($thisUser = mysqli_fetch_assoc($users)) {
     echo "      <tr>
-        <td><a href='user.php?action=edit&id=".intval($thisUser['id'])."'>".escape_output($thisUser['name'])."</a></td>
+        <td><a href='user.php?action=show&id=".intval($thisUser['id'])."'>".escape_output($thisUser['name'])."</a></td>
         <td>".escape_output($thisUser['email'])."</td>
         <td>".escape_output(convert_userlevel_to_text($thisUser['userlevel']))."</td>
         <td>".escape_output(intval($thisUser['form_entry_count']))."</td>
