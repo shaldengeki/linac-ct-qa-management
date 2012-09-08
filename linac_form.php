@@ -23,7 +23,7 @@
       <div class='control-group'>
         <label class='control-label' for='form_entry[created_at]'>Inspection Date</label>
         <div class='controls'>
-          <input name='form_entry[created_at]' type='datetime-local' class='input-xlarge' id='form_entry_created_at'".(($id === false) ? "" : " value='".escape_output($formEntryObject['created_at'])."'").">
+          <input name='form_entry[created_at]' type='datetime-local' readonly='true' class='input-xlarge' id='form_entry_created_at'".(($id === false) ? "" : " value='".escape_output($formEntryObject['created_at'])."'").">
         </div>
       </div>
     </div>
@@ -476,7 +476,7 @@
 ";
   display_ok_notok_dropdown('form_entry[form_values][contrast_disks_status]', ($id != false) ? $formEntryObject['form_values']['contrast_disks'] : '');
   echo "              </td>
-              <td class='control-group'><input type='number' step='1' name='form_entry[form_values][contrast_disks_measurement]' class='span12' id='form_entry_form_values_contrast_disks_measurement' ".(($id === false) ? " placeholder='18'" : " value='".escape_output($formEntryObject['form_values']['contrast_disks_measurement'])."'")."/></td>
+              <td class='control-group'><input type='number' step='0.1' name='form_entry[form_values][contrast_disks_measurement]' class='span12' id='form_entry_form_values_contrast_disks_measurement' ".(($id === false) ? " placeholder='18'" : " value='".escape_output($formEntryObject['form_values']['contrast_disks_measurement'])."'")."/></td>
               <td class='control-group'><input name='form_entry[form_values][contrast_disks_row]' class='span12' id='form_entry_form_values_contrast_disks_row' ".(($id === false) ? " placeholder='8mm disk'" : " value='".escape_output($formEntryObject['form_values']['contrast_disks_row'])."'")."/></td>
             </tr>
             <tr>

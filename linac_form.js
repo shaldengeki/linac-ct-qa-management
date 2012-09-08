@@ -423,7 +423,7 @@ function displayImagePreview(files) {
 }
 
 $(document).ready(function() {
-  //$('#form_entry_created_at').datetimepicker();
+  $('#form_entry_created_at').datetimepicker();
   $('#form_entry_form_values_temperature').change(function() {calculateTPCF();});
   $('#form_entry_form_values_pressure').change(function() {calculateTPCF();});
   $('#form_entry_form_values_tpcf').change(function() { 

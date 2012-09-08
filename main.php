@@ -26,13 +26,17 @@ start_html($database, $user, "UC Medicine QA", "", $_REQUEST['status'], $_REQUES
       <li><s>Review TrueBeam1 data</s></li>
       <li><s>User creation and modification</s></li>
       <li>Large-graph view</li>
-      <li>Imaging fields</li>
+      <li><s>Imaging fields</s></li>
       <li><s>Entry approval/review</s></li>
       <li><s>Change backups to zip</s></li>
       <li><s>User password changes</s></li>
       <li><s>Red input boxes</s></li>
-      <li>Python image analysis</li>
+      <li>Save form button</li>
       <li>Print to PDF</li>
+      <li>Form entry pass/fail</li>
+      <li>Domain name change (ucqa.org)</li>
+      <li>Python image analysis</li>
+      <li>Make forms more user-friendly</li>
     </ol>
   </div>
   <div class="span4">

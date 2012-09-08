@@ -172,7 +172,10 @@ function display_login_form() {
 ';
 }
 
-function display_month_year_dropdown($select_id="", $select_name_prefix="form_entry", $selected=array(1,1)) {
+function display_month_year_dropdown($select_id="", $select_name_prefix="form_entry", $selected=False) {
+  if ($selected === false) {
+    $selected = array( 0 => intval(date('n')), 1 => intval(date('Y')));
+  }
   echo "<select id='".escape_output($select_id)."' name='".escape_output($select_name_prefix)."[qa_month]'>
 ";
   for ($month_i = 1; $month_i <= 12; $month_i++) {
@@ -200,10 +203,12 @@ function display_ok_notok_dropdown($select_id="ok_notok", $selected=0) {
 
 function display_facilities($database, $user) {
   //lists all facilities.
+  $userIsAdmin = $user->isAdmin($database);
   echo "<table class='table table-striped table-bordered dataTable'>
   <thead>
     <tr>
       <th>Name</th>
+      <th></th>
     </tr>
   </thead>
   <tbody>
@@ -211,8 +216,16 @@ function display_facilities($database, $user) {
   $facilities = $database->stdQuery("SELECT `id`, `name` FROM `facilities` ORDER BY `id` ASC");
   while ($facility = mysqli_fetch_assoc($facilities)) {
     echo "    <tr>
-      <td><a href='facility.php?action=edit&id=".intval($facility['id'])."'>".escape_output($facility['name'])."</a></td>
-    </tr>
+      <td><a href='facility.php?action=show&id=".intval($facility['id'])."'>".escape_output($facility['name'])."</a></td>
+";
+    if ($user->facility_id == intval($facility['id']) && $userIsAdmin) {
+      echo "<td><a href='facility.php?action=edit&id=".intval($facility['id'])."'>Edit</a></td>
+";
+    } else {
+      echo "<td></td>
+";
+    }
+    echo "    </tr>
 ";
     }
   echo "  </tbody>
@@ -255,6 +268,61 @@ function display_facility_edit_form($database, $user, $id=false) {
     </div>
   </fieldset>
 </form>
+";
+}
+
+function display_facility_profile($database, $user, $facility_id) {
+  $facilityObject = $database->queryFirstRow("SELECT * FROM `facilities` WHERE `id` = ".intval($facility_id)." LIMIT 1");
+  $users = $database->stdQuery("SELECT `users`.`id`, `name`, `email`, `userlevel`, COUNT(`form_entries`.`id`) AS `form_entry_count` FROM `users` LEFT OUTER JOIN `form_entries` ON `form_entries`.`user_id` = `users`.`id` WHERE `facility_id` = ".intval($facilityObject['id'])." GROUP BY `form_entries`.`user_id` ORDER BY `userlevel` DESC, `name` ASC;");
+  $machines = $database->stdQuery("SELECT `machines`.`id`, `machines`.`name`, `machine_types`.`name` AS `machine_type`, COUNT(`form_entries`.`id`) AS `form_entry_count`, MAX(`form_entries`.`updated_at`) AS `last_updated` FROM `machines` LEFT OUTER JOIN `machine_types` ON `machine_types`.`id` = `machines`.`machine_type_id` LEFT OUTER JOIN `form_entries` ON `form_entries`.`machine_id` = `machines`.`id` WHERE `facility_id` = ".intval($facilityObject['id'])." GROUP BY `form_entries`.`machine_id` ORDER BY `name` ASC;");
+
+  echo "  <h3>People</h3>
+  <table class='table table-striped table-bordered dataTable'>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Role</th>
+        <th>QA Entries</th>
+      </tr>
+    </thead>
+    <tbody>
+";
+  while ($thisUser = mysqli_fetch_assoc($users)) {
+    echo "      <tr>
+        <td><a href='user.php?action=edit&id=".intval($thisUser['id'])."'>".escape_output($thisUser['name'])."</a></td>
+        <td>".escape_output($thisUser['email'])."</td>
+        <td>".escape_output(convert_userlevel_to_text($thisUser['userlevel']))."</td>
+        <td>".escape_output(intval($thisUser['form_entry_count']))."</td>
+      </tr>
+";
+  }
+  echo "    </tbody>
+  </table>
+";
+  echo "  <h3>Machines</h3>
+  <table class='table table-striped table-bordered dataTable'>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>QA Entries</th>
+        <th>Last Entry</th>
+      </tr>
+    </thead>
+    <tbody>
+";
+  while ($machine = mysqli_fetch_assoc($machines)) {
+    echo "    <tr>
+      <td><a href='machine.php?action=show&id=".intval($machine['id'])."'>".escape_output($machine['name'])."</a></td>
+      <td>".escape_output($machine['machine_type'])."</td>
+      <td>".escape_output(intval($machine['form_entry_count']))."</td>
+      <td>".escape_output(format_mysql_timestamp($machine['last_updated']))."</td>
+    </tr>
+";
+  }
+  echo "    </tbody>
+  </table>
 ";
 }
 
@@ -833,7 +901,7 @@ function display_user_profile($database, $user, $user_id) {
     <dt>Email</dt>
     <dd>".escape_output($userObject->email)."</dd>
     <dt>Facility</dt>
-    <dd>".escape_output($facility)."</dd>
+    <dd><a href='facility.php?action=show&id=".intval($userObject->facility_id)."'>".escape_output($facility)."</a></dd>
     <dt>User Role</dt>
     <dd>".escape_output(convert_userlevel_to_text($userObject->userlevel))."</dd>
   </dl>

@@ -35,6 +35,20 @@ switch($_REQUEST['action']) {
 ";
     display_facility_edit_form($database, $user, intval($_REQUEST['id']));
     break;
+  case 'show':
+    if (!isset($_REQUEST['id']) || !is_numeric($_REQUEST['id'])) {
+      display_error("Error: Invalid facility ID", "Please check the facility ID and try again.");
+      break;
+    }
+    $facilityName = $database->queryFirstValue("SELECT `name` FROM `facilities` WHERE `id` = ".intval($_REQUEST['id'])." LIMIT 1");
+    if (!$facilityName) {
+      display_error("Error: Invalid facility ID", "Please check the facility ID and try again.");
+      break;
+    }
+    echo "<h1>".escape_output($facilityName)."</h1>
+";
+    display_facility_profile($database, $user, intval($_REQUEST['id']));
+    break;
   default:
   case 'index':
     echo "<h1>Facilities</h1>
