@@ -248,6 +248,7 @@ class DbConn extends mysqli {
           }
           // process uploaded image.
           $file_array = $_FILES['form_image'];
+          $imagePath = "";
           if (!empty($file_array['tmp_name']) && is_uploaded_file($file_array['tmp_name'])) {
             if ($file_array['error'] != UPLOAD_ERR_OK) {
               return array('location' => 'form_entry.php'.((isset($get_form_entry_id)) ? "?id=".intval($get_form_entry_id) : ""), 'status' => "There was an error uploading your image file.", 'class' => 'error');
@@ -273,8 +274,8 @@ class DbConn extends mysqli {
             if (!move_uploaded_file($file_array['tmp_name'], $imagePath)) {
               return array('location' => 'form_entry.php'.((isset($get_form_entry_id)) ? "?id=".intval($get_form_entry_id) : ""), 'status' => "There was an error moving your uploaded file.", 'class' => 'error');
             }
-            $updateFormEntry = $this->stdQuery("UPDATE `form_entries` SET `machine_id` = ".intval($form_entry['machine_id']).", `image_path` = ".$this->quoteSmart($imagePath).", `created_at` = '".date('Y-m-d H:i:s', strtotime($form_entry['created_at']))."', `qa_month` = ".intval($form_entry['qa_month']).", `qa_year` = ".intval($form_entry['qa_year']).", `updated_at` = '".date('Y-m-d H:i:s')."' WHERE `id` = ".intval($form_entry['id'])." LIMIT 1");
           }
+          $updateFormEntry = $this->stdQuery("UPDATE `form_entries` SET `machine_id` = ".intval($form_entry['machine_id']).", `image_path` = ".$this->quoteSmart($imagePath).", `created_at` = '".date('Y-m-d H:i:s', strtotime($form_entry['created_at']))."', `qa_month` = ".intval($form_entry['qa_month']).", `qa_year` = ".intval($form_entry['qa_year']).", `updated_at` = '".date('Y-m-d H:i:s')."' WHERE `id` = ".intval($form_entry['id'])." LIMIT 1");
           return array('location' => 'form_entry.php?action=index&form_id='.$form_entry['form_id'], 'status' => "Successfully updated form entry.", 'class' => 'success');
         } else {
           // inserting a form entry.

@@ -707,7 +707,7 @@ function display_form_entries($database, $user, $form_id=false) {
   } else {
     $form_id = "`form_entries`.`form_id`";
   }
-  $form_entries = $database->stdQuery("SELECT `form_entries`.`id`, `form_entries`.`machine_id`, `machines`.`name` AS `machine_name`, `form_entries`.`user_id`, `users`.`name` AS `user_name`, `created_at`, `qa_month`, `qa_year`, `approved_on`, `approved_user_id`, `approved_user`.`name` AS `approved_user_name`, `comments` FROM `form_entries` LEFT OUTER JOIN `forms` ON `forms`.`id` = `form_entries`.`form_id` LEFT OUTER JOIN `machines` ON `machines`.`id` = `form_entries`.`machine_id` LEFT OUTER JOIN `users` ON `users`.`id` = `form_entries`.`user_id` LEFT OUTER JOIN `users` AS `approved_user` ON `approved_user`.`id` = `form_entries`.`approved_user_id` WHERE `form_entries`.`form_id` = ".$form_id." ORDER BY `id` ASC");
+  $form_entries = $database->stdQuery("SELECT `form_entries`.`id`, `form_entries`.`machine_id`, `machines`.`name` AS `machine_name`, `form_entries`.`user_id`, `users`.`name` AS `user_name`, `created_at`, `qa_month`, `qa_year`, `approved_on`, `approved_user_id`, `approved_user`.`name` AS `approved_user_name`, `comments` FROM `form_entries` LEFT OUTER JOIN `forms` ON `forms`.`id` = `form_entries`.`form_id` LEFT OUTER JOIN `machines` ON `machines`.`id` = `form_entries`.`machine_id` LEFT OUTER JOIN `users` ON `users`.`id` = `form_entries`.`user_id` LEFT OUTER JOIN `users` AS `approved_user` ON `approved_user`.`id` = `form_entries`.`approved_user_id` WHERE `form_entries`.`form_id` = ".$form_id." ORDER BY `qa_year` DESC, `qa_month` DESC");
   while ($form_entry = mysqli_fetch_assoc($form_entries)) {
     if ($form_entry['approved_on'] == '') {
       $row_class = " class='error'";
