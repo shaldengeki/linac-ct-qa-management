@@ -31,7 +31,10 @@ start_html($database, $user, "UC Medicine QA", "", $_REQUEST['status'], $_REQUES
       <li><s>Change backups to zip</s></li>
       <li><s>User password changes</s></li>
       <li><s>Red input boxes</s></li>
-      <li>Save form button</li>
+      <li><s>Save form button</s></li>
+      <li><s>Restructure machines to account for machine-specific parameters</s></li>
+      <li><s>Linac Monthly form tabs</s></li>
+      <li><s>Allow admins to reassign form entries</s></li>
       <li>Print to PDF</li>
       <li>Form entry pass/fail</li>
       <li>Domain name change (ucqa.org)</li>

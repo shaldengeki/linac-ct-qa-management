@@ -7,6 +7,21 @@ if (!$user->loggedIn($database)) {
 if (isset($_POST['machine'])) {
   $createMachine = $database->create_or_update_machine($user, $_POST['machine']);
   redirect_to($createmachine);
+} elseif ($_REQUEST['action'] == 'get_parameters' && isset($_REQUEST['id']) && is_numeric($_REQUEST['id'])) {
+  // return a js response instantiating all the parameters and values for this machine.
+  $machineParameters = $database->stdQuery("SELECT `machine_type_attributes`.`name`, `machine_parameters`.`value` FROM `machine_type_attributes` LEFT OUTER JOIN `machine_parameters` ON `machine_type_attributes`.`id` = `machine_parameters`.`machine_type_attribute_id` WHERE `machine_parameters`.`machine_id` = ".intval($_REQUEST['id']));
+  $parametersOutput = array();
+  while ($parameter = mysqli_fetch_assoc($machineParameters)) {
+    @$value = unserialize($parameter['value']);
+    if (!$value) {
+      $value = $parameter['value'];
+    } else {
+      $value = json_encode($value);
+    }
+    $parametersOutput[] = $parameter['name']." = ".$value.";";
+  }
+  echo implode("\n", $parametersOutput);
+  exit;
 }
 
 start_html($database, $user, "UC Medicine QA", "Manage Machines", $_REQUEST['status'], $_REQUEST['class']);

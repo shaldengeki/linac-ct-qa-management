@@ -185,7 +185,7 @@ function display_month_year_dropdown($select_id="", $select_name_prefix="form_en
 echo "</select>
 <select id='".escape_output($select_id)."' name='".escape_output($select_name_prefix)."[qa_year]'>
 ";
-  for ($year = 2007; $year <= intval(date('Y', time())); $year++) {
+  for ($year = intval(date('Y', time())); $year >= 2007; $year--) {
     echo "  <option value='".$year."'".(($selected[1] === $year) ? "selected='selected'" : "").">".$year."</option>
 ";
   }
@@ -757,6 +757,7 @@ function display_form_entry_edit_form($database, $user, $id=false, $form_id=fals
     echo "Please specify a valid form entry ID or form ID.";
     return;
   }
+  $jsParameters = array();
   if (!($id === false)) {
     $formValues = $database->stdQuery("SELECT * FROM `form_values` WHERE `form_entry_id` = ".intval($id));
     while ($formValue = mysqli_fetch_assoc($formValues)) {
@@ -765,15 +766,35 @@ function display_form_entry_edit_form($database, $user, $id=false, $form_id=fals
         $formEntryObject['form_values'][$formField] = $formValue['value'];
       }
     }
+    // instantiate all machine_type_attributes in php and js.
+    $machineParameters = $database->stdQuery("SELECT `machine_type_attributes`.`name`, `machine_parameters`.`value` FROM `machine_type_attributes` LEFT OUTER JOIN `machine_parameters` ON `machine_type_attributes`.`id` = `machine_parameters`.`machine_type_attribute_id` WHERE `machine_parameters`.`machine_id` = ".intval($formEntryObject['machine_id']));
+    while ($parameter = mysqli_fetch_assoc($machineParameters)) {
+      @$value = unserialize($parameter['value']);
+      if (!$value) {
+        $value = $parameter['value'];
+      } else {
+        $value = json_encode($value);
+      }
+      ${$parameter['name']} = $value;
+      $jsParameters[$parameter['name']] = $value;
+    }
+  } else {
+    // instantiate all the global machine parameters.
+    $machineParameters = $database->stdQuery("SELECT `machine_type_attributes`.`name` FROM `machine_type_attributes`");
+    while ($parameter = mysqli_fetch_assoc($machineParameters)) {
+      ${$parameter['name']} = array();
+      $jsParameters[$parameter['name']] = "{}";
+    }
   }
   if ($formObject['php'] != '' && $formObject['php'] != 'NULL') {
     eval($formObject['php']);
   }
   if ($formObject['js'] != '' && $formObject['js'] != 'NULL') {
-    echo "<script type='text/javascript'>
-  ".$formObject['js']."
-</script>
-";
+    echo "<script type='text/javascript'>\n";
+    foreach ($jsParameters as $name => $value) {
+      echo "var ".$name." = ".$value.";\n";
+    }
+    echo $formObject['js']."\n</script>\n";
   }
 }
 
@@ -810,6 +831,23 @@ function display_users($database, $user) {
   }
   echo "  </tbody>
 </table>
+";
+}
+
+function display_user_dropdown($database, $user, $select_id="user_id", $selected=0) {
+  if ($selected != 0) {
+    $userObject = $database->queryFirstRow("SELECT `facility_id` FROM `users` WHERE `id` = ".intval($selected));
+  } else {
+    $userObject = array('facility_id' => intval($user->facility_id));
+  }
+  echo "<select id='".escape_output($select_id)."' name='".escape_output($select_id)."'>
+";
+  $facilityUsers = $database->stdQuery("SELECT `id`, `name` FROM `users` WHERE `facility_id` = ".intval($userObject['facility_id'])." ORDER BY `name` ASC");
+  while ($user = mysqli_fetch_assoc($facilityUsers)) {
+    echo "  <option value='".intval($user['id'])."'".(($selected == intval($user['id'])) ? "selected='selected'" : "").">".escape_output($user['name'])."</option>
+";
+  }
+  echo "</select>
 ";
 }
 

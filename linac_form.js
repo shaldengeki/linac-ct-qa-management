@@ -49,42 +49,14 @@ function calculateOutputCalibrationStats(type, id_prefix) {
         var p_ion = 1.01;
         break;
       case 'photon':
-        switch (id_prefix.substr(-5)) {
-          case 'n_6MV':
-            var p_ion = 1.001;
-            var k_q = 0.992;
-            var D_w_abs = 0.85;
-            break;
-          case '_10MV':
-            var p_ion = 1.000;
-            var k_q = 0.978;
-            var D_w_abs = 0.9;
-            break;
-          case '_15MV':
-            var p_ion = 1.004;
-            var k_q = 0.974;
-            var D_w_abs = 0.9;
-            break;
-          case '_18MV':
-          var p_ion = 1.001;
-          var k_q = 0.965;
-          var D_w_abs = 0.85;
-            break;
-          case '6XFFF':
-            var p_ion = 1.005;
-            var k_q = 0.996;
-            var D_w_abs = 0.85;
-            break;
-          case '0XFFF':
-            var p_ion = 1.011;
-            var k_q = 0.983;
-            var D_w_abs = 0.9;
-            break;
-        }
+        p_ion = p_ion_choices[id_prefix.substr(-5)];
+        k_q = k_q_choices[id_prefix.substr(-5)];
+        D_w_abs = D_w_abs_choices[id_prefix.substr(-5)];
         $('#' + id_prefix + '_Dw_abs').val(D_w_abs);
         break;
     }
     
+
     if ($('#form_entry_form_values_tpcf').val() != '') {
       var M = qAvg * parseFloat($('#form_entry_form_values_tpcf').val()) * p_ion * k_elec;
       $('#' + id_prefix + '_M').val(roundNumber(M, 7));
@@ -138,26 +110,7 @@ function calculateTPRStats(id_prefix, outputCalibration_prefix) {
     }
     var qAvg_outputCalibration = (parseFloat($('#' + outputCalibration_prefix + '_q1').val()) + parseFloat($('#' + outputCalibration_prefix + '_q2').val()) + parseFloat($('#' + outputCalibration_prefix + '_q3').val())) / 3.0;
     
-    switch (id_prefix.substr(-5)) {
-      case 'r_6MV':
-        var TPR_abs = 1.188;
-        break;
-      case '_10MV':
-        var TPR_abs = 1.142;
-        break;
-      case '_15MV':
-        var TPR_abs = 1.124;
-        break;
-      case '_18MV':
-        var TPR_abs = 1.110;
-        break;
-      case '6XFFF':
-        var TPR_abs = 1.228;
-        break;
-      case '0XFFF':
-        var TPR_abs = 1.166;
-        break;
-    }
+    TPR_abs = TPR_abs_choices[id_prefix.substr(-5)];
     $('#' + id_prefix + '_TPR_abs').val(TPR_abs);
     
     var TPR = qAvg / qAvg_outputCalibration;
@@ -191,20 +144,7 @@ function calculateEDWStats(id_prefix, TPR_prefix) {
     $('#' + id_prefix + '_avg').val(qAvg);
     var qAvg_TPR = (parseFloat($('#' + TPR_prefix + '_q1').val()) + parseFloat($('#' + TPR_prefix + '_q2').val()) + parseFloat($('#' + TPR_prefix + '_q3').val())) / 3.0;
 
-    switch (id_prefix.substr(-4)) {
-      case '_6MV':
-        var WF_abs = 0.661;
-        break;
-      case '10MV':
-        var WF_abs = 0.701;
-        break;
-      case '15MV':
-        var WF_abs = 0.716;
-        break;
-      case '18MV':
-        var WF_abs = 0.719;
-        break;
-    }
+    WF_abs = WF_abs_choices[id_prefix.substr(-4)];
     
     $('#' + id_prefix + '_WF_abs').val(WF_abs);
     
@@ -226,12 +166,11 @@ function calculateEnergyRatioStats(id_prefix, outputCalibration_prefix) {
     }
     var qAvg_outputCalibration = (parseFloat($('#' + outputCalibration_prefix + '_q1').val()) + parseFloat($('#' + outputCalibration_prefix + '_q2').val()) + parseFloat($('#' + outputCalibration_prefix + '_q3').val())) / 3.0;
     
-    PDD_choices = {"_6MeV": 0.840, "_9MeV": 0.863, "12MeV": 0.913, "16MeV": 0.853, "20MeV": 0.862};
     percentDiff_mins = {"_6MeV": 0.6921, "_9MeV": 0.7763, "12MeV": 0.861, "16MeV": 0.812, "20MeV": 0.840};
     percentDiff_maxes = {"_6MeV": 0.9368, "_9MeV": 0.9362, "12MeV": 0.949, "16MeV": 0.889, "20MeV": 0.884};
     
     var PDD = qAvg / qAvg_outputCalibration;
-    var PDD_ref = PDD_choices[id_prefix.substr(-5)];
+    var PDD_ref = PDD_ref_choices[id_prefix.substr(-5)];
     var percentDiff = (PDD - PDD_ref) / PDD_ref * 100;
 
     $('#' + id_prefix + '_PDD').val(roundNumber(PDD, 7));    
@@ -301,8 +240,23 @@ function calculateAllEnergyRatioStats() {
   calculateEnergyRatioStats('form_entry_form_values_energy_ratio_20MeV', 'form_entry_form_values_electron_output_calibration_adjusted_20MeV');
 }
 
+function calculateAllDosimetryStats() {
+  calculateAllOutputCalibrationStats();
+  calculateAllTPRStats();
+  calculateAllGatingStats();
+  calculateAllEDWStats();
+  calculateAllEnergyRatioStats();
+}
+
 function bindAllOutputCalibrationStats() {
   // bind all events related to the output calibration tables.
+  $('#form_entry\\[machine_id\\]').change(function() {
+    $.getScript("machine.php?action=get_parameters&id=" + $(this).val(), function() {
+      calculateAllDosimetryStats();
+    });
+  });
+
+
   entries = [ 
     {'name': '6MV', 'type': 'photon'},
     {'name': '10MV', 'type': 'photon'},

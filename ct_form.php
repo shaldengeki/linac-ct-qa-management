@@ -317,10 +317,27 @@
     <h3>Comments</h3>
     <textarea name='form_entry[comments]' id='form_entry_comments' rows='10' class='span12' placeholder='Comments go here.'>".(($id === false) ? "" : escape_output($formEntryObject['comments']))."</textarea><br />
     <div class='form-actions'>
-      <button type='submit' class='btn btn-primary'>".(($id === false) ? "Save entry" : "Save changes")."</button>
-      <a class='btn' href='#' onClick='window.location.replace(document.referrer);' >".(($id === false) ? "Go back" : "Discard changes")."</a>
-    </div>
-  </fieldset>
+";
+    if ($id != false && $formEntryObject['approved_on'] != '') {
+    echo "      <button type='submit' class='btn btn-primary disabled' disabled='disabled'>Approved</button>
+";    
+    } else {
+    echo "      <button type='submit' class='btn btn-primary'>".(($id === false) ? "Save" : "Save changes")."</button>
+";
+    }
+    echo "      <a class='btn' href='#' onClick='window.location.replace(document.referrer);' >".(($id === false) ? "Go back" : "Discard changes")."</a>
+";
+    if ($id != false && $user->isPhysicist($database)) {
+      if ($formEntryObject['approved_on'] == '') {
+        echo "      <a class='btn btn-success' href='form_entry.php?action=approve&id=".intval($id)."'>Approve</a>
+";
+      } else {
+        echo "      <a class='btn btn-warning' href='form_entry.php?action=unapprove&id=".intval($id)."'>Unapprove</a>
+";
+      }
+    }
+    echo "    </div>
+    </fieldset>
 </form>
 ";
 ?>

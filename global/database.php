@@ -234,6 +234,15 @@ class DbConn extends mysqli {
           if ($checkApproval != '') {
             return array('location' => 'form_entry.php?action=edit&id='.intval($get_form_entry_id), 'status' => "This form entry has already been approved and must be un-approved to make changes.");
           }
+          //check to ensure the provided user is valid.
+          if (intval($form_entry['user_id']) != $user->id && !$user->isAdmin($this)) {
+            return array('location' => 'form_entry.php?action=edit&id='.intval($get_form_entry_id), 'status' => "You aren't allowed to assign this form entry to that user.");
+          }
+          //check to ensure selected user exists and is part of this facility.
+          $checkUserExists = $this->queryFirstValue("SELECT `facility_id` FROM `users` WHERE `id` = ".intval($form_entry['user_id'])." LIMIT 1");
+          if (!$checkUserExists || intval($checkUserExists) != $user->facility_id) {
+            return array('location' => 'form_entry.php?action=edit&id='.intval($get_form_entry_id), 'status' => "You aren't allowed to assign this form entry to that user.");
+          }
           //otherwise, update this form entry.
           foreach ($form_entry['form_values'] as $name=>$value) {
             if ($value == 'NULL') {
@@ -275,7 +284,7 @@ class DbConn extends mysqli {
               return array('location' => 'form_entry.php'.((isset($get_form_entry_id)) ? "?id=".intval($get_form_entry_id) : ""), 'status' => "There was an error moving your uploaded file.", 'class' => 'error');
             }
           }
-          $updateFormEntry = $this->stdQuery("UPDATE `form_entries` SET `machine_id` = ".intval($form_entry['machine_id']).", `image_path` = ".$this->quoteSmart($imagePath).", `created_at` = '".date('Y-m-d H:i:s', strtotime($form_entry['created_at']))."', `qa_month` = ".intval($form_entry['qa_month']).", `qa_year` = ".intval($form_entry['qa_year']).", `updated_at` = '".date('Y-m-d H:i:s')."' WHERE `id` = ".intval($form_entry['id'])." LIMIT 1");
+          $updateFormEntry = $this->stdQuery("UPDATE `form_entries` SET `user_id` = ".intval($form_entry['user_id']).", `machine_id` = ".intval($form_entry['machine_id']).", `image_path` = ".$this->quoteSmart($imagePath).", `created_at` = '".date('Y-m-d H:i:s', strtotime($form_entry['created_at']))."', `qa_month` = ".intval($form_entry['qa_month']).", `qa_year` = ".intval($form_entry['qa_year']).", `updated_at` = '".date('Y-m-d H:i:s')."' WHERE `id` = ".intval($form_entry['id'])." LIMIT 1");
           return array('location' => 'form_entry.php?action=index&form_id='.$form_entry['form_id'], 'status' => "Successfully updated form entry.", 'class' => 'success');
         } else {
           // inserting a form entry.
@@ -284,7 +293,18 @@ class DbConn extends mysqli {
           if (!$checkForm || $checkForm != 1) {
             return array('location' => 'form_entry.php?action=new'.((isset($form_entry['form_id'])) ? "&form_id=".intval($form_entry['form_id']) : ""), 'status' => "The specified form does not exist.", 'class' => 'error');                  
           }
-          $insertEntry = $this->stdQuery("INSERT INTO `form_entries` (`form_id`, `machine_id`, `user_id`, `comments`, `image_path`, `created_at`, `qa_month`, `qa_year`, `updated_at`) VALUES (".intval($form_entry['form_id']).", ".intval($form_entry['machine_id']).", ".intval($user->id).", ".$this->quoteSmart($form_entry['comments']).", '', '".date('Y-m-d H:i:s', strtotime($form_entry['created_at']))."', ".intval($form_entry['qa_month']).", ".intval($form_entry['qa_year']).", '".date('Y-m-d H:i:s')."')");
+
+          //check to ensure the provided user is valid.
+          if (intval($form_entry['user_id']) != $user->id && !$user->isAdmin($this)) {
+            return array('location' => 'form_entry.php?action=new'.((isset($form_entry['form_id'])) ? "&form_id=".intval($form_entry['form_id']) : ""), 'status' => "You aren't allowed to assign this form entry to that user.");
+          }
+          //check to ensure selected user exists and is part of this facility.
+          $checkUserExists = $this->queryFirstValue("SELECT `facility_id` FROM `users` WHERE `id` = ".intval($form_entry['user_id'])." LIMIT 1");
+          if (!$checkUserExists || intval($checkUserExists) != $user->facility_id) {
+            return array('location' => 'form_entry.php?action=new'.((isset($form_entry['form_id'])) ? "&form_id=".intval($form_entry['form_id']) : ""), 'status' => "You aren't allowed to assign this form entry to that user.");
+          }
+
+          $insertEntry = $this->stdQuery("INSERT INTO `form_entries` (`form_id`, `machine_id`, `user_id`, `comments`, `image_path`, `created_at`, `qa_month`, `qa_year`, `updated_at`) VALUES (".intval($form_entry['form_id']).", ".intval($form_entry['machine_id']).", ".intval($form_entry['user_id']).", ".$this->quoteSmart($form_entry['comments']).", '', '".date('Y-m-d H:i:s', strtotime($form_entry['created_at']))."', ".intval($form_entry['qa_month']).", ".intval($form_entry['qa_year']).", '".date('Y-m-d H:i:s')."')");
           $form_entry['id'] = intval($this->insert_id);
           $valueQueryArray = [];
           foreach ($form_entry['form_values'] as $name=>$value) {
