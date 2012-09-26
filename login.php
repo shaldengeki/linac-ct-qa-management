@@ -8,6 +8,6 @@ if (!isset($_POST['username']) || !isset($_POST['password'])) {
 $username=$_POST['username']; 
 $password=$_POST['password'];
 
-$loginResult = $user->logIn($database, $username, $password);
+$loginResult = $user->logIn($username, $password);
 redirect_to($loginResult);
 ?>

@@ -1,6 +1,6 @@
 <?php
 include_once("global/includes.php");
-if (!$user->loggedIn($database)) {
+if (!$user->loggedIn()) {
   header("Location: index.php");
 }
 
@@ -28,7 +28,7 @@ start_html($database, $user, "UC Medicine QA", "Manage Machines", $_REQUEST['sta
 
 switch($_REQUEST['action']) {
   case 'new':
-    if (!$user->isAdmin($database)) {
+    if (!$user->isAdmin()) {
       display_error("Error: Insufficient privileges", "You must be an administrator to add machines.");
       break;
     }
@@ -42,7 +42,7 @@ switch($_REQUEST['action']) {
       break;
     }
     //ensure that user has sufficient privileges to modify this machine.
-    if (!$user->isAdmin($database)) {
+    if (!$user->isAdmin()) {
       display_error("Error: Insufficient privileges", "You must be an administrator to modify machines.");
       break;
     }

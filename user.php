@@ -1,6 +1,6 @@
 <?php
 include_once("global/includes.php");
-if (!$user->loggedIn($database)) {
+if (!$user->loggedIn()) {
   header("Location: index.php");
 }
 
@@ -16,7 +16,7 @@ start_html($database, $user, "UC Medicine QA", "Manage Users", $_REQUEST['status
 
 switch($_REQUEST['action']) {
   case 'new':
-    if (!$user->isAdmin($database)) {
+    if (!$user->isAdmin()) {
       display_error("Error: Insufficient privileges", "You must be an administrator to register users.");
       break;
     }
@@ -30,11 +30,11 @@ switch($_REQUEST['action']) {
       break;
     }
     //ensure that user has sufficient privileges to modify this machine.
-    if (intval($_REQUEST['id']) != $user->id && !$user->isAdmin($database)) {
+    if (intval($_REQUEST['id']) != $user->id && !$user->isAdmin()) {
       display_error("Error: Insufficient privileges", "You do not have privileges to modify this user.");
       break;
     }
-    if ($user->isAdmin($database)) {
+    if ($user->isAdmin()) {
       $facility_id = $database->queryFirstValue("SELECT `facility_id` FROM `users` WHERE `id` = ".intval($_REQUEST['id'])." LIMIT 1");
       if (!$facility_id) {
         display_error("Error: Invalid user ID", "Please check your ID and try again.");

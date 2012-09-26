@@ -6,42 +6,60 @@ class User {
   public $userlevel;
   public $facility_id;
   public $email;
-  public function __construct($inputArray) {
-    foreach ($inputArray as $key=>$value) {
-      @$this->{$key}= $value;
+  public $dbConn;
+  public function __construct($database, $id, $inputArray=False) {
+    $this->dbConn = $database;
+    if ($id == 0) {
+      $this->id = 0;
+      $this->name = "Guest";
+      $this->userlevel = 0;
+      $this->facility_id = 0;
+      $this->email = "";
+    } else {
+      $userInfo = $this->dbConn->queryFirstRow("SELECT `id`, `name`, `userlevel`, `email`, `facility_id` FROM `users` WHERE `id` = ".intval($id)." LIMIT 1");
+      $this->id = intval($userInfo['id']);
+      $this->name = $userInfo['name'];
+      $this->userlevel = intval($userInfo['userlevel']);
+      $this->email = $userInfo['email'];
+      $this->facility_id = intval($userInfo['facility_id']);
+    }
+    if (is_array($inputArray)) {
+      foreach ($inputArray as $key=>$value) {
+        @$this->{$key}= $value;
+      }
     }
   }
-  public function loggedIn($database) {
+  public function loggedIn() {
     //if userID is not proper, or if user's last IP was not the requester's IP, return false.
     if (intval($this->id) <= 0) {
       return false;
     }
-    $thisUserInfo = $database->queryFirstRow("SELECT `last_ip` FROM `users` WHERE `id` = ".intval($this->id)." LIMIT 1");
+    $thisUserInfo = $this->dbConn->queryFirstRow("SELECT `last_ip` FROM `users` WHERE `id` = ".intval($this->id)." LIMIT 1");
     if ($thisUserInfo['last_ip'] != $_SERVER['REMOTE_ADDR']) {
       return false;
     }
     return true;
   }
-  public function logIn($database, $username, $password) {
+  public function logIn($username, $password) {
     // rate-limit requests.
-    $numFailedRequests = $database->queryCount("SELECT COUNT(*) FROM `failed_logins` WHERE `ip` = ".$database->quoteSmart($_SERVER['REMOTE_ADDR'])." AND `date` > NOW() - INTERVAL 1 HOUR");
+    $numFailedRequests = $this->dbConn->queryCount("SELECT COUNT(*) FROM `failed_logins` WHERE `ip` = ".$this->dbConn->quoteSmart($_SERVER['REMOTE_ADDR'])." AND `date` > NOW() - INTERVAL 1 HOUR");
     if ($numFailedRequests > 5) {
       return array("location" => "index.php", "status" => "You have had too many unsuccessful login attempts. Please wait awhile and try again.", 'class' => 'error');
     }
   
     $bcrypt = new Bcrypt();
-    $findUsername = $database->queryFirstRow("SELECT `id`, `name`, `facility_id`, `userlevel`, `password_hash` FROM `users` WHERE `email` = ".$database->quoteSmart($username)." LIMIT 1");
+    $findUsername = $this->dbConn->queryFirstRow("SELECT `id`, `name`, `facility_id`, `userlevel`, `password_hash` FROM `users` WHERE `email` = ".$this->dbConn->quoteSmart($username)." LIMIT 1");
     if (!$findUsername) {
-      $database->log_failed_login($username, $password);
+      $this->dbConn->log_failed_login($username, $password);
       return array("location" => "index.php", "status" => "Could not log in with the supplied credentials.", 'class' => 'error');
     }
     if (!$bcrypt->verify($password, $findUsername['password_hash'])) {
-      $database->log_failed_login($username, $password);
+      $this->dbConn->log_failed_login($username, $password);
       return array("location" => "index.php", "status" => "Could not log in with the supplied credentials.", 'class' => 'error');
     }
     
     //update last IP address.
-    $updateLastIP = $database->stdQuery("UPDATE `users` SET `last_ip` = ".$database->quoteSmart($_SERVER['REMOTE_ADDR'])." WHERE `id` = ".intval($findUsername['id'])." LIMIT 1");
+    $updateLastIP = $this->dbConn->stdQuery("UPDATE `users` SET `last_ip` = ".$this->dbConn->quoteSmart($_SERVER['REMOTE_ADDR'])." WHERE `id` = ".intval($findUsername['id'])." LIMIT 1");
     $_SESSION['id'] = $findUsername['id'];
     $_SESSION['name'] = $findUsername['name'];
     $_SESSION['facility_id'] = $findUsername['facility_id'];
@@ -51,9 +69,9 @@ class User {
     $this->userlevel = intval($findUsername['userlevel']);
     return array("location" => "main.php", "status" => "Successfully logged in.", 'class' => 'success');
   }
-  public function register($database, $name, $email, $password, $password_confirmation, $facility_id) {
+  public function register($name, $email, $password, $password_confirmation, $facility_id) {
     //registration is closed to all non-admin users.
-    if (!$this->loggedIn($database) || !$this->isAdmin($database)) {
+    if (!$this->loggedIn() || !$this->isAdmin()) {
       $returnArray = array("location" => "register.php", "status" => "Registration is closed to all non-admin users. Please contact your facility administrator for access.");
     } else {
       //check if user's passwords match.
@@ -66,18 +84,18 @@ class User {
           $returnArray = array("location" => "register.php", "status" => "The email address you have entered is malformed. Please check it and try again.");
         } else {
           //check if user is already registered.
-          $checkNameEmail = intval($database->queryCount("SELECT COUNT(*) FROM `users` WHERE (`name` = ".$database->quoteSmart($name)." || `email` = ".$database->quoteSmart($email).")"));
+          $checkNameEmail = intval($this->dbConn->queryCount("SELECT COUNT(*) FROM `users` WHERE (`name` = ".$this->dbConn->quoteSmart($name)." || `email` = ".$this->dbConn->quoteSmart($email).")"));
           if ($checkNameEmail > 0) {
             $returnArray = array("location" => "register.php", "status" => "Your name or email has previously been registered. Please try logging in.");
           } else {
             //check if this facility exists.
-            $checkFacilityExists = intval($database->queryCount("SELECT COUNT(*) FROM `facilities` WHERE `id` = ".intval($facility_id)));
+            $checkFacilityExists = intval($this->dbConn->queryCount("SELECT COUNT(*) FROM `facilities` WHERE `id` = ".intval($facility_id)));
             if ($checkFacilityExists < 1) {
               $returnArray = array("location" => "register.php", "status" => "That facility does not exist. Please try again.", 'class' => 'error');
             } else {
               //register this user.
               $bcrypt = new Bcrypt();
-              $registerUser = $database->stdQuery("INSERT INTO `users` SET `name` = ".$database->quoteSmart($name).", `email` = ".$database->quoteSmart($email).", `password_hash` = ".$database->quoteSmart($bcrypt->hash($password)).", `userlevel` = 1, `last_ip` = ".$database->quoteSmart($_SERVER['REMOTE_ADDR']).", `facility_id` = ".intval($facility_id));
+              $registerUser = $this->dbConn->stdQuery("INSERT INTO `users` SET `name` = ".$this->dbConn->quoteSmart($name).", `email` = ".$this->dbConn->quoteSmart($email).", `password_hash` = ".$this->dbConn->quoteSmart($bcrypt->hash($password)).", `userlevel` = 1, `last_ip` = ".$this->dbConn->quoteSmart($_SERVER['REMOTE_ADDR']).", `facility_id` = ".intval($facility_id));
               if (!$registerUser) {
                 $returnArray = array("location" => "register.php", "status" => "Database errors were encountered during registration. Please try again later.", 'class' => 'error');
               } else {
@@ -90,31 +108,37 @@ class User {
     }
     return $returnArray;
   }
-  public function isPhysicist($database) {
-    if (!$this->loggedIn($database)) {
+  public function isPhysicist() {
+    if (!$this->loggedIn()) {
       return false;
     }
-    $checkUserlevel = $database->queryFirstValue("SELECT `userlevel` FROM `users` WHERE `id` = ".intval($this->id));
-    if (!$checkUserlevel or intval($checkUserlevel) != 2) {
+    if (!$this->userlevel or intval($this->userlevel) != 2) {
       return false;
     }
+    // $checkUserlevel = $this->dbConn->queryFirstValue("SELECT `userlevel` FROM `users` WHERE `id` = ".intval($this->id));
+    // if (!$checkUserlevel or intval($checkUserlevel) != 2) {
+    //   return false;
+    // }
     return true;
   }
-  public function isAdmin($database) {
-    if (!$this->loggedIn($database)) {
+  public function isAdmin() {
+    if (!$this->loggedIn()) {
       return false;
     }
-    $checkUserlevel = $database->queryFirstValue("SELECT `userlevel` FROM `users` WHERE `id` = ".intval($this->id));
-    if (!$checkUserlevel or intval($checkUserlevel) < 3) {
+    if (!$this->userlevel or intval($this->userlevel) < 3) {
       return false;
     }
+    // $checkUserlevel = $this->dbConn->queryFirstValue("SELECT `userlevel` FROM `users` WHERE `id` = ".intval($this->id));
+    // if (!$checkUserlevel or intval($checkUserlevel) < 3) {
+    //   return false;
+    // }
     return true;
   }
-  public function facility($database) {
+  public function facility() {
     if (!$this->facility_id) {
       return false;
     }
-    $getFacility = $database->queryFirstRow("SELECT * FROM `facilities` WHERE `id` = ".intval($this->facility_id)." LIMIT 1");
+    $getFacility = $this->dbConn->queryFirstRow("SELECT * FROM `facilities` WHERE `id` = ".intval($this->facility_id)." LIMIT 1");
     if (!$getFacility) {
       return false;
     }

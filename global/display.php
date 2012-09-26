@@ -87,7 +87,7 @@ echo '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
         <div class="nav-collapse">
           <ul class="nav">
 ';
-  if ($user->loggedIn($database)) {
+  if ($user->loggedIn()) {
     $forms = $database->stdQuery("SELECT `id`, `name` FROM `forms` ORDER BY `id` ASC");
     while ($form = mysqli_fetch_assoc($forms)) {
       echo '              <li class="dropdown">
@@ -105,7 +105,7 @@ echo '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 ';
     }
   }
-  if ($user->isAdmin($database)) {
+  if ($user->isAdmin()) {
   echo '              <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                   Admin
@@ -128,7 +128,7 @@ echo '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
             <li class="divider-vertical"></li>
             <li class="dropdown">
 ';
-  if ($user->loggedIn($database)) {
+  if ($user->loggedIn()) {
     echo '              <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="icon-user icon-white"></i>'.escape_output($user->name).'<b class="caret"></b></a>
               <ul class="dropdown-menu">
                 <a href="/user.php?action=show&id='.intval($user->id).'">Profile</a>
@@ -203,7 +203,7 @@ function display_ok_notok_dropdown($select_id="ok_notok", $selected=0) {
 
 function display_facilities($database, $user) {
   //lists all facilities.
-  $userIsAdmin = $user->isAdmin($database);
+  $userIsAdmin = $user->isAdmin();
   echo "<table class='table table-striped table-bordered dataTable'>
   <thead>
     <tr>
@@ -537,7 +537,7 @@ function display_machine_edit_form($database, $user, $id=false) {
       </div>
     </div>
     <div class='control-group'>
-      <label class='control-label' for='machine[facility_id]'>Facility</label>
+      <label class='control-label' for='machine[machine_type_id]'>Machine Type</label>
       <div class='controls'>
 ";
   display_machine_type_dropdown($database, "machine[machine_type_id]", ($id === false) ? 0 : $machineObject['machine_type_id']);
@@ -549,8 +549,35 @@ function display_machine_edit_form($database, $user, $id=false) {
         <input name='machine[facility_id]' value='".intval($user->facility_id)."' type='hidden' />
         <span class='input-xlarge uneditable-input'>".escape_output($facility)."</span>
       </div>
-    </div>
-    <div class='form-actions'>
+    </div>\n";
+  if (!($id === false)) {
+    $machineAttributes = $database->stdQuery("SELECT `id`, `name`, `value` FROM `machine_type_attributes` LEFT OUTER JOIN `machine_parameters` ON `machine_type_attribute_id` = `machine_type_attributes`.`id` AND `machine_id` = ".intval($id)." WHERE `machine_type_id` = ".intval($machineObject['machine_type_id'])." ORDER BY `name` ASC");
+    if ($machineAttributes->num_rows > 0) {
+      echo "    <div class='control-group'>
+      <label class='control-label' for='machine[machine_parameters]'>Machine Parameters</label>
+      <div class='controls'>\n";
+      while ($machineAttribute = $machineAttributes->fetch_assoc()) {
+        echo "        <div class='control-group'>
+          <label class='control-label' for='machine[machine_parameters][".intval($machineAttribute['id'])."][value]'>".escape_output($machineAttribute['name'])."</label>\n";
+        $jsonArray = json_decode($machineAttribute['value'], true);
+        if ($jsonArray == null) {
+          echo "          <input name='machine[machine_parameters][".intval($machineAttribute['id'])."][value]' value='".escape_output($machineAttribute['value'])."' />\n";
+        } else {
+          echo "    <div class='controls'>\n";
+          foreach ($jsonArray as $key=>$value) {
+            echo "            <label class='control-label' for='machine[machine_parameters][".intval($machineAttribute['id'])."][".escape_output($key)."]'>".escape_output($key)."</label>
+            <div class='controls'>
+              <input name='machine[machine_parameters][".intval($machineAttribute['id'])."][".escape_output($key)."]' value='".escape_output($value)."' />
+            </div><br />\n";
+          }
+          echo "          </div>\n";
+        }
+        echo "        </div>\n";
+      }
+      echo "    </div>\n";
+    }
+  }
+  echo "    <div class='form-actions'>
       <button type='submit' class='btn btn-primary'>".(($id === false) ? "Add Machine" : "Save changes")."</button>
       <a href='#' onClick='window.location.replace(document.referrer);' class='btn'>".(($id === false) ? "Go back" : "Discard changes")."</a>
     </div>
@@ -813,7 +840,7 @@ function display_users($database, $user) {
   </thead>
   <tbody>
 ";
-  if ($user->isAdmin($database)) {
+  if ($user->isAdmin()) {
     $users = $database->stdQuery("SELECT `users`.`id`, `users`.`name`, `users`.`email`, `users`.`userlevel`, `facilities`.`name` AS `facility_name` FROM `users` LEFT OUTER JOIN `facilities` ON `users`.`facility_id` = `facilities`.`id` ORDER BY `users`.`name` ASC");
   } else {
     $users = $database->stdQuery("SELECT `users`.`id`, `users`.`name`, `users`.`email`, `users`.`userlevel`, `facilities`.`name` AS `facility_name` FROM `users` LEFT OUTER JOIN `facilities` ON `users`.`facility_id` = `facilities`.`id` WHERE `users`.`facility_id` = ".intval($user->facility_id)." ORDER BY `users`.`name` ASC");
@@ -824,8 +851,8 @@ function display_users($database, $user) {
       <td>".escape_output($thisUser['email'])."</td>
       <td>".escape_output(convert_userlevel_to_text($thisUser['userlevel']))."</td>
       <td>".escape_output($thisUser['facility_name'])."</td>
-      <td>"; if ($user->isAdmin($database)) { echo "<a href='user.php?action=edit&id=".intval($thisUser['id'])."'>Edit</a>"; } echo "</td>
-      <td>"; if ($user->isAdmin($database)) { echo "<a href='user.php?action=delete&id=".intval($thisUser['id'])."'>Delete</a>"; } echo "</td>
+      <td>"; if ($user->isAdmin()) { echo "<a href='user.php?action=edit&id=".intval($thisUser['id'])."'>Edit</a>"; } echo "</td>
+      <td>"; if ($user->isAdmin()) { echo "<a href='user.php?action=delete&id=".intval($thisUser['id'])."'>Delete</a>"; } echo "</td>
     </tr>
 ";
   }
@@ -901,7 +928,7 @@ function display_user_edit_form($database, $user, $id=false) {
       </div>
     </div>
 ";
-  if ($user->isAdmin($database)) {
+  if ($user->isAdmin()) {
     echo "    <div class='control-group'>
       <label class='control-label' for='user[facility_id]'>Facility</label>
       <div class='controls'>
@@ -928,7 +955,7 @@ function display_user_edit_form($database, $user, $id=false) {
 }
 
 function display_user_profile($database, $user, $user_id) {
-  $userObject = new User($database->queryFirstRow("SELECT * FROM `users` WHERE `id` = ".intval($user_id)." LIMIT 1"));
+  $userObject = new User($database, $user_id);
   $facility = $database->queryFirstValue("SELECT `name` FROM `facilities` WHERE `id` = ".intval($userObject->facility_id)." LIMIT 1");
   $form_entries = $database->stdQuery("SELECT `form_entries`.*, `forms`.`name` AS `form_name`, `machines`.`name` AS `machine_name` FROM `form_entries` 
                                         LEFT OUTER JOIN `forms` ON `forms`.`id` = `form_entries`.`form_id`
@@ -1074,7 +1101,7 @@ function display_history_json($database, $user, $fields = array(), $machines=arr
   header('Content-type: application/json');
   $return_array = array();
   
-  if (!$user->loggedIn($database)) {
+  if (!$user->loggedIn()) {
     $return_array['error'] = "You must be logged in to view history data.";
   } elseif (!is_array($fields) || !is_array($machines)) {
     $return_array['error'] = "Please provide a valid list of fields and machines.";  

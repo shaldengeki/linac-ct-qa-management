@@ -9,9 +9,9 @@ include_once("./global/misc.php");
 $database = new DbConn(MYSQL_HOST, MYSQL_USERNAME, MYSQL_PASSWORD, MYSQL_DATABASE);
 session_start();
 if (isset($_SESSION['id'])) {
-  $user = new User($_SESSION);
+  $user = new User($database, $_SESSION['id']);
 } else {
-  $user = new User(array("id" => 0, "name" => "Guest"));
+  $user = new User($database, 0);
 }
 if (!isset($_REQUEST['status'])) {
   $_REQUEST['status'] = "";

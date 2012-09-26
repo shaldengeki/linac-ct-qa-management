@@ -1,6 +1,6 @@
 <?php
 include_once("global/includes.php");
-if (!$user->loggedIn($database)) {
+if (!$user->loggedIn()) {
   header("Location: index.php");
 }
 

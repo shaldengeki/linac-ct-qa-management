@@ -327,7 +327,7 @@
     }
     echo "      <a class='btn' href='#' onClick='window.location.replace(document.referrer);' >".(($id === false) ? "Go back" : "Discard changes")."</a>
 ";
-    if ($id != false && $user->isPhysicist($database)) {
+    if ($id != false && $user->isPhysicist()) {
       if ($formEntryObject['approved_on'] == '') {
         echo "      <a class='btn btn-success' href='form_entry.php?action=approve&id=".intval($id)."'>Approve</a>
 ";

@@ -1,6 +1,8 @@
 <?php
 include_once("global/includes.php");
-if (!$user->loggedIn($database)) {
+if (!$user->loggedIn()) {
+  print_r($user);
+  exit;
   header("Location: index.php");
 }
 start_html($database, $user, "UC Medicine QA", "", $_REQUEST['status'], $_REQUEST['class']);

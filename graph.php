@@ -1,6 +1,6 @@
 <?php
 include_once("global/includes.php");
-if (!$user->loggedIn($database)) {
+if (!$user->loggedIn()) {
   redirect_to(array('location' => 'index.php', 'status' => 'Please log in to plot history.'));
 }
 
