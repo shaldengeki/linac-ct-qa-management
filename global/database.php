@@ -219,7 +219,7 @@ class DbConn extends mysqli {
       if ($machineFacility != $user->facility_id) {
         return array('location' => 'form_entry.php'.((isset($form_entry['id'])) ? "?id=".intval($form_entry['id']) : ""), 'status' => 'This machine does not belong to your facility.', 'class' => 'error');
       } else {
-        $formEntry = $this->queryFirstRow("SELECT `id`, `comments`, `image_path` FROM `form_entries` WHERE `id` = ".intval($form_entry['id'])." LIMIT 1"));
+        $formEntry = $this->queryFirstRow("SELECT `id`, `comments`, `image_path` FROM `form_entries` WHERE `id` = ".intval($form_entry['id'])." LIMIT 1");
         if ($formEntry) {
           // updating a form entry. check to ensure that this user has permissions to update this form.
           $checkUser = $this->queryFirstValue("SELECT `user_id` FROM `form_entries` WHERE `id` = ".intval($formEntry['id'])." && `form_id` = ".intval($form_entry['form_id']));
