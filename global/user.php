@@ -3,7 +3,7 @@
 class User {
   public $id;
   public $name;
-  public $userlevel;
+  public $usermask;
   public $facility_id;
   public $email;
   public $dbConn;
@@ -12,14 +12,14 @@ class User {
     if ($id == 0) {
       $this->id = 0;
       $this->name = "Guest";
-      $this->userlevel = 0;
+      $this->usermask = 0;
       $this->facility_id = 0;
       $this->email = "";
     } else {
-      $userInfo = $this->dbConn->queryFirstRow("SELECT `id`, `name`, `userlevel`, `email`, `facility_id` FROM `users` WHERE `id` = ".intval($id)." LIMIT 1");
+      $userInfo = $this->dbConn->queryFirstRow("SELECT `id`, `name`, `usermask`, `email`, `facility_id` FROM `users` WHERE `id` = ".intval($id)." LIMIT 1");
       $this->id = intval($userInfo['id']);
       $this->name = $userInfo['name'];
-      $this->userlevel = intval($userInfo['userlevel']);
+      $this->usermask = intval($userInfo['usermask']);
       $this->email = $userInfo['email'];
       $this->facility_id = intval($userInfo['facility_id']);
     }
@@ -48,7 +48,7 @@ class User {
     }
   
     $bcrypt = new Bcrypt();
-    $findUsername = $this->dbConn->queryFirstRow("SELECT `id`, `name`, `facility_id`, `userlevel`, `password_hash` FROM `users` WHERE `email` = ".$this->dbConn->quoteSmart($username)." LIMIT 1");
+    $findUsername = $this->dbConn->queryFirstRow("SELECT `id`, `name`, `facility_id`, `usermask`, `password_hash` FROM `users` WHERE `email` = ".$this->dbConn->quoteSmart($username)." LIMIT 1");
     if (!$findUsername) {
       $this->dbConn->log_failed_login($username, $password);
       return array("location" => "index.php", "status" => "Could not log in with the supplied credentials.", 'class' => 'error');
@@ -63,10 +63,10 @@ class User {
     $_SESSION['id'] = $findUsername['id'];
     $_SESSION['name'] = $findUsername['name'];
     $_SESSION['facility_id'] = $findUsername['facility_id'];
-    $_SESSION['userlevel'] = $findUsername['userlevel'];
+    $_SESSION['usermask'] = $findUsername['usermask'];
     $this->id = intval($findUsername['id']);
     $this->facility_id = intval($findUsername['facility_id']);
-    $this->userlevel = intval($findUsername['userlevel']);
+    $this->usermask = intval($findUsername['usermask']);
     return array("location" => "main.php", "status" => "Successfully logged in.", 'class' => 'success');
   }
   public function register($name, $email, $password, $password_confirmation, $facility_id) {
@@ -95,7 +95,7 @@ class User {
             } else {
               //register this user.
               $bcrypt = new Bcrypt();
-              $registerUser = $this->dbConn->stdQuery("INSERT INTO `users` SET `name` = ".$this->dbConn->quoteSmart($name).", `email` = ".$this->dbConn->quoteSmart($email).", `password_hash` = ".$this->dbConn->quoteSmart($bcrypt->hash($password)).", `userlevel` = 1, `last_ip` = ".$this->dbConn->quoteSmart($_SERVER['REMOTE_ADDR']).", `facility_id` = ".intval($facility_id));
+              $registerUser = $this->dbConn->stdQuery("INSERT INTO `users` SET `name` = ".$this->dbConn->quoteSmart($name).", `email` = ".$this->dbConn->quoteSmart($email).", `password_hash` = ".$this->dbConn->quoteSmart($bcrypt->hash($password)).", `usermask` = 1, `last_ip` = ".$this->dbConn->quoteSmart($_SERVER['REMOTE_ADDR']).", `facility_id` = ".intval($facility_id));
               if (!$registerUser) {
                 $returnArray = array("location" => "register.php", "status" => "Database errors were encountered during registration. Please try again later.", 'class' => 'error');
               } else {
@@ -108,30 +108,31 @@ class User {
     }
     return $returnArray;
   }
+  public function isResident() {
+    if (!$this->loggedIn()) {
+      return false;
+    }
+    if (!$this->usermask or !(intval($this->usermask) & 1)) {
+      return false;
+    }
+    return true;
+  }
   public function isPhysicist() {
     if (!$this->loggedIn()) {
       return false;
     }
-    if (!$this->userlevel or intval($this->userlevel) != 2) {
+    if (!$this->usermask or !(intval($this->usermask) & 2)) {
       return false;
     }
-    // $checkUserlevel = $this->dbConn->queryFirstValue("SELECT `userlevel` FROM `users` WHERE `id` = ".intval($this->id));
-    // if (!$checkUserlevel or intval($checkUserlevel) != 2) {
-    //   return false;
-    // }
     return true;
   }
   public function isAdmin() {
     if (!$this->loggedIn()) {
       return false;
     }
-    if (!$this->userlevel or intval($this->userlevel) < 3) {
+    if (!$this->usermask or !(intval($this->usermask) & 4)) {
       return false;
     }
-    // $checkUserlevel = $this->dbConn->queryFirstValue("SELECT `userlevel` FROM `users` WHERE `id` = ".intval($this->id));
-    // if (!$checkUserlevel or intval($checkUserlevel) < 3) {
-    //   return false;
-    // }
     return true;
   }
   public function facility() {

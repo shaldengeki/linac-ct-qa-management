@@ -45,160 +45,163 @@ function display_error($title="Error", $text="An unknown error occurred. Please 
 }
 
 function start_html($database, $user, $title="UC Medicine QA", $subtitle="", $status="", $statusClass="") {
-echo '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
-        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-	
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
-<head>
-	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>'.escape_output($title).($subtitle != "" ? " - ".escape_output($subtitle) : "").'</title>
-	<link rel="shortcut icon" href="/favicon.ico" />
-	<link rel="stylesheet" href="css/bootstrap.min.css" type="text/css" />
-	<link rel="stylesheet" href="css/bootstrap-responsive.min.css" type="text/css" />
-	<link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" type="text/css" />
-	<link rel="stylesheet" href="css/jquery.dataTables.css" type="text/css" />
-	<link rel="stylesheet" href="css/linac-qa.css" type="text/css" />
-  <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
-  <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.18/jquery-ui.min.js"></script>
-  <script type="text/javascript" src="js/jquery-ui-timepicker-addon.js"></script>
-	<script type="text/javascript" language="javascript" src="js/jquery.dropdownPlain.js"></script>
-	<script type="text/javascript" language="javascript" src="js/jquery.dataTables.min.js"></script>
-  <script type="text/javascript" src="js/d3.v2.min.js"></script>
-  <script type="text/javascript" src="js/d3-helpers.js"></script>
-  <script type="text/javascript" src="js/highcharts.js"></script>
-  <script type="text/javascript" src="js/exporting.js"></script>
-	<script type="text/javascript" language="javascript" src="js/calcFunctions.js"></script>
-	<script type="text/javascript" language="javascript" src="js/renderHighCharts.js"></script>
-	<script type="text/javascript" language="javascript" src="js/bootstrap.min.js"></script>
-	<script type="text/javascript" language="javascript" src="js/bootstrap-dropdown.js"></script>
-	<script type="text/javascript" language="javascript" src="js/loadInterface.js"></script>
-</head>
-<body>
-  <div class="navbar navbar-inverse navbar-fixed-top">
-    <div class="navbar-inner">
-      <div class="container-fluid">
-        <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-        </a>
-        <a href="./index.php" class="brand">UC Medicine QA</a>
-        <div class="nav-collapse">
-          <ul class="nav">
-';
+  echo '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">'."\n\n".'<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+  	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  	<title>'.escape_output($title).($subtitle != "" ? " - ".escape_output($subtitle) : "").'</title>
+  	<link rel="shortcut icon" href="/favicon.ico" />
+  	<link rel="stylesheet" href="css/bootstrap.min.css" type="text/css" />
+  	<link rel="stylesheet" href="css/bootstrap-responsive.min.css" type="text/css" />
+  	<link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" type="text/css" />
+  	<link rel="stylesheet" href="css/jquery.dataTables.css" type="text/css" />
+  	<link rel="stylesheet" href="css/linac-qa.css" type="text/css" />
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.18/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="js/jquery-ui-timepicker-addon.js"></script>
+  	<script type="text/javascript" language="javascript" src="js/jquery.dropdownPlain.js"></script>
+  	<script type="text/javascript" language="javascript" src="js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" src="js/d3.v2.min.js"></script>
+    <script type="text/javascript" src="js/d3-helpers.js"></script>
+    <script type="text/javascript" src="js/highcharts.js"></script>
+    <script type="text/javascript" src="js/exporting.js"></script>
+  	<script type="text/javascript" language="javascript" src="js/calcFunctions.js"></script>
+  	<script type="text/javascript" language="javascript" src="js/renderHighCharts.js"></script>
+  	<script type="text/javascript" language="javascript" src="js/bootstrap.min.js"></script>
+  	<script type="text/javascript" language="javascript" src="js/bootstrap-dropdown.js"></script>
+  	<script type="text/javascript" language="javascript" src="js/loadInterface.js"></script>
+  </head>
+  <body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container-fluid">
+          <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </a>
+          <a href="./index.php" class="brand">UC Medicine QA</a>
+          <div class="nav-collapse">
+            <ul class="nav">'."\n";
+  // display daily, monthly, yearly forms.
   if ($user->loggedIn()) {
-    $forms = $database->stdQuery("SELECT `id`, `name` FROM `forms` ORDER BY `id` ASC");
-    while ($form = mysqli_fetch_assoc($forms)) {
-      echo '              <li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                  '.escape_output($form['name']).'
-                  <b class="caret"></b>
-                </a>
-                <ul class="dropdown-menu">
-                  <li><a href="form_entry.php?action=new&form_id='.intval($form['id']).'">Submit new record</a></li>
-                  <li><a href="form_entry.php?action=index&form_id='.intval($form['id']).'">View history</a></li>
-                  <li><a href="graph.php?action=show&form_id='.intval($form['id']).'">Plot history</a></li>
-                </ul>
-              </li>
-              <li class="divider-vertical"></li>
-';
+    $formTypes = $database->stdQuery("SELECT `id`, `name` FROM `form_types` ORDER BY `id` ASC");
+    while ($formType = $formTypes->fetch_assoc()) {
+      echo '                <li class="dropdown">
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                    '.escape_output($formType['name']).'
+                    <b class="caret"></b>
+                  </a>
+                  <ul class="dropdown-menu">'."\n";
+      $forms = $database->stdQuery("SELECT `id`, `name` FROM `forms` WHERE `form_type_id` = ".intval($formType['id'])." ORDER BY `name` ASC");
+      while ($form = $forms->fetch_assoc()) {
+        echo '                    <li><a href="form_entry.php?action=new&form_id='.intval($form['id']).'">'.escape_output($form['name']).'</a></li>'."\n";
+      }
+      echo '                  </ul>
+                </li>
+                <li class="divider-vertical"></li>'."\n";
     }
+    // display analysis toolbar.
+    echo '                <li class="dropdown">
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                    Analysis
+                    <b class="caret"></b>
+                  </a>
+                  <ul class="dropdown-menu">'."\n";
+    $forms = $database->stdQuery("SELECT `id`, `name` FROM `forms` ORDER BY `name` ASC");
+    while ($form = $forms->fetch_assoc()) {
+      echo '                        <li class="dropdown-submenu">
+                          <a tabindex="-1" href="#">'.escape_output($form['name']).'</a>
+                          <ul class="dropdown-menu">
+                            <li><a href="form_entry.php?action=index&form_id='.intval($form['id']).'">Entries</a></li>
+                            <li><a href="graph.php?action=show&form_id='.intval($form['id']).'">Plot</a></li>
+                          </ul>'."\n";
+    }
+    echo '                  </ul>'."\n";
   }
+  // display administrator tools.
   if ($user->isAdmin()) {
-  echo '              <li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                  Admin
-                  <b class="caret"></b>
-                </a>
-                <ul class="dropdown-menu">
-                  <li><a href="form.php">Forms</a></li>
-                  <li><a href="machine_type.php">Machine Types</a></li>
-                  <li><a href="machine.php">Machines</a></li>
-                  <li><a href="facility.php">Facilities</a></li>
-                  <li><a href="user.php">Users</a></li>
-                  <li><a href="backup.php">Backup</a></li>
-                </ul>
-              </li>
+    echo '                <li class="dropdown">
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                    Admin
+                    <b class="caret"></b>
+                  </a>
+                  <ul class="dropdown-menu">
+                    <li><a href="facility.php">Facilities</a></li>
+                    <li><a href="form.php">Forms</a></li>
+                    <li><a href="machine_type.php">Machine Types</a></li>
+                    <li><a href="machine.php">Machines</a></li>
+                    <li><a href="user.php">Users</a></li>
+                    <li><a href="backup.php">Backup</a></li>
+                  </ul>
+                </li>
+                <li class="divider-vertical"></li>'."\n";
+  }
+  echo '            </ul>
+            <ul class="nav pull-right">
               <li class="divider-vertical"></li>
-';
-  }
-  echo '          </ul>
-          <ul class="nav pull-right">
-            <li class="divider-vertical"></li>
-            <li class="dropdown">
-';
+              <li class="dropdown">'."\n";
+  // display user settings / log out link, or sign in form.
   if ($user->loggedIn()) {
-    echo '              <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="icon-user icon-white"></i>'.escape_output($user->name).'<b class="caret"></b></a>
-              <ul class="dropdown-menu">
-                <a href="/user.php?action=show&id='.intval($user->id).'">Profile</a>
-                <a href="/user.php?action=edit&id='.intval($user->id).'">User Settings</a>
-                <a href="/logout.php">Sign out</a>
-              </ul>
-';
+    echo '                <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="icon-user icon-white"></i>'.escape_output($user->name).'<b class="caret"></b></a>
+                <ul class="dropdown-menu">
+                  <li><a href="/user.php?action=show&id='.intval($user->id).'">Profile</a></li>
+                  <li><a href="/user.php?action=edit&id='.intval($user->id).'">User Settings</a></li>
+                  <li class="divider"></li>
+                  <li><a href="/logout.php">Sign out</a></li>
+                </ul>'."\n";
   } else {
-    echo '              <a href="#" class="dropdown-toggle" data-toggle="dropdown">Sign in<b class="caret"></b></a>
-              <ul class="dropdown-menu">
-';
+    echo '                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Sign in<b class="caret"></b></a>
+                <ul class="dropdown-menu">'."\n";
     display_login_form();
-    echo '              </ul>
-';
+    echo '                </ul>'."\n";
   }
-  echo '            </li>
-          </ul>
+  echo '              </li>
+            </ul>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-  <div class="container-fluid">
-';
+    <div class="container-fluid">'."\n";
+  // display alerts if applicable.
   if ($status != "") {
-    echo '<div class="alert alert-'.escape_output($statusClass).'">
-  <button class="close" data-dismiss="alert" href="#">×</button>
-  '.escape_output($status).'
-</div>
-';
+    echo '    <div class="alert alert-'.escape_output($statusClass).'">
+      <button class="close" data-dismiss="alert" href="#">×</button>
+      '.escape_output($status).'
+    </div>'."\n";
   }
 }
 
 function display_login_form() {
-  echo '<form id="login_form" accept-charset="UTF-8" action="/login.php" method="post">
-  <label for="Email">Email</label>
-  <input id="username" name="username" size="30" type="email" />
-  <label for="password">Password</label>
-  <input id="password" name="password" size="30" type="password" />
-  <input class="btn btn-small btn-primary" name="commit" type="submit" value="Sign in" />
-</form>
-';
+  echo '  <form id="login_form" accept-charset="UTF-8" action="/login.php" method="post">
+    <label for="Email">Email</label>
+    <input id="username" name="username" size="30" type="email" />
+    <label for="password">Password</label>
+    <input id="password" name="password" size="30" type="password" />
+    <input class="btn btn-small btn-primary" name="commit" type="submit" value="Sign in" />
+  </form>'."\n";
 }
 
 function display_month_year_dropdown($select_id="", $select_name_prefix="form_entry", $selected=False) {
   if ($selected === false) {
     $selected = array( 0 => intval(date('n')), 1 => intval(date('Y')));
   }
-  echo "<select id='".escape_output($select_id)."' name='".escape_output($select_name_prefix)."[qa_month]'>
-";
+  echo "<select id='".escape_output($select_id)."' name='".escape_output($select_name_prefix)."[qa_month]'>\n";
   for ($month_i = 1; $month_i <= 12; $month_i++) {
-    echo "  <option value='".$month_i."'".(($selected[0] === $month_i) ? "selected='selected'" : "").">".htmlentities(date('M', mktime(0, 0, 0, $month_i, 1, 2000)), ENT_QUOTES, "UTF-8")."</option>
-";
+    echo "  <option value='".$month_i."'".(($selected[0] === $month_i) ? "selected='selected'" : "").">".htmlentities(date('M', mktime(0, 0, 0, $month_i, 1, 2000)), ENT_QUOTES, "UTF-8")."</option>\n";
   }
-echo "</select>
-<select id='".escape_output($select_id)."' name='".escape_output($select_name_prefix)."[qa_year]'>
-";
+  echo "</select>\n<select id='".escape_output($select_id)."' name='".escape_output($select_name_prefix)."[qa_year]'>\n";
   for ($year = intval(date('Y', time())); $year >= 2007; $year--) {
-    echo "  <option value='".$year."'".(($selected[1] === $year) ? "selected='selected'" : "").">".$year."</option>
-";
+    echo "  <option value='".$year."'".(($selected[1] === $year) ? "selected='selected'" : "").">".$year."</option>\n";
   }
-echo "</select>
-";
+  echo "</select>\n";
 }
 
 function display_ok_notok_dropdown($select_id="ok_notok", $selected=0) {
   echo "<select id='".escape_output($select_id)."' name='".escape_output($select_id)."'>
                     <option value=1".((intval($selected) == 1) ? " selected='selected'" : "").">OK</option>
-                    <option value=0".((intval($selected) == 0) ? " selected='selected'" : "").">NOT OK</option>
-</select>
-";
+                    <option value=0".((intval($selected) == 0) ? " selected='selected'" : "").">NOT OK</option>\n</select>\n";
 }
 
 function display_facilities($database, $user) {
@@ -211,38 +214,28 @@ function display_facilities($database, $user) {
       <th></th>
     </tr>
   </thead>
-  <tbody>
-";
+  <tbody>\n";
   $facilities = $database->stdQuery("SELECT `id`, `name` FROM `facilities` ORDER BY `id` ASC");
   while ($facility = mysqli_fetch_assoc($facilities)) {
     echo "    <tr>
-      <td><a href='facility.php?action=show&id=".intval($facility['id'])."'>".escape_output($facility['name'])."</a></td>
-";
+      <td><a href='facility.php?action=show&id=".intval($facility['id'])."'>".escape_output($facility['name'])."</a></td>\n";
     if ($user->facility_id == intval($facility['id']) && $userIsAdmin) {
-      echo "<td><a href='facility.php?action=edit&id=".intval($facility['id'])."'>Edit</a></td>
-";
+      echo "<td><a href='facility.php?action=edit&id=".intval($facility['id'])."'>Edit</a></td>\n";
     } else {
-      echo "<td></td>
-";
+      echo "<td></td>\n";
     }
-    echo "    </tr>
-";
+    echo "    </tr>\n";
     }
-  echo "  </tbody>
-</table>
-";
+  echo "  </tbody>\n</table>\n";
 }
 
 function display_facility_dropdown($database, $select_id="facility_id", $selected=0) {
-  echo "<select id='".escape_output($select_id)."' name='".escape_output($select_id)."'>
-";
+  echo "<select id='".escape_output($select_id)."' name='".escape_output($select_id)."'>\n";
   $facilities = $database->stdQuery("SELECT `id`, `name` FROM `facilities`");
   while ($facility = mysqli_fetch_assoc($facilities)) {
-    echo "  <option value='".intval($facility['id'])."'".(($selected == intval($facility['id'])) ? "selected='selected'" : "").">".escape_output($facility['name'])."</option>
-";
+    echo "  <option value='".intval($facility['id'])."'".(($selected == intval($facility['id'])) ? "selected='selected'" : "").">".escape_output($facility['name'])."</option>\n";
   }
-  echo "</select>
-";
+  echo "</select>\n";
 }
 
 function display_facility_edit_form($database, $user, $id=false) {
@@ -253,8 +246,7 @@ function display_facility_edit_form($database, $user, $id=false) {
       $id = false;
     }
   }
-  echo "<form action='facility.php".(($id === false) ? "" : "?id=".intval($id))."' method='POST' class='form-horizontal'>
-".(($id === false) ? "" : "<input type='hidden' name='facility[id]' value='".intval($id)."' />")."
+  echo "<form action='facility.php".(($id === false) ? "" : "?id=".intval($id))."' method='POST' class='form-horizontal'>\n".(($id === false) ? "" : "<input type='hidden' name='facility[id]' value='".intval($id)."' />")."
   <fieldset>
     <div class='control-group'>
       <label class='control-label' for='facility[name]'>Name</label>
@@ -266,14 +258,12 @@ function display_facility_edit_form($database, $user, $id=false) {
       <button type='submit' class='btn btn-primary'>".(($id === false) ? "Add Facility" : "Save changes")."</button>
       <a href='#' onClick='window.location.replace(document.referrer);' class='btn'>".(($id === false) ? "Go back" : "Discard changes")."</a>
     </div>
-  </fieldset>
-</form>
-";
+  </fieldset>\n</form>\n";
 }
 
 function display_facility_profile($database, $user, $facility_id) {
   $facilityObject = $database->queryFirstRow("SELECT * FROM `facilities` WHERE `id` = ".intval($facility_id)." LIMIT 1");
-  $users = $database->stdQuery("SELECT `users`.`id`, `name`, `email`, `userlevel`, COUNT(`form_entries`.`id`) AS `form_entry_count` FROM `users` LEFT OUTER JOIN `form_entries` ON `form_entries`.`user_id` = `users`.`id` WHERE `facility_id` = ".intval($facilityObject['id'])." GROUP BY `form_entries`.`user_id` ORDER BY `userlevel` DESC, `name` ASC;");
+  $users = $database->stdQuery("SELECT `users`.`id`, `name`, `email`, `usermask`, COUNT(`form_entries`.`id`) AS `form_entry_count` FROM `users` LEFT OUTER JOIN `form_entries` ON `form_entries`.`user_id` = `users`.`id` WHERE `facility_id` = ".intval($facilityObject['id'])." GROUP BY `form_entries`.`user_id` ORDER BY `usermask` DESC, `name` ASC;");
   $machines = $database->stdQuery("SELECT `machines`.`id`, `machines`.`name`, `machine_types`.`name` AS `machine_type`, COUNT(`form_entries`.`id`) AS `form_entry_count`, MAX(`form_entries`.`updated_at`) AS `last_updated` FROM `machines` LEFT OUTER JOIN `machine_types` ON `machine_types`.`id` = `machines`.`machine_type_id` LEFT OUTER JOIN `form_entries` ON `form_entries`.`machine_id` = `machines`.`id` WHERE `facility_id` = ".intval($facilityObject['id'])." GROUP BY `form_entries`.`machine_id` ORDER BY `name` ASC;");
 
   echo "  <h3>People</h3>
@@ -286,20 +276,17 @@ function display_facility_profile($database, $user, $facility_id) {
         <th>QA Entries</th>
       </tr>
     </thead>
-    <tbody>
-";
+    <tbody>\n";
   while ($thisUser = mysqli_fetch_assoc($users)) {
     echo "      <tr>
         <td><a href='user.php?action=show&id=".intval($thisUser['id'])."'>".escape_output($thisUser['name'])."</a></td>
         <td>".escape_output($thisUser['email'])."</td>
-        <td>".escape_output(convert_userlevel_to_text($thisUser['userlevel']))."</td>
+        <td>".escape_output(convert_usermask_to_text($thisUser['usermask']))."</td>
         <td>".escape_output(intval($thisUser['form_entry_count']))."</td>
-      </tr>
-";
+      </tr>\n";
   }
   echo "    </tbody>
-  </table>
-";
+  </table>\n";
   echo "  <h3>Machines</h3>
   <table class='table table-striped table-bordered dataTable'>
     <thead>
@@ -310,20 +297,17 @@ function display_facility_profile($database, $user, $facility_id) {
         <th>Last Entry</th>
       </tr>
     </thead>
-    <tbody>
-";
+    <tbody>\n";
   while ($machine = mysqli_fetch_assoc($machines)) {
     echo "    <tr>
       <td><a href='machine.php?action=show&id=".intval($machine['id'])."'>".escape_output($machine['name'])."</a></td>
       <td>".escape_output($machine['machine_type'])."</td>
       <td>".escape_output(intval($machine['form_entry_count']))."</td>
       <td>".escape_output(format_mysql_timestamp($machine['last_updated']))."</td>
-    </tr>
-";
+    </tr>\n";
   }
   echo "    </tbody>
-  </table>
-";
+  </table>\n";
 }
 
 function display_register_form($database, $action=".") {
@@ -356,34 +340,28 @@ function display_register_form($database, $action=".") {
         </div>
         <div class="control-group">
           <label class="control-label">Facility</label>
-          <div class="controls">
-';
-  echo display_facility_dropdown($database);
+          <div class="controls">'."\n";
+  display_facility_dropdown($database);
   echo '          </div>
         </div>
         <div class="form-actions">
           <button type="submit" class="btn btn-primary">Sign up</button>
         </div>
       </fieldset>
-    </form>
-';
+    </form>'."\n";
 }
 
 function display_ionization_chamber_dropdown($select_id = "form_entry_form_values_ionization_chamber", $select_name_prefix="form_entry[form_values]", $selected="") {
   echo "<select class='span12' id='".escape_output($select_id)."' name='".escape_output($select_name_prefix)."[ionization_chamber]'>
   <option value='Farmer (S/N 944, ND.SW(Gy/C) 5.18E+07)'".(($selected === 'Farmer (S/N 944, ND.SW(Gy/C) 5.18E+07)') ? "selected='selected'" : "").">Farmer (S/N 944, ND.SW(Gy/C) 5.18E+07)</option>
-  <option value='Farmer (S/N 269, ND.SW(Gy/C) 5.32E+07)'".(($selected === 'Farmer (S/N 269, ND.SW(Gy/C) 5.32E+07)') ? "selected='selected'" : "").">Farmer (S/N 269, ND.SW(Gy/C) 5.32E+07)</option>
-</select>
-";
+  <option value='Farmer (S/N 269, ND.SW(Gy/C) 5.32E+07)'".(($selected === 'Farmer (S/N 269, ND.SW(Gy/C) 5.32E+07)') ? "selected='selected'" : "").">Farmer (S/N 269, ND.SW(Gy/C) 5.32E+07)</option>\n</select>\n";
 }
 
 function display_electrometer_dropdown($select_id = "form_entry_form_values_electrometer", $select_name_prefix="form_entry[form_values]", $selected="") {
   echo "<select class='span12' id='".escape_output($select_id)."' name='".escape_output($select_name_prefix)."[electrometer]'>
   <option value='Keithley Model 614 (S/N 42215, Kelec 0.995)'".(($selected === 'Keithley Model 614 (S/N 42215, Kelec 0.995)') ? "selected='selected'" : "").">Keithley Model 614 (S/N 42215, Kelec 0.995)</option>
   <option value='SI CDX 2000B #1 (S/N J073443, Kelec 1.000)'".(($selected === 'SI CDX 2000B #1 (S/N J073443, Kelec 1.000)') ? "selected='selected'" : "").">SI CDX 2000B #1 (S/N J073443, Kelec 1.000)</option>
-  <option value='SI CDX 2000B #2 (S/N J073444, Kelec 1.000)'".(($selected === 'SI CDX 2000B #2 (S/N J073444, Kelec 1.000)') ? "selected='selected'" : "").">SI CDX 2000B #2 (S/N J073444, Kelec 1.000)</option>
-</select>
-";  
+  <option value='SI CDX 2000B #2 (S/N J073444, Kelec 1.000)'".(($selected === 'SI CDX 2000B #2 (S/N J073444, Kelec 1.000)') ? "selected='selected'" : "").">SI CDX 2000B #2 (S/N J073444, Kelec 1.000)</option>\n</select>\n";
 }
 
 function display_machine_types($database, $user) {
@@ -395,31 +373,24 @@ function display_machine_types($database, $user) {
       <th>Description</th>
     </tr>
   </thead>
-  <tbody>
-";
+  <tbody>\n";
   $machine_types = $database->stdQuery("SELECT `id`, `name`, `description` FROM `machine_types` ORDER BY `id` ASC");
   while ($machine_type = mysqli_fetch_assoc($machine_types)) {
     echo "    <tr>
       <td><a href='machine_type.php?action=show&id=".intval($machine_type['id'])."'>".escape_output($machine_type['name'])."</a></td>
       <td>".escape_output($machine_type['description'])."</td>
-    </tr>
-";
+    </tr>\n";
     }
-  echo "  </tbody>
-</table>
-";
+  echo "  </tbody>\n</table>\n";
 }
 
 function display_machine_type_dropdown($database, $select_id="machine_type_id", $selected=0) {
-  echo "<select id='".escape_output($select_id)."' name='".escape_output($select_id)."'>
-";
+  echo "<select id='".escape_output($select_id)."' name='".escape_output($select_id)."'>\n";
   $machineTypes = $database->stdQuery("SELECT `id`, `name` FROM `machine_types`");
   while ($machineType = mysqli_fetch_assoc($machineTypes)) {
-    echo "  <option value='".intval($machineType['id'])."'".(($selected == intval($machineType['id'])) ? "selected='selected'" : "").">".escape_output($machineType['name'])."</option>
-";
+    echo "  <option value='".intval($machineType['id'])."'".(($selected == intval($machineType['id'])) ? "selected='selected'" : "").">".escape_output($machineType['name'])."</option>\n";
   }
-  echo "</select>
-";
+  echo "</select>\n";
 }
 
 function display_machine_type_edit_form($database, $user, $id=false) {
@@ -448,9 +419,7 @@ function display_machine_type_edit_form($database, $user, $id=false) {
       <button type='submit' class='btn btn-primary'>".(($id === false) ? "Add Machine Type" : "Save changes")."</button>
       <a href='#' onClick='window.location.replace(document.referrer);' class='btn'>".(($id === false) ? "Go back" : "Discard changes")."</a>
     </div>
-  </fieldset>
-</form>
-";
+  </fieldset>\n</form>\n";
 }
 
 function display_machine_type_info($database, $user, $machine_type_id, $graph_div_prefix = "machine_type_info") {
@@ -460,8 +429,7 @@ function display_machine_type_info($database, $user, $machine_type_id, $graph_di
   } else {
     $machines = $database->stdQuery("SELECT `id`, `name` FROM `machines` WHERE `facility_id` = ".intval($user->facility_id)." AND `machine_type_id` = ".intval($machineTypeObject['id']));
     while ($machine = mysqli_fetch_assoc($machines)) {
-      echo "<h2>".escape_output($machine['name'])."</h2>
-";
+      echo "<h2>".escape_output($machine['name'])."</h2>\n";
       display_machine_info($database, $user, $machine['id'], $graph_div_prefix."_".$machine['id']);
     }
   }
@@ -477,8 +445,7 @@ function display_machines($database, $user) {
       <th>Facility</th>
     </tr>
   </thead>
-  <tbody>
-";
+  <tbody>\n";
   $machines = $database->stdQuery("SELECT `id`, `name`, `machine_type_id`, `facility_id` FROM `machines` WHERE `facility_id` = ".intval($user->facility_id)." ORDER BY `id` ASC");
   while ($machine = mysqli_fetch_assoc($machines)) {
     $facility = $database->queryFirstValue("SELECT `name` FROM `facilities` WHERE `id` = ".intval($machine['facility_id'])." LIMIT 1");
@@ -493,25 +460,19 @@ function display_machines($database, $user) {
       <td><a href='machine.php?action=show&id=".intval($machine['id'])."'>".escape_output($machine['name'])."</a></td>
       <td>".escape_output($type)."</td>
       <td>".escape_output($facility)."</td>
-    </tr>
-";
+    </tr>\n";
   }
-  echo "  </tbody>
-</table>
-";
+  echo "  </tbody>\n</table>\n";
 }
 
 function display_machine_dropdown($database, $user, $select_id="machine_id", $selected=0, $machine_type=false) {
-  echo "<select id='".escape_output($select_id)."' name='".escape_output($select_id)."'>
-";
+  echo "<select id='".escape_output($select_id)."' name='".escape_output($select_id)."'>\n";
   $machineTypeFilter = intval($machine_type) ? " && `machine_type_id` = ".intval($machine_type) : "";
   $machines = $database->stdQuery("SELECT `id`, `name` FROM `machines` WHERE `facility_id` = ".intval($user->facility_id).$machineTypeFilter." ORDER BY `name` ASC");
   while ($machine = mysqli_fetch_assoc($machines)) {
-    echo "  <option value='".intval($machine['id'])."'".(($selected == intval($machine['id'])) ? "selected='selected'" : "").">".escape_output($machine['name'])."</option>
-";
+    echo "  <option value='".intval($machine['id'])."'".(($selected == intval($machine['id'])) ? "selected='selected'" : "").">".escape_output($machine['name'])."</option>\n";
   }
-  echo "</select>
-";
+  echo "</select>\n";
 }
 
 function display_machine_edit_form($database, $user, $id=false) {
@@ -527,8 +488,7 @@ function display_machine_edit_form($database, $user, $id=false) {
     $facility = "None";
   }
   
-  echo "<form action='machine.php".(($id === false) ? "" : "?id=".intval($id))."' method='POST' class='form-horizontal'>
-".(($id === false) ? "" : "<input type='hidden' name='machine[id]' value='".intval($id)."' />")."
+  echo "<form action='machine.php".(($id === false) ? "" : "?id=".intval($id))."' method='POST' class='form-horizontal'>\n".(($id === false) ? "" : "<input type='hidden' name='machine[id]' value='".intval($id)."' />")."
   <fieldset>
     <div class='control-group'>
       <label class='control-label' for='machine[name]'>Name</label>
@@ -538,8 +498,7 @@ function display_machine_edit_form($database, $user, $id=false) {
     </div>
     <div class='control-group'>
       <label class='control-label' for='machine[machine_type_id]'>Machine Type</label>
-      <div class='controls'>
-";
+      <div class='controls'>\n";
   display_machine_type_dropdown($database, "machine[machine_type_id]", ($id === false) ? 0 : $machineObject['machine_type_id']);
   echo "      </div>
     </div>
@@ -581,9 +540,7 @@ function display_machine_edit_form($database, $user, $id=false) {
       <button type='submit' class='btn btn-primary'>".(($id === false) ? "Add Machine" : "Save changes")."</button>
       <a href='#' onClick='window.location.replace(document.referrer);' class='btn'>".(($id === false) ? "Go back" : "Discard changes")."</a>
     </div>
-  </fieldset>
-</form>
-";
+  </fieldset>\n</form>\n";
 }
 
 function display_machine_info($database, $user, $machine_id, $graph_div_prefix = "machine_info") {
@@ -606,11 +563,10 @@ function display_machine_info($database, $user, $machine_id, $graph_div_prefix =
         }
         if (count($field_strings) > 1) {
           echo "<span id='".escape_output($graph_div_prefix)."_".intval($i)."'></span>
-<script type='text/javascript'>
-var data = [".implode(",", $field_strings)."];
-displayFormFieldLineGraph(data, '".humanize($machine_field['name'])."', '".escape_output($graph_div_prefix)."_".intval($i)."');
-</script>
-";
+  <script type='text/javascript'>
+    var data = [".implode(",", $field_strings)."];
+    displayFormFieldLineGraph(data, '".humanize($machine_field['name'])."', '".escape_output($graph_div_prefix)."_".intval($i)."');
+  </script>\n";
           $i++;
         }
       }
@@ -628,20 +584,16 @@ function display_forms($database, $user) {
       <th>Machine Type</th>
     </tr>
   </thead>
-  <tbody>
-";
+  <tbody>\n";
   $forms = $database->stdQuery("SELECT `forms`.`id`, `forms`.`name`, `forms`.`description`, `machine_types`.`name` AS `machine_type_name` FROM `forms` LEFT OUTER JOIN `machine_types` ON `forms`.`machine_type_id` = `machine_types`.`id` ORDER BY `forms`.`id` ASC");
   while ($form = mysqli_fetch_assoc($forms)) {
     echo "    <tr>
       <td><a href='form.php?action=edit&id=".intval($form['id'])."'>".escape_output($form['name'])."</a></td>
       <td>".escape_output($form['description'])."</td>
       <td>".escape_output($form['machine_type_name'])."</td>
-    </tr>
-";
+    </tr>\n";
   }
-  echo "  </tbody>
-</table>
-";
+  echo "  </tbody>\n</table>\n";
 }
 
 function display_form_field_graph($database, $form_field) {
@@ -669,8 +621,7 @@ function display_form_edit_form($database, $user, $id=false) {
     }
   }
   echo "<form action='form.php".(($id === false) ? "" : "?id=".intval($id))."' method='POST' class='form-horizontal'>
-  <fieldset>
-".(($id === false) ? "" : "<input type='hidden' name='form[id]' value='".intval($id)."' />")."
+  <fieldset>\n".(($id === false) ? "" : "<input type='hidden' name='form[id]' value='".intval($id)."' />")."
     <div class='control-group'>
       <label class='control-label' for='form[name]'>Name</label>
       <div class='controls'>
@@ -706,9 +657,7 @@ function display_form_edit_form($database, $user, $id=false) {
       <button type='submit' class='btn btn-primary'>".(($id === false) ? "Create form" : "Save changes")."</button>
       <a href='#' onClick='window.location.replace(document.referrer);' class='btn'>".(($id === false) ? "Go back" : "Discard changes")."</a>
     </div>
-  </fieldset>
-</form>
-";
+  </fieldset>\n</form>\n";
 }
 
 function display_form_entries($database, $user, $form_id=false) {
@@ -727,8 +676,7 @@ function display_form_entries($database, $user, $form_id=false) {
       <th></th>
     </tr>
   </thead>
-  <tbody>
-";
+  <tbody>\n";
   if (is_numeric($form_id)) {
     $form_id = intval($form_id);
   } else {
@@ -755,12 +703,9 @@ function display_form_entries($database, $user, $form_id=false) {
       <td>".escape_output($form_entry['comments'])."</td>
       <td><a href='form_entry.php?action=edit&id=".intval($form_entry['id'])."'>Edit</a></td>
       <td></td>
-    </tr>
-";
+    </tr>\n";
   }
-  echo "  </tbody>
-</table>
-";
+  echo "  </tbody>\n</table>\n";
 }
 
 function display_form_entry_edit_form($database, $user, $id=false, $form_id=false) {
@@ -838,27 +783,23 @@ function display_users($database, $user) {
       <th></th>
     </tr>
   </thead>
-  <tbody>
-";
+  <tbody>\n";
   if ($user->isAdmin()) {
-    $users = $database->stdQuery("SELECT `users`.`id`, `users`.`name`, `users`.`email`, `users`.`userlevel`, `facilities`.`name` AS `facility_name` FROM `users` LEFT OUTER JOIN `facilities` ON `users`.`facility_id` = `facilities`.`id` ORDER BY `users`.`name` ASC");
+    $users = $database->stdQuery("SELECT `users`.`id`, `users`.`name`, `users`.`email`, `users`.`usermask`, `facilities`.`name` AS `facility_name` FROM `users` LEFT OUTER JOIN `facilities` ON `users`.`facility_id` = `facilities`.`id` ORDER BY `users`.`name` ASC");
   } else {
-    $users = $database->stdQuery("SELECT `users`.`id`, `users`.`name`, `users`.`email`, `users`.`userlevel`, `facilities`.`name` AS `facility_name` FROM `users` LEFT OUTER JOIN `facilities` ON `users`.`facility_id` = `facilities`.`id` WHERE `users`.`facility_id` = ".intval($user->facility_id)." ORDER BY `users`.`name` ASC");
+    $users = $database->stdQuery("SELECT `users`.`id`, `users`.`name`, `users`.`email`, `users`.`usermask`, `facilities`.`name` AS `facility_name` FROM `users` LEFT OUTER JOIN `facilities` ON `users`.`facility_id` = `facilities`.`id` WHERE `users`.`facility_id` = ".intval($user->facility_id)." ORDER BY `users`.`name` ASC");
   }
   while ($thisUser = mysqli_fetch_assoc($users)) {
     echo "    <tr>
       <td><a href='user.php?action=show&id=".intval($thisUser['id'])."'>".escape_output($thisUser['name'])."</a></td>
       <td>".escape_output($thisUser['email'])."</td>
-      <td>".escape_output(convert_userlevel_to_text($thisUser['userlevel']))."</td>
+      <td>".escape_output(convert_usermask_to_text($thisUser['usermask']))."</td>
       <td>".escape_output($thisUser['facility_name'])."</td>
       <td>"; if ($user->isAdmin()) { echo "<a href='user.php?action=edit&id=".intval($thisUser['id'])."'>Edit</a>"; } echo "</td>
       <td>"; if ($user->isAdmin()) { echo "<a href='user.php?action=delete&id=".intval($thisUser['id'])."'>Delete</a>"; } echo "</td>
-    </tr>
-";
+    </tr>\n";
   }
-  echo "  </tbody>
-</table>
-";
+  echo "  </tbody>\n</table>\n";
 }
 
 function display_user_dropdown($database, $user, $select_id="user_id", $selected=0) {
@@ -867,26 +808,19 @@ function display_user_dropdown($database, $user, $select_id="user_id", $selected
   } else {
     $userObject = array('facility_id' => intval($user->facility_id));
   }
-  echo "<select id='".escape_output($select_id)."' name='".escape_output($select_id)."'>
-";
+  echo "<select id='".escape_output($select_id)."' name='".escape_output($select_id)."'>\n";
   $facilityUsers = $database->stdQuery("SELECT `id`, `name` FROM `users` WHERE `facility_id` = ".intval($userObject['facility_id'])." ORDER BY `name` ASC");
   while ($user = mysqli_fetch_assoc($facilityUsers)) {
-    echo "  <option value='".intval($user['id'])."'".(($selected == intval($user['id'])) ? "selected='selected'" : "").">".escape_output($user['name'])."</option>
-";
+    echo "  <option value='".intval($user['id'])."'".(($selected == intval($user['id'])) ? "selected='selected'" : "").">".escape_output($user['name'])."</option>\n";
   }
-  echo "</select>
-";
+  echo "</select>\n";
 }
 
-function display_userlevel_dropdown($database, $select_id="userlevel", $selected=0) {
-  echo "<select id='".escape_output($select_id)."' name='".escape_output($select_id)."'>
-";
-  for ($userlevel = 0; $userlevel <= 3; $userlevel++) {
-    echo "  <option value='".intval($userlevel)."'".(($selected == intval($userlevel)) ? "selected='selected'" : "").">".escape_output(convert_userlevel_to_text($userlevel))."</option>
-";
+function display_user_roles_select($database, $select_id="usermask[]", $mask=0) {
+  for ($usermask = 0; $usermask <= 2; $usermask++) {
+    echo "<label class='checkbox'>
+  <input type='checkbox' name='".escape_output($select_id)."' value='".intval(pow(2, $usermask))."'".(($mask & intval(pow(2, $usermask))) ? "checked='checked'" : "")." />".escape_output(convert_usermask_to_text(pow(2, $usermask)))."\n</label>\n";
   }
-  echo "</select>
-";
 }
 
 function display_user_edit_form($database, $user, $id=false) {
@@ -900,8 +834,7 @@ function display_user_edit_form($database, $user, $id=false) {
       return;
     }
   }    
-  echo "<form action='user.php".(($id === false) ? "" : "?id=".intval($id))."' method='POST' class='form-horizontal'>
-".(($id === false) ? "" : "<input type='hidden' name='user[id]' value='".intval($id)."' />")."
+  echo "<form action='user.php".(($id === false) ? "" : "?id=".intval($id))."' method='POST' class='form-horizontal'>\n".(($id === false) ? "" : "<input type='hidden' name='user[id]' value='".intval($id)."' />")."
   <fieldset>
     <div class='control-group'>
       <label class='control-label' for='user[name]'>Name</label>
@@ -926,32 +859,26 @@ function display_user_edit_form($database, $user, $id=false) {
       <div class='controls'>
         <input name='user[email]' type='email' class='input-xlarge' id='user[email]'".(($id === false) ? "" : " value='".escape_output($userObject['email'])."'").">
       </div>
-    </div>
-";
+    </div>\n";
   if ($user->isAdmin()) {
     echo "    <div class='control-group'>
       <label class='control-label' for='user[facility_id]'>Facility</label>
-      <div class='controls'>
-";
-  display_facility_dropdown($database, "user[facility_id]", ($id === false) ? 0 : $userObject['facility_id']);
-  echo "      </div>
+      <div class='controls'>\n";
+    display_facility_dropdown($database, "user[facility_id]", ($id === false) ? 0 : $userObject['facility_id']);
+    echo "      </div>
     </div>
     <div class='control-group'>
-      <label class='control-label' for='user[userlevel]'>Role</label>
-      <div class='controls'>
-";
-  display_userlevel_dropdown($database, "user[userlevel]", ($id === false) ? 0 : intval($userObject['userlevel']));
-  echo "      </div>
-    </div>
-";
-    }
+      <label class='control-label' for='user[usermask][]'>Role(s)</label>
+      <div class='controls'>\n";
+    display_user_roles_select($database, "user[usermask][]", ($id === false) ? 0 : intval($userObject['usermask']));
+    echo "      </div>
+    </div>\n";
+  }
   echo "    <div class='form-actions'>
       <button type='submit' class='btn btn-primary'>".(($id === false) ? "Add User" : "Save changes")."</button>
       <a href='#' onClick='window.location.replace(document.referrer);' class='btn'>".(($id === false) ? "Go back" : "Discard changes")."</a>
     </div>
-  </fieldset>
-</form>
-";
+  </fieldset>\n</form>\n";
 }
 
 function display_user_profile($database, $user, $user_id) {
@@ -968,10 +895,9 @@ function display_user_profile($database, $user, $user_id) {
     <dt>Facility</dt>
     <dd><a href='facility.php?action=show&id=".intval($userObject->facility_id)."'>".escape_output($facility)."</a></dd>
     <dt>User Role</dt>
-    <dd>".escape_output(convert_userlevel_to_text($userObject->userlevel))."</dd>
-  </dl>
-";
-  if (convert_userlevel_to_text($userObject->userlevel) == 'Physicist') {
+    <dd>".escape_output(convert_usermask_to_text($userObject->usermask))."</dd>
+  </dl>\n";
+  if (convert_usermask_to_text($userObject->usermask) == 'Physicist') {
     $form_approvals = $database->stdQuery("SELECT `form_entries`.`id`, `qa_month`, `qa_year`, `machine_id`, `machines`.`name` AS `machine_name`, `user_id`, `users`.`name` AS `user_name`, `approved_on` FROM `form_entries` LEFT OUTER JOIN `machines` ON `machines`.`id` = `form_entries`.`machine_id` LEFT OUTER JOIN `users` ON `users`.`id` = `form_entries`.`user_id` WHERE `approved_user_id` = ".intval($userObject->id)." ORDER BY `approved_on` DESC");
     echo "  <h3>Approvals</h3>
   <table class='table table-striped table-bordered dataTable'>
@@ -983,20 +909,17 @@ function display_user_profile($database, $user, $user_id) {
         <th>Approval Date</th>
       </tr>
     </thead>
-    <tbody>
-";
+    <tbody>\n";
     while ($approval = mysqli_fetch_assoc($form_approvals)) {
       echo "      <tr>
         <td><a href='form_entry.php?action=edit&id=".intval($approval['id'])."'>".escape_output($approval['qa_year']."/".$approval['qa_month'])."</a></td>
         <td><a href='form.php?action=show&id=".intval($approval['machine_id'])."'>".escape_output($approval['machine_name'])."</a></td>
         <td><a href='user.php?action=show&id=".intval($approval['user_id'])."'>".escape_output($approval['user_name'])."</a></td>
         <td>".escape_output(format_mysql_timestamp($approval['approved_on']))."</td>
-      </tr>
-";
+      </tr>\n";
     }
     echo "    </tbody>
-  </table>
-";
+  </table>\n";
   }
   echo "  <h3>Form Entries</h3>
   <table class='table table-striped table-bordered dataTable'>
@@ -1010,8 +933,7 @@ function display_user_profile($database, $user, $user_id) {
         <th></th>
       </tr>
     </thead>
-    <tbody>
-";
+    <tbody>\n";
   while ($form_entry = mysqli_fetch_assoc($form_entries)) {
     echo "    <tr>
       <td><a href='form.php?action=show&id=".intval($form_entry['form_id'])."'>".escape_output($form_entry['form_name'])."</a></td>
@@ -1020,12 +942,10 @@ function display_user_profile($database, $user, $user_id) {
       <td>".escape_output($form_entry['qa_year']."/".$form_entry['qa_month'])."</td>
       <td>".escape_output(format_mysql_timestamp($form_entry['created_at']))."</td>
       <td><a href='form_entry.php?action=edit&id=".intval($form_entry['id'])."'>View</a></td>
-    </tr>
-";
+    </tr>\n";
   }
   echo "    </tbody>
-  </table>
-";
+  </table>\n";
 }
 
 function display_backups($database, $user) {
@@ -1038,8 +958,7 @@ function display_backups($database, $user) {
       <th>Created at</th>
     </tr>
   </thead>
-  <tbody>
-";
+  <tbody>\n";
   $backups = $database->stdQuery("SELECT * FROM `backups` ORDER BY `created_at` DESC");
   while ($backup = mysqli_fetch_assoc($backups)) {
     $user = $database->queryFirstValue("SELECT `name` FROM `users` WHERE `id` = ".intval($backup['user_id'])." LIMIT 1");
@@ -1050,13 +969,9 @@ function display_backups($database, $user) {
       <td>".escape_output($user)."</td>
       <td><a href='backup.php?action=download&id=".intval($backup['id'])."'>".escape_output(basename($backup['path']))."</a></td>
       <td>".escape_output(date('Y/m/d H:i', strtotime($backup['created_at'])))."</td>
-    </tr>
-";
+    </tr>\n";
   }
-  echo "  </tbody>
-</table>
-<a class='btn btn-primary' href='backup.php?action=create'>Create a backup</a>
-";
+  echo "  </tbody>\n</table>\n<a class='btn btn-primary' href='backup.php?action=create'>Create a backup</a>\n";
 }
 
 function display_backup_form($database) {
@@ -1092,9 +1007,7 @@ function display_backup_form($database) {
       <button type='submit' class='btn btn-primary'>Create backup</button>
       <a href='#' onClick='window.location.replace(document.referrer);' class='btn'>Go back</a>
     </div>
-  </fieldset>
-</form>
-";
+  </fieldset>\n</form>\n";
 }
 
 function display_history_json($database, $user, $fields = array(), $machines=array()) {
@@ -1132,8 +1045,7 @@ function display_history_plot($database, $user, $form_id) {
   //displays plot for a particular form.
   $formObject = $database->queryFirstRow("SELECT * FROM `forms` WHERE `id` = ".intval($form_id)." LIMIT 1");
   if (!$formObject) {
-    echo "The form ID you provided was invalid. Please try again.
-";
+    echo "The form ID you provided was invalid. Please try again.\n";
   } else {
     $formFields = $database->stdQuery("SELECT `id`, `name` FROM `form_fields`
                                         WHERE `form_id` = ".intval($form_id)."
@@ -1148,11 +1060,9 @@ function display_history_plot($database, $user, $form_id) {
       <div class='span4'>
         <div class='row-fluid'><h3 class='span12' style='text-align:center;'>Machines</h3></div>
         <div class='row-fluid'>
-          <select multiple='multiple' id='machines' class='span12' size='10' name='machines[]'>
-";
+          <select multiple='multiple' id='machines' class='span12' size='10' name='machines[]'>\n";
     while ($machine = mysqli_fetch_assoc($machines)) {
-      echo "           <option value='".intval($machine['id'])."'>".escape_output($machine['name'])."</option>
-";
+      echo "           <option value='".intval($machine['id'])."'>".escape_output($machine['name'])."</option>\n";
     }
     echo "         </select>
         </div>
@@ -1160,11 +1070,9 @@ function display_history_plot($database, $user, $form_id) {
       <div class='span4'>
         <div class='row-fluid'><h3 class='span12' style='text-align:center;'>Fields</h3></div>
         <div class='row-fluid'>
-          <select multiple='multiple' id='form_fields' class='span12' size='10' name='form_fields[]'>
-";
+          <select multiple='multiple' id='form_fields' class='span12' size='10' name='form_fields[]'>\n";
     while ($field = mysqli_fetch_assoc($formFields)) {
-      echo "            <option value='".intval($field['id'])."'>".escape_output($field['name'])."</option>
-";
+      echo "            <option value='".intval($field['id'])."'>".escape_output($field['name'])."</option>\n";
     }
     echo "          </select>
         </div>
@@ -1182,16 +1090,13 @@ function display_history_plot($database, $user, $form_id) {
     <div class='form-actions'>
       <a class='btn btn-xlarge btn-primary' href='#' onClick='drawLargeD3Plot();'>Redraw Plot</a>
     </div>
-  </form>
-";
+  </form>\n";
   }
 }
 
 function display_footer() {
-  echo '    <hr />
-  </div>
-</body>
-</html>';
+  echo "    <hr />
+  </div>\n</body>\n</html>";
 }
 
 ?>

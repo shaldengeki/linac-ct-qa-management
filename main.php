@@ -45,13 +45,13 @@ start_html($database, $user, "UC Medicine QA", "", $_REQUEST['status'], $_REQUES
     </ol>
   </div>
   <div class="span4">
-    <div class="row-fluid">
+    <!--<div class="row-fluid">
       <h2>Notifications</h2>
 <?php
   /* TODO: entries here for out-of-bounds values, upcoming and passed QA deadlines */
   echo "Coming soon!";
 ?>
-    </div>
+    </div>-->
     <div class="row-fluid">
       <h2>Entries needing approval</h2>
 <?php

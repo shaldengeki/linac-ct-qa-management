@@ -1,29 +1,24 @@
 ﻿<?php
   // displays a form to edit form parameters.
   echo "<form action='form_entry.php' method='POST' class='form-horizontal' enctype='multipart/form-data'>
-  <fieldset>
-".(($id === false) ? "" : "<input type='hidden' name='form_entry[id]' value='".intval($id)."' />");
+  <fieldset>\n".(($id === false) ? "" : "<input type='hidden' name='form_entry[id]' value='".intval($id)."' />");
   if (isset($_REQUEST['form_id'])) {
-    echo "<input type='hidden' name='form_entry[form_id]' value='".intval($_REQUEST['form_id'])."' />
-";
+    echo "<input type='hidden' name='form_entry[form_id]' value='".intval($_REQUEST['form_id'])."' />\n";
   } elseif ($id != false) {
-    echo "<input type='hidden' name='form_entry[form_id]' value='".intval($formEntryObject['form_id'])."' />
-";
+    echo "<input type='hidden' name='form_entry[form_id]' value='".intval($formEntryObject['form_id'])."' />\n";
   }
   echo "
 <div class='row-fluid'>
   <div class='span6'>
     <div class='control-group'>
         <label class='control-label' for='form_entry[machine_id]'>Machine</label>
-        <div class='controls'>
-";
+        <div class='controls'>\n";
   display_machine_dropdown($database, $user, "form_entry[machine_id]", (($id === false) ? 0 : intval($formEntryObject['machine_id'])), intval($formObject['machine_type_id']));
   echo "        </div>
       </div>
       <div class='control-group'>
         <label class='control-label' for='form_entry[machine_id]'>Performed by</label>
-        <div class='controls'>
-";
+        <div class='controls'>\n";
   display_user_dropdown($database, $user, "form_entry[user_id]", (($id === false) ? $user->id : intval($formEntryObject['user_id'])));
   echo "        </div>
       </div>
@@ -31,8 +26,7 @@
     <div class='span6'>
       <div class='control-group'>
         <label class='control-label' for='form_entry[qa_month]'>QA Month</label>
-        <div class='controls'>
-";
+        <div class='controls'>\n";
   display_month_year_dropdown("form_entry[qa_month]", "form_entry", (($id === false) ? False : array(intval($formEntryObject['qa_month']),intval($formEntryObject['qa_year']))));
   echo "
         </div>
@@ -944,15 +938,13 @@
             <tbody>
               <tr>
                 <td>Door</td>
-                <td class='control-group'>
-";
+                <td class='control-group'>\n";
   display_ok_notok_dropdown('form_entry[form_values][door_key_interlock_door_status]', ($id != false) ? $formEntryObject['form_values']['door_key_interlock_door_status'] : '');
   echo "               </td>
               </tr>
               <tr>
                 <td>Key</td>
-                <td class='control-group'>
-";
+                <td class='control-group'>\n";
   display_ok_notok_dropdown('form_entry[form_values][door_key_interlock_key_status]', ($id != false) ? $formEntryObject['form_values']['door_key_interlock_key_status'] : '');
   echo "               </td>
               </tr>
@@ -977,8 +969,7 @@
                       <option value='60'".(($id != false && $formEntryObject['form_values']['accessory_position_wedge_position'] == '60') ? " selected='selected'" : "").">60&deg; upper</option>
                       <option value='60'".(($id != false && $formEntryObject['form_values']['accessory_position_wedge_position'] == '-60') ? " selected='selected'" : "").">60&deg; lower</option>
                     </select></td>
-                <td class='control-group'>
-";
+                <td class='control-group'>\n";
   display_ok_notok_dropdown('form_entry[form_values][accessory_position_wedge_status]', ($id != false) ? $formEntryObject['form_values']['accessory_position_wedge_status'] : '');
   echo "                </td>
               </tr>
@@ -991,16 +982,14 @@
                       <option value='20*20'".(($id != false && $formEntryObject['form_values']['accessory_position_cone_position'] == '20*20') ? " selected='selected'" : "").">20*20</option>
                       <option value='25*25'".(($id != false && $formEntryObject['form_values']['accessory_position_cone_position'] == '25*25') ? " selected='selected'" : "").">25*25</option>
                     </select></td>
-                <td class='control-group'>
-";
+                <td class='control-group'>\n";
   display_ok_notok_dropdown('form_entry[form_values][accessory_position_cone_status]', ($id != false) ? $formEntryObject['form_values']['accessory_position_cone_status'] : '');
   echo "               </td>
               </tr>
               <tr>
                 <td>Block</td>
                 <td></td>
-                <td class='control-group'>
-";
+                <td class='control-group'>\n";
   display_ok_notok_dropdown('form_entry[form_values][accessory_position_block]', ($id != false) ? $formEntryObject['form_values']['accessory_position_block'] : '');
   echo "               </td>
               </tr>
@@ -1025,8 +1014,7 @@
             <tbody>
               <tr>
                 <td>Resolution (lp/mm)</td>
-                <td class='control-group'>
-  ";
+                <td class='control-group'>\n";
   display_ok_notok_dropdown('form_entry[form_values][resolution_lp_mm_status]', ($id != false) ? $formEntryObject['form_values']['resolution_lp_mm'] : '');
   echo "                </td>
                 <td class='control-group'><input type='number' step='0.01' name='form_entry[form_values][resolution_lp_mm_measurement]' class='span12' id='form_entry_form_values_resolution_lp_mm_measurement' ".(($id === false) ? " placeholder='>1.25'" : " value='".escape_output($formEntryObject['form_values']['resolution_lp_mm_measurement'])."'")."/></td>
@@ -1034,8 +1022,7 @@
               </tr>
               <tr>
                 <td>Contrast (disks)</td>
-                <td class='control-group'>
-";
+                <td class='control-group'>\n";
   display_ok_notok_dropdown('form_entry[form_values][contrast_disks_status]', ($id != false) ? $formEntryObject['form_values']['contrast_disks'] : '');
   echo "               </td>
                 <td class='control-group'><input type='number' step='0.1' name='form_entry[form_values][contrast_disks_measurement]' class='span12' id='form_entry_form_values_contrast_disks_measurement' ".(($id === false) ? " placeholder='18'" : " value='".escape_output($formEntryObject['form_values']['contrast_disks_measurement'])."'")."/></td>
@@ -1133,38 +1120,32 @@
         </div>
     </div>
     </div>
-    <h3>Image</h3>
-";
+    <h3>Image</h3>\n";
     if ($id != false && $formEntryObject['image_path'] != '') {
-      echo "<img src='".escape_output($formEntryObject['image_path'])."' /><br />
-";
+      echo "
+      <div class='center-horizontal'>
+        <img src='".escape_output($formEntryObject['image_path'])."' class='image-fluid'/>
+      </div>\n";
     }
     echo "    <div id='image_preview' class='row-fluid'></div>
     <input name='form_image' class='input-file' type='file' onChange='displayImagePreview(this.files);' />
     <h3>Comments</h3>
     <textarea name='form_entry[comments]' id='form_entry_comments' rows='10' class='span12' placeholder='Comments go here.'>".(($id === false) ? "" : escape_output($formEntryObject['comments']))."</textarea><br />
-    <div class='form-actions'>
-";
+    <div class='form-actions'>\n";
     if ($id != false && $formEntryObject['approved_on'] != '') {
-    echo "      <button type='submit' class='btn btn-primary disabled' disabled='disabled'>Approved</button>
-";    
+    echo "      <button type='submit' class='btn btn-primary disabled' disabled='disabled'>Approved</button>\n";    
     } else {
-    echo "      <button type='submit' class='btn btn-primary'>".(($id === false) ? "Save" : "Save changes")."</button>
-";
+    echo "      <button type='submit' class='btn btn-primary'>".(($id === false) ? "Save" : "Save changes")."</button>\n";
     }
-    echo "      <a class='btn' href='#' onClick='window.location.replace(document.referrer);' >".(($id === false) ? "Go back" : "Discard changes")."</a>
-";
+    echo "      <a class='btn' href='#' onClick='window.location.replace(document.referrer);' >".(($id === false) ? "Go back" : "Discard changes")."</a>\n";
     if ($id != false && $user->isPhysicist()) {
       if ($formEntryObject['approved_on'] == '') {
-        echo "      <a class='btn btn-success' href='form_entry.php?action=approve&id=".intval($id)."'>Approve</a>
-";
+        echo "      <a class='btn btn-success' href='form_entry.php?action=approve&id=".intval($id)."'>Approve</a>\n";
       } else {
-        echo "      <a class='btn btn-warning' href='form_entry.php?action=unapprove&id=".intval($id)."'>Unapprove</a>
-";
+        echo "      <a class='btn btn-warning' href='form_entry.php?action=unapprove&id=".intval($id)."'>Unapprove</a>\n";
       }
     }
     echo "    </div>
   </fieldset>
-</form>
-";
+</form>\n";
 ?>

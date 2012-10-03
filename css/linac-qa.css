@@ -32,6 +32,19 @@ path {
   text-align: center;
 }
 
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    /* display: none; <- Crashes Chrome on hover */
+    -webkit-appearance: none;
+    margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
+}
+
+.image-fluid {
+  margin-left: auto;
+  margin-right: auto;
+  width: 30%;
+}
+
 .image-preview {
   border: 1px solid black;
   -moz-border-radius: 20px;

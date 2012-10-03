@@ -159,7 +159,7 @@ function drawLargeD3Plot() {
       .attr("y", h + 15)
       .attr("dy", ".71em")
       .attr("text-anchor", "middle")
-      .text(x.tickFormat(num_x_ticks));
+      .text(d3.time.format("%m/%y"));
     rules.append("svg:text")
       .data(y.ticks(num_y_ticks))
         .attr("y", y)

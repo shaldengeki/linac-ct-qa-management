@@ -28,21 +28,25 @@ function get_numeric($val) {
   }
 }
 
-function convert_userlevel_to_text($userlevel) {
-  switch(intval($userlevel)) {
-    case 0:
-      return 'Guest';
-      break;
-    case 1:
-      return 'Normal';
-      break;
-    case 2:
-      return 'Physicist';
-    case 3:
-      return 'Administrator';
-    default:
-      return 'Unknown';
+function convert_usermask_to_text($usermask) {
+  $usermask = intval($usermask);
+  $roles = [];
+  if ($usermask == 0) {
+    return "Guest";
   }
+  if ($usermask & 4) {
+    $roles[] = "Administrator";
+  }
+  if ($usermask & 2) {
+    $roles[] = "Physicist";
+  }
+  if ($usermask & 1) {
+    $roles[] = "Resident";
+  }
+  if (count($roles) == 0) {
+    return "Unknown";
+  }
+  return implode(", ", $roles);
 }
 
 function stream_large_file($filename, $mimeType='text/plain; charset="UTF-8"', $chunkSize=1048576, $retbytes = TRUE) {

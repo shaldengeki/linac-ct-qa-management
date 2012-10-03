@@ -418,7 +418,7 @@ class DbConn extends mysqli {
       }
     }
     //if changing userlevel, check to ensure that they are setting it equal to or less than their current userlevel.
-    if (isset($user_entry['userlevel']) && intval($user_entry['userlevel']) > $user->userlevel) {
+    if (isset($user_entry['usermask']) && !$user->isAdmin() && intval(@array_sum($user_entry['usermask'])) > $user->usermask) {
       return array('location' => 'user.php', 'status' => 'You are not allowed to set userlevels beyond your current userlevel.', 'class' => 'error');
     }
     //if changing facility, check to ensure that they are an administrator.
@@ -444,8 +444,8 @@ class DbConn extends mysqli {
         $bcrypt = new Bcrypt();
         $optionalFields .= ", `password_hash` = ".$this->quoteSmart($bcrypt->hash($user_entry['password']));
       }
-      if (isset($user_entry['userlevel']) && intval($user_entry['userlevel']) != 0) {
-        $optionalFields .= ", `userlevel` = ".intval($user_entry['userlevel']);
+      if (isset($user_entry['usermask']) && intval(@array_sum($user_entry['usermask'])) != 0) {
+        $optionalFields .= ", `usermask` = ".intval(@array_sum($user_entry['usermask']));
       }
       if (isset($user_entry['facility_id']) && intval($user_entry['facility_id']) != 0) {
         $optionalFields .= ", `facility_id` = ".intval($user_entry['facility_id']);
@@ -462,7 +462,7 @@ class DbConn extends mysqli {
     } else {
       //insert this user.
       $bcrypt = new Bcrypt();
-      $insertUser = $this->stdQuery("INSERT INTO `users` (`name`, `email`, `password_hash`, `userlevel`, `facility_id`) VALUES (".$this->quoteSmart($user_entry['name']).", ".$this->quoteSmart($user_entry['email']).", ".$this->quoteSmart($bcrypt->hash($user_entry['password'])).", ".intval($user_entry['userlevel']).", ".intval($user_entry['facility_id']).")");
+      $insertUser = $this->stdQuery("INSERT INTO `users` (`name`, `email`, `password_hash`, `usermask`, `facility_id`) VALUES (".$this->quoteSmart($user_entry['name']).", ".$this->quoteSmart($user_entry['email']).", ".$this->quoteSmart($bcrypt->hash($user_entry['password'])).", ".intval(@array_sum($user_entry['usermask'])).", ".intval($user_entry['facility_id']).")");
       if (!$insertUser) {
         return array('location' => 'user.php?action=new', 'status' => "Error while creating user. Please try again.", 'class' => 'error');
       }
