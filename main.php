@@ -39,9 +39,8 @@ start_html($database, $user, "UC Medicine QA", "", $_REQUEST['status'], $_REQUES
       <li><s>Allow admins to reassign form entries</s></li>
       <li>Print to PDF</li>
       <li>Form entry pass/fail</li>
-      <li>Domain name change (ucqa.org)</li>
-      <li>Python image analysis</li>
       <li>Make forms more user-friendly</li>
+      <li>Python image analysis</li>
     </ol>
   </div>
   <div class="span4">

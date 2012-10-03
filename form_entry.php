@@ -38,7 +38,7 @@ switch($_REQUEST['action']) {
       display_error("Error: Insufficient privileges", "You may only view and edit forms belonging to your facility.");
       break;
     }
-    echo "<h1>Modify a record</h1>
+    echo "<h1>QA Record</h1>
 ";
     display_form_entry_edit_form($database, $user, intval($_REQUEST['id']), false);
     break;

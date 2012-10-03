@@ -17,7 +17,7 @@ function format_mysql_timestamp($date) {
 }
 
 function escape_output($input) {
-  if ($input == '' || $input == 'NULL') {
+  if ($input === '' || $input === 'NULL') {
     return '';
   }
   return htmlspecialchars($input, ENT_QUOTES, "UTF-8");
@@ -277,7 +277,7 @@ function display_facility_profile($database, $user, $facility_id) {
       </tr>
     </thead>
     <tbody>\n";
-  while ($thisUser = mysqli_fetch_assoc($users)) {
+  while ($thisUser = $users->fetch_assoc()) {
     echo "      <tr>
         <td><a href='user.php?action=show&id=".intval($thisUser['id'])."'>".escape_output($thisUser['name'])."</a></td>
         <td>".escape_output($thisUser['email'])."</td>
@@ -298,12 +298,12 @@ function display_facility_profile($database, $user, $facility_id) {
       </tr>
     </thead>
     <tbody>\n";
-  while ($machine = mysqli_fetch_assoc($machines)) {
+  while ($machine = $machines->fetch_assoc()) {
     echo "    <tr>
       <td><a href='machine.php?action=show&id=".intval($machine['id'])."'>".escape_output($machine['name'])."</a></td>
       <td>".escape_output($machine['machine_type'])."</td>
       <td>".escape_output(intval($machine['form_entry_count']))."</td>
-      <td>".escape_output(format_mysql_timestamp($machine['last_updated']))."</td>
+      <td>".escape_output((($machine['last_updated'] == '') ? "N/A" : format_mysql_timestamp($machine['last_updated'])))."</td>
     </tr>\n";
   }
   echo "    </tbody>
@@ -666,9 +666,9 @@ function display_form_entries($database, $user, $form_id=false) {
   <thead>
     <tr>
       <th>Machine</th>
-      <th>User</th>
       <th class='dataTable-default-sort' data-sort-order='desc'>QA Month</th>
-      <th>Submitted on</th>
+      <th>Submitted By</th>
+      <th>Submitted On</th>
       <th>Approved By</th>
       <th>Approved On</th>
       <th>Comments</th>
@@ -695,8 +695,8 @@ function display_form_entries($database, $user, $form_id=false) {
     }
     echo "    <tr".$row_class.">
       <td><a href='machine.php?action=show&id=".intval($form_entry['machine_id'])."'>".escape_output($form_entry['machine_name'])."</a></td>
-      <td><a href='user.php?action=show&id=".intval($form_entry['user_id'])."'>".escape_output($form_entry['user_name'])."</a></td>
       <td>".intval($form_entry['qa_year'])."/".((intval($form_entry['qa_month']) >= 10) ? "" : "0").intval($form_entry['qa_month'])."</td>
+      <td><a href='user.php?action=show&id=".intval($form_entry['user_id'])."'>".escape_output($form_entry['user_name'])."</a></td>
       <td>".escape_output(format_mysql_timestamp($form_entry['created_at']))."</td>
       <td>".$approval_user."</td>
       <td>".$approval_date."</td>
@@ -913,7 +913,7 @@ function display_user_profile($database, $user, $user_id) {
     while ($approval = mysqli_fetch_assoc($form_approvals)) {
       echo "      <tr>
         <td><a href='form_entry.php?action=edit&id=".intval($approval['id'])."'>".escape_output($approval['qa_year']."/".$approval['qa_month'])."</a></td>
-        <td><a href='form.php?action=show&id=".intval($approval['machine_id'])."'>".escape_output($approval['machine_name'])."</a></td>
+        <td><a href='machine.php?action=show&id=".intval($approval['machine_id'])."'>".escape_output($approval['machine_name'])."</a></td>
         <td><a href='user.php?action=show&id=".intval($approval['user_id'])."'>".escape_output($approval['user_name'])."</a></td>
         <td>".escape_output(format_mysql_timestamp($approval['approved_on']))."</td>
       </tr>\n";
@@ -937,7 +937,7 @@ function display_user_profile($database, $user, $user_id) {
   while ($form_entry = mysqli_fetch_assoc($form_entries)) {
     echo "    <tr>
       <td><a href='form.php?action=show&id=".intval($form_entry['form_id'])."'>".escape_output($form_entry['form_name'])."</a></td>
-      <td><a href='form.php?action=show&id=".intval($form_entry['machine_id'])."'>".escape_output($form_entry['machine_name'])."</a></td>
+      <td><a href='machine.php?action=show&id=".intval($form_entry['machine_id'])."'>".escape_output($form_entry['machine_name'])."</a></td>
       <td>".escape_output($form_entry['comments'])."</td>
       <td>".escape_output($form_entry['qa_year']."/".$form_entry['qa_month'])."</td>
       <td>".escape_output(format_mysql_timestamp($form_entry['created_at']))."</td>

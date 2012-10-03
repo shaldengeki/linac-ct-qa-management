@@ -72,7 +72,7 @@ switch($_REQUEST['action']) {
       display_error("Error: Insufficient privileges", "You may only view your own facility's machines.");
       break;
     }
-    echo "<h1>".escape_output($machineObject['name'])." - History</h1> (<a href='machine.php?action=edit&id=".intval($_REQUEST['id'])."'>edit</a>)
+    echo "<h1>".escape_output($machineObject['name'])." - History <small>(<a href='machine.php?action=edit&id=".intval($_REQUEST['id'])."'>edit</a>)</small></h1>
 ";
     display_machine_info($database, $user, intval($_REQUEST['id']));
     break;
