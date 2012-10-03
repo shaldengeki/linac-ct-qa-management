@@ -96,14 +96,28 @@ $.extend( $.fn.dataTableExt.oPagination, {
 $(document).ready(function () {
   $('.dropdown-toggle').dropdown();
   /* Table initialisation */
+  var defaultSortColumn = 0;
+  var defaultSortOrder = "asc";
+  var tableNode = false;
   $('.dataTable').each(function() {
+  	// see if there's a default-sort column. if not, default to the first column.
+  	defaultSortColumn = $(this).find('thead > tr > th.dataTable-default-sort').index('.dataTable > thead > tr > th');
+  	if (defaultSortColumn == -1) {
+  		defaultSortColumn = 0;
+			defaultSortOrder = "asc";
+  	} else {
+  		defaultSortOrder = $(this).find('thead > tr > th.dataTable-default-sort').attr("data-sort-order");
+		}
     $(this).dataTable({
       "sDom": "<'row-fluid'<'span6'l><'span6'f>r>t<'row-fluid'<'span6'i><'span6'p>>",
       "sPaginationType": "bootstrap",
       "oLanguage": {
         "sLengthMenu": "_MENU_ records per page"
-      }
+      },
+      "iDisplayLength": 50,
+      "aaSorting": [[ defaultSortColumn, defaultSortOrder ]]
     });
+		
   });
   if ($('#vis').length > 0) {
     drawLargeD3Plot();

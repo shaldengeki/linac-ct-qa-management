@@ -667,7 +667,7 @@ function display_form_entries($database, $user, $form_id=false) {
     <tr>
       <th>Machine</th>
       <th>User</th>
-      <th>QA Month</th>
+      <th class='dataTable-default-sort' data-sort-order='desc'>QA Month</th>
       <th>Submitted on</th>
       <th>Approved By</th>
       <th>Approved On</th>
