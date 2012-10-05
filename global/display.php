@@ -1088,7 +1088,7 @@ function display_history_plot($user, $form_id) {
 }
 
 function display_footer() {
-  echo "    <hr />
+  echo "    <hr />  
   </div>\n</body>\n</html>";
 }
 

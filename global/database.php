@@ -3,17 +3,21 @@
 class DbConn extends mysqli {
   //basic database connection class that provides input-escaping and standardized query error output.
   
-  private $host, $username, $password, $database;
+  private $host, $username, $password, $database, $profile;
 
-  public function __construct($host, $username, $password, $database) {
+  public function __construct($host, $username, $password, $database, $profile=False) {
     $this->host = $host;
     $this->username = $username;
     $this->password = $password;
     $this->database = $database;
+    $this->profile = bool($profile);
     parent::__construct($host, $username, $password, $database);
     if (mysqli_connect_error()) {
       die('Connection error ('.mysqli_connect_errno().')'.
             mysqli_connect_error());
+    }
+    if ($this->profile) {
+      $this->stdQuery('SET profiling=1');
     }
   }
   public function quoteSmart($value) {
