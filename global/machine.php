@@ -43,13 +43,8 @@ class Machine {
     return $this->dbConn->queryFirstRow("SELECT `facilities`.`id`, `facilities`.`name` FROM `machines` LEFT OUTER JOIN `facilities` ON `facilities`.`id` = `machines`.`facility_id` WHERE `machines`.`id` = ".intval($this->id));
   }
   public function getFormEntries() {
-    // retrieves a list of FormEntry objects belonging to the current machine, ordered by updated_at desc.
-    $formEntryQuery = $this->dbConn->stdQuery("SELECT `id` FROM `form_entries` WHERE `machine_id` = ".intval($this->id)." ORDER BY `updated_at` DESC");
-    $formEntries = [];
-    while ($entry = $formEntryQuery->fetch_assoc()) {
-      $formEntries[] = new FormEntry($this->dbConn, intval($entry['id']));
-    }
-    return $formEntries;
+    // retrieves a list of ids corresponding tot his machine's form entries, ordered by updated_at desc.
+    return $this->dbConn->queryAssoc("SELECT `id` FROM `form_entries` WHERE `machine_id` = ".intval($this->id)." ORDER BY `updated_at` DESC");
   }
   public function getMachineParameters() {
     // retrieves a list of MachineParameter objects belonging to the current machine.

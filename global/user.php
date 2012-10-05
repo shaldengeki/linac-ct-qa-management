@@ -133,13 +133,8 @@ class User {
     return $this->dbConn->queryFirstRow("SELECT `facilities`.`id`, `facilities`.`name` FROM `users` LEFT OUTER JOIN `facilities` ON `facilities`.`id` = `users`.`facility_id` WHERE `users`.`id` = ".intval($this->id));
   }
   public function getFormEntries() {
-    // retrieves a list of FormEntry objects belonging to the current user, ordered by updated_at desc.
-    $formEntryQuery = $this->dbConn->stdQuery("SELECT `id` FROM `form_entries` WHERE `user_id` = ".intval($this->id)." ORDER BY `updated_at` DESC");
-    $formEntries = [];
-    while ($entry = $formEntryQuery->fetch_assoc()) {
-      $formEntries[] = new FormEntry($this->dbConn, intval($entry['id']));
-    }
-    return $formEntries;
+    // retrieves a list of id arrays corresponding to form entries belonging to this user.
+    return $this->dbConn->queryAssoc("SELECT `id` FROM `form_entries` WHERE `user_id` = ".intval($this->id)." ORDER BY `updated_at` DESC");
   }
   public function getApprovals() {
     // retrieves a list of FormEntry objects that the user has approved, ordered by updated_at desc.
