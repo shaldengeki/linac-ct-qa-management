@@ -10,7 +10,7 @@ class DbConn extends mysqli {
     $this->username = $username;
     $this->password = $password;
     $this->database = $database;
-    $this->profile = bool($profile);
+    $this->profile = $profile;
     parent::__construct($host, $username, $password, $database);
     if (mysqli_connect_error()) {
       die('Connection error ('.mysqli_connect_errno().')'.
