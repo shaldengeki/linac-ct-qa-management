@@ -3,30 +3,32 @@
 class User {
   public $id;
   public $name;
+  public $email;
   public $usermask;
   public $facility_id;
-  public $email;
+  public $facility;
+  public $formEntries;
+  public $approvals;
+  public $backups;
   public $dbConn;
-  public function __construct($database, $id, $inputArray=False) {
+  public function __construct($database, $id=Null) {
     $this->dbConn = $database;
-    if ($id == 0) {
+    if ($id === 0) {
       $this->id = 0;
       $this->name = "Guest";
       $this->usermask = 0;
-      $this->facility_id = 0;
       $this->email = "";
+      $this->facility = $this->formEntries = $this->approvals = $this->backups = [];
     } else {
       $userInfo = $this->dbConn->queryFirstRow("SELECT `id`, `name`, `usermask`, `email`, `facility_id` FROM `users` WHERE `id` = ".intval($id)." LIMIT 1");
       $this->id = intval($userInfo['id']);
       $this->name = $userInfo['name'];
       $this->usermask = intval($userInfo['usermask']);
       $this->email = $userInfo['email'];
-      $this->facility_id = intval($userInfo['facility_id']);
-    }
-    if (is_array($inputArray)) {
-      foreach ($inputArray as $key=>$value) {
-        @$this->{$key}= $value;
-      }
+      $this->facility = $this->getFacility();
+      $this->formEntries = $this->getFormEntries();
+      $this->approvals = $this->getApprovals();
+      $this->backups = $this->getBackups();
     }
   }
   public function loggedIn() {
@@ -65,7 +67,7 @@ class User {
     $_SESSION['facility_id'] = $findUsername['facility_id'];
     $_SESSION['usermask'] = $findUsername['usermask'];
     $this->id = intval($findUsername['id']);
-    $this->facility_id = intval($findUsername['facility_id']);
+    $this->facility['id'] = intval($findUsername['facility_id']);
     $this->usermask = intval($findUsername['usermask']);
     return array("location" => "main.php", "status" => "Successfully logged in.", 'class' => 'success');
   }
@@ -109,42 +111,50 @@ class User {
     return $returnArray;
   }
   public function isResident() {
-    if (!$this->loggedIn()) {
-      return false;
-    }
     if (!$this->usermask or !(intval($this->usermask) & 1)) {
       return false;
     }
     return true;
   }
   public function isPhysicist() {
-    if (!$this->loggedIn()) {
-      return false;
-    }
     if (!$this->usermask or !(intval($this->usermask) & 2)) {
       return false;
     }
     return true;
   }
   public function isAdmin() {
-    if (!$this->loggedIn()) {
-      return false;
-    }
     if (!$this->usermask or !(intval($this->usermask) & 4)) {
       return false;
     }
     return true;
   }
-  public function facility() {
-    if (!$this->facility_id) {
-      return false;
-    }
-    $getFacility = $this->dbConn->queryFirstRow("SELECT * FROM `facilities` WHERE `id` = ".intval($this->facility_id)." LIMIT 1");
-    if (!$getFacility) {
-      return false;
-    }
-    return $getFacility;
+  public function getFacility() {
+    // retrieves an id,name array corresponding to this users's facility.
+    return $this->dbConn->queryFirstRow("SELECT `facilities`.`id`, `facilities`.`name` FROM `users` LEFT OUTER JOIN `facilities` ON `facilities`.`id` = `users`.`facility_id` WHERE `users`.`id` = ".intval($this->id));
   }
+  public function getFormEntries() {
+    // retrieves a list of FormEntry objects belonging to the current user, ordered by updated_at desc.
+    $formEntryQuery = $this->dbConn->stdQuery("SELECT `id` FROM `form_entries` WHERE `user_id` = ".intval($this->id)." ORDER BY `updated_at` DESC");
+    $formEntries = [];
+    while ($entry = $formEntryQuery->fetch_assoc()) {
+      $formEntries[] = new FormEntry($this->dbConn, intval($entry['id']));
+    }
+    return $formEntries;
+  }
+  public function getApprovals() {
+    // retrieves a list of FormEntry objects that the user has approved, ordered by updated_at desc.
+    $formEntryQuery = $this->dbConn->stdQuery("SELECT `id` FROM `form_entries` WHERE `approved_user_id` = ".intval($this->id)." ORDER BY `updated_at` DESC");
+    $formEntries = [];
+    while ($entry = $formEntryQuery->fetch_assoc()) {
+      $formEntries[] = new FormEntry($this->dbConn, intval($entry['id']));
+    }
+    return $formEntries;
+  }
+  public function getBackups() {
+    // retrieves a list of id,created_at,path arrays for backups belonging to the current user, sorted by created_at desc.
+    return $this->dbConn->queryAssoc("SELECT `id`, `created_at`, `path` FROM `backups` WHERE `user_id` = ".intval($this->id)." ORDER BY `created_at` DESC");
+  }
+
 }
 
 ?>

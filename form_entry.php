@@ -15,13 +15,13 @@ if (isset($_POST['form_entry'])) {
   redirect_to($approveFormEntry);
 }
 
-start_html($database, $user, "UC Medicine QA", "Manage Form Entries", $_REQUEST['status'], $_REQUEST['class']);
+start_html($user, "UC Medicine QA", "Manage Form Entries", $_REQUEST['status'], $_REQUEST['class']);
 
 switch($_REQUEST['action']) {
   case 'new':
     echo "<h1>Submit a record</h1>
 ";
-    display_form_entry_edit_form($database, $user, false, intval($_REQUEST['form_id']));
+    display_form_entry_edit_form($user, false, intval($_REQUEST['form_id']));
     break;
   case 'edit':
     //ensure that id is set.
@@ -34,13 +34,13 @@ switch($_REQUEST['action']) {
     if (!$facility_id) {
       display_error("Error: Invalid entry ID", "Please check the ID and try again.");
       break;
-    } elseif (intval($facility_id) != $user->facility_id) {
+    } elseif (intval($facility_id) != $user->facility['id']) {
       display_error("Error: Insufficient privileges", "You may only view and edit forms belonging to your facility.");
       break;
     }
     echo "<h1>QA Record</h1>
 ";
-    display_form_entry_edit_form($database, $user, intval($_REQUEST['id']), false);
+    display_form_entry_edit_form($user, intval($_REQUEST['id']), false);
     break;
   default:
   case 'index':
@@ -51,7 +51,7 @@ switch($_REQUEST['action']) {
     }
     echo "<h1>History for: ".escape_output($form_name)."</h1>
 ";
-    display_form_entries($database, $user, intval($_REQUEST['form_id']));
+    display_form_entries($user, intval($_REQUEST['form_id']));
     echo "<a href='form_entry.php?action=new&form_id=".intval($_REQUEST['form_id'])."'>Submit a record</a><br />
 ";
     break;

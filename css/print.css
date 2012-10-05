@@ -1,0 +1,25 @@
+/*
+* {
+	margin: 0 !important;
+	padding: 0 !important;
+}
+html,body {
+	height: 100%;
+	background: #FFF;
+}
+*/
+html {
+	width: 100% !important;
+}
+body {
+	padding-top: 0;
+	margin: 0;
+}
+
+.navbar-fixed-top {
+	display: none;
+}
+
+.tab-content > .tab-pane {
+	display: block !important;
+}

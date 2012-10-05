@@ -6,16 +6,16 @@ if (!$user->loggedIn()) {
 
 switch($_REQUEST['action']) {
   case 'json':
-    display_history_json($database, $user, explode(",", $_REQUEST['form_fields']), explode(",", $_REQUEST['machines']));
+    display_history_json($user, explode(",", $_REQUEST['form_fields']), explode(",", $_REQUEST['machines']));
     exit;
     break;
   
   default:
   case 'show':
-    start_html($database, $user, "UC Medicine QA", "Plot History", $_REQUEST['status'], $_REQUEST['class']);
+    start_html($user, "UC Medicine QA", "Plot History", $_REQUEST['status'], $_REQUEST['class']);
     echo "<h1>Plot History</h1>
 ";
-    display_history_plot($database, $user, $_REQUEST['form_id']);
+    display_history_plot($user, $_REQUEST['form_id']);
     break;
 
   default:

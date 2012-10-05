@@ -24,7 +24,7 @@ if (isset($_POST['machine'])) {
   exit;
 }
 
-start_html($database, $user, "UC Medicine QA", "Manage Machines", $_REQUEST['status'], $_REQUEST['class']);
+start_html($user, "UC Medicine QA", "Manage Machines", $_REQUEST['status'], $_REQUEST['class']);
 
 switch($_REQUEST['action']) {
   case 'new':
@@ -34,7 +34,7 @@ switch($_REQUEST['action']) {
     }
     echo "<h1>Add a machine</h1>
 ";
-    display_machine_edit_form($database, $user);
+    display_machine_edit_form($user);
     break;
   case 'edit':
     if (!isset($_REQUEST['id']) || !is_numeric($_REQUEST['id'])) {
@@ -50,13 +50,13 @@ switch($_REQUEST['action']) {
     if (!$facility_id) {
       display_error("Error: Invalid machine ID", "Please check your ID and try again.");
       break;    
-    } elseif (intval($facility_id) != $user->facility_id) {
+    } elseif (intval($facility_id) != $user->facility['id']) {
       display_error("Error: Insufficient privileges", "You may only modify your own facility's machines.");
       break;
     }
     echo "<h1>Modify a machine</h1>
 ";
-    display_machine_edit_form($database, $user, intval($_REQUEST['id']));
+    display_machine_edit_form($user, intval($_REQUEST['id']));
     break;
   case 'show':
     if (!isset($_REQUEST['id']) || !is_numeric($_REQUEST['id'])) {
@@ -68,19 +68,19 @@ switch($_REQUEST['action']) {
     if (!$machineObject) {
       display_error("Error: Invalid machine ID", "Please check your ID and try again.");
       break;    
-    } elseif (intval($machineObject['facility_id']) != $user->facility_id) {
+    } elseif (intval($machineObject['facility_id']) != $user->facility['id']) {
       display_error("Error: Insufficient privileges", "You may only view your own facility's machines.");
       break;
     }
     echo "<h1>".escape_output($machineObject['name'])." - History <small>(<a href='machine.php?action=edit&id=".intval($_REQUEST['id'])."'>edit</a>)</small></h1>
 ";
-    display_machine_info($database, $user, intval($_REQUEST['id']));
+    display_machine_info($user, intval($_REQUEST['id']));
     break;
   default:
   case 'index':
     echo "<h1>Machines</h1>
 ";
-    display_machines($database, $user);
+    display_machines($user);
     echo "<a href='machine.php?action=new'>Add a new machine</a><br />
 ";
     break;

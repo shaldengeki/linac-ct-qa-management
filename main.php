@@ -1,11 +1,9 @@
 <?php
 include_once("global/includes.php");
 if (!$user->loggedIn()) {
-  print_r($user);
-  exit;
   header("Location: index.php");
 }
-start_html($database, $user, "UC Medicine QA", "", $_REQUEST['status'], $_REQUEST['class']);
+start_html($user, "UC Medicine QA", "", $_REQUEST['status'], $_REQUEST['class']);
 
 ?>
 <div class="row-fluid">
@@ -37,6 +35,7 @@ start_html($database, $user, "UC Medicine QA", "", $_REQUEST['status'], $_REQUES
       <li><s>Restructure machines to account for machine-specific parameters</s></li>
       <li><s>Linac Monthly form tabs</s></li>
       <li><s>Allow admins to reassign form entries</s></li>
+      <li>Equipment profiles</li>
       <li>Print to PDF</li>
       <li>Form entry pass/fail</li>
       <li>Make forms more user-friendly</li>
@@ -55,7 +54,7 @@ start_html($database, $user, "UC Medicine QA", "", $_REQUEST['status'], $_REQUES
       <h2>Entries needing approval</h2>
 <?php
 // get a list of all form entries that have not been approved for machines within this user's facility.
-$entriesNeedingApproval = $database->stdQuery("SELECT `machines`.`name` AS `machine_name`, `form_entries`.`id`, `form_entries`.`qa_month`, `form_entries`.`qa_year` FROM `form_entries` LEFT OUTER JOIN `machines` ON `machines`.`id` = `form_entries`.`machine_id` WHERE (`approved_on` IS NULL && `machines`.`facility_id` = ".intval($user->facility_id).") ORDER BY `qa_year` ASC, `qa_month` ASC LIMIT 10");
+$entriesNeedingApproval = $database->stdQuery("SELECT `machines`.`name` AS `machine_name`, `form_entries`.`id`, `form_entries`.`qa_month`, `form_entries`.`qa_year` FROM `form_entries` LEFT OUTER JOIN `machines` ON `machines`.`id` = `form_entries`.`machine_id` WHERE (`approved_on` IS NULL && `machines`.`facility_id` = ".intval($user->facility['id']).") ORDER BY `qa_year` ASC, `qa_month` ASC LIMIT 10");
 if (!$entriesNeedingApproval) {
   echo "None!";
 } else {
@@ -78,7 +77,7 @@ if (!$entriesNeedingApproval) {
       <h2>Latest updates</h2>
 <?php
 // get a list of all form entries for machines within this user's facility.
-$entries = $database->stdQuery("SELECT `machines`.`name` AS `machine_name`, `form_entries`.`id`, `form_entries`.`qa_month`, `form_entries`.`qa_year`, `form_entries`.`approved_on` FROM `form_entries` LEFT OUTER JOIN `machines` ON `machines`.`id` = `form_entries`.`machine_id` WHERE `machines`.`facility_id` = ".intval($user->facility_id)." ORDER BY `form_entries`.`updated_at` DESC LIMIT 20");
+$entries = $database->stdQuery("SELECT `machines`.`name` AS `machine_name`, `form_entries`.`id`, `form_entries`.`qa_month`, `form_entries`.`qa_year`, `form_entries`.`approved_on` FROM `form_entries` LEFT OUTER JOIN `machines` ON `machines`.`id` = `form_entries`.`machine_id` WHERE `machines`.`facility_id` = ".intval($user->facility['id'])." ORDER BY `form_entries`.`updated_at` DESC LIMIT 20");
 if (!$entries) {
   echo "None!";
 } else {

@@ -39,6 +39,12 @@ input::-webkit-inner-spin-button {
     margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
 }
 
+/* override bootstrap disabled styling. */
+.enabled {
+  cursor: auto !important;
+  background-color: #FFF !important;
+}
+
 .image-fluid {
   margin-left: auto;
   margin-right: auto;

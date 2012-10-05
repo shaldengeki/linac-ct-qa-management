@@ -12,7 +12,7 @@ if (isset($_POST['user'])) {
   redirect_to($deleteUser);
 }
 
-start_html($database, $user, "UC Medicine QA", "Manage Users", $_REQUEST['status'], $_REQUEST['class']);
+start_html($user, "UC Medicine QA", "Manage Users", $_REQUEST['status'], $_REQUEST['class']);
 
 switch($_REQUEST['action']) {
   case 'new':
@@ -22,7 +22,7 @@ switch($_REQUEST['action']) {
     }
     echo "<h1>Create a user</h1>
 ";
-    display_user_edit_form($database, $user);
+    display_user_edit_form($user);
     break;
   case 'edit':
     if (!isset($_REQUEST['id']) || !is_numeric($_REQUEST['id'])) {
@@ -39,14 +39,14 @@ switch($_REQUEST['action']) {
       if (!$facility_id) {
         display_error("Error: Invalid user ID", "Please check your ID and try again.");
         break;
-      } elseif (intval($facility_id) != $user->facility_id) {
+      } elseif (intval($facility_id) != $user->facility['id']) {
         display_error("Error: Insufficient privileges", "You may only view your own facility's users.");
         break;
       }
     }
     echo "<h1>Modify a user</h1>
 ";
-    display_user_edit_form($database, $user, intval($_REQUEST['id']));
+    display_user_edit_form($user, intval($_REQUEST['id']));
     break;
   case 'show':
     $userName = $database->queryFirstValue("SELECT `name` FROM `users` WHERE `id` = ".intval($_REQUEST['id'])." LIMIT 1");
@@ -55,14 +55,14 @@ switch($_REQUEST['action']) {
     } else {
       echo "<h1>".escape_output($userName)."</h1>
 ";
-      display_user_profile($database, $user, intval($_REQUEST['id']));
+      display_user_profile($user, intval($_REQUEST['id']));
     }
     break;
   default:
   case 'index':
     echo "<h1>Users</h1>
 ";
-    display_users($database, $user);
+    display_users($user);
     echo "<a href='user.php?action=new'>Add a new user</a><br />
 ";
     break;

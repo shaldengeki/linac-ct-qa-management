@@ -7,7 +7,7 @@ if (isset($_POST['name']) && isset($_POST['email']) && isset($_POST['password'])
   $registerUser = $user->register($_POST['name'], $_POST['email'], $_POST['password'], $_POST['password_confirmation'], $_POST['facility_id']);
   redirect_to($registerUser);
 } else {
-  start_html($database, $user, "UC Medicine QA", "", $_REQUEST['status']);
+  start_html($user, "UC Medicine QA", "", $_REQUEST['status']);
 ?>
 <div class="row">
   <div class="span4">&nbsp;</div>

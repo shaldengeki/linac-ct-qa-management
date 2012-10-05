@@ -59,12 +59,14 @@ class DbConn extends mysqli {
   }
   public function queryAssoc($query) {
     $result = $this->stdQuery($query);
-    if ($result->num_rows < 1) {
-      return false;
+    $returnArray = [];
+    if ($result->num_rows > 1) {
+      while ($row = $result->fetch_assoc()) {
+        $returnArray[] = $row;
+      }
     }
-    $returnValue = $result->fetch_all();
     $result->free();
-    return $returnValue;
+    return $returnArray;
   }
   public function queryCount($query, $column="*") {
     $result = $this->queryFirstRow($query);
@@ -139,7 +141,7 @@ class DbConn extends mysqli {
     return $returnArray;
   }
   public function create_or_update_machine($user, $machine) {
-    if (!$user->loggedIn() || !$user->isAdmin() || (intval($machine['facility_id']) != $user->facility_id)) {
+    if (!$user->loggedIn() || !$user->isAdmin() || (intval($machine['facility_id']) != $user->facility['id'])) {
       $returnArray = array('location' => 'index.php', 'status' => 'You are not an administrator of this facility and cannot add machines to it.');
     } elseif (!isset($machine['name']) || !isset($machine['machine_type_id']) || !isset($machine['facility_id'])) {
       $returnArray = array('location' => 'machine.php'.((isset($_REQUEST['id'])) ? "?id=".intval($_REQUEST['id']) : ""), 'status' => 'One or more required fields are missing. Please check your input and try again.');
@@ -216,7 +218,7 @@ class DbConn extends mysqli {
       return array('location' => 'form_entry.php'.((isset($form_entry['id'])) ? "?id=".intval($form_entry['id']) : ""), 'status' => 'Please specify a machine ID, form ID, and recording time and try again.');
     } else {
       $machineFacility = intval($this->queryFirstValue("SELECT `facility_id` FROM `machines` WHERE `id` = ".intval($form_entry['machine_id'])." LIMIT 1"));
-      if ($machineFacility != $user->facility_id) {
+      if ($machineFacility != $user->facility['id']) {
         return array('location' => 'form_entry.php'.((isset($form_entry['id'])) ? "?id=".intval($form_entry['id']) : ""), 'status' => 'This machine does not belong to your facility.', 'class' => 'error');
       } else {
         $formEntry = $this->queryFirstRow("SELECT `id`, `comments`, `image_path` FROM `form_entries` WHERE `id` = ".intval($form_entry['id'])." LIMIT 1");
@@ -240,7 +242,7 @@ class DbConn extends mysqli {
           }
           //check to ensure selected user exists and is part of this facility.
           $checkUserExists = $this->queryFirstValue("SELECT `facility_id` FROM `users` WHERE `id` = ".intval($form_entry['user_id'])." LIMIT 1");
-          if (!$checkUserExists || intval($checkUserExists) != $user->facility_id) {
+          if (!$checkUserExists || intval($checkUserExists) != $user->facility['id']) {
             return array('location' => 'form_entry.php?action=edit&id='.intval($formEntry['id']), 'status' => "You aren't allowed to assign this form entry to that user.");
           }
           //otherwise, update this form entry.
@@ -302,7 +304,7 @@ class DbConn extends mysqli {
           }
           //check to ensure selected user exists and is part of this facility.
           $checkUserExists = $this->queryFirstValue("SELECT `facility_id` FROM `users` WHERE `id` = ".intval($form_entry['user_id'])." LIMIT 1");
-          if (!$checkUserExists || intval($checkUserExists) != $user->facility_id) {
+          if (!$checkUserExists || intval($checkUserExists) != $user->facility['id']) {
             return array('location' => 'form_entry.php?action=new'.((isset($form_entry['form_id'])) ? "&form_id=".intval($form_entry['form_id']) : ""), 'status' => "You aren't allowed to assign this form entry to that user.");
           }
 
@@ -358,7 +360,7 @@ class DbConn extends mysqli {
     }
   }
   public function approve_form_entry($user, $form_entry_id, $direction) {
-    if (!$user->isPhysicist()) {
+    if (!$user->loggedIn || !$user->isPhysicist()) {
       return array('location' => 'main.php', 'status' => 'You are not allowed to approve form entries.', 'class' => 'error');
     }
     //check to ensure that this form entry exists and is part of this physicist's facility.
@@ -369,7 +371,7 @@ class DbConn extends mysqli {
     $machine = $this->queryFirstRow("SELECT * FROM `machines` WHERE `id` = ".intval($form_entry['machine_id'])." LIMIT 1");
     if (!$machine) {
       return array('location' => 'main.php', 'status' => 'The specified form entry does not belong to a valid machine. Please notify your facility adminstrator.', 'class' => 'error');
-    } elseif (intval($machine['facility_id']) != $user->facility_id) {
+    } elseif (intval($machine['facility_id']) != $user->facility['id']) {
       return array('location' => 'main.php', 'status' => 'You cannot approve a form entry from another facility.', 'class' => 'error');
     }
     
@@ -413,7 +415,7 @@ class DbConn extends mysqli {
       $userObject = $this->queryFirstRow("SELECT * FROM `users` WHERE `id` = ".intval($user_entry['id'])." LIMIT 1");
       if (!$userObject) {
         return array('location' => 'user.php', 'status' => 'The requested user was not found.', 'class' => 'error');
-      } elseif (intval($userObject['facility_id']) != $user->facility_id) {
+      } elseif (intval($userObject['facility_id']) != $user->facility['id']) {
         return array('location' => 'user.php', 'status' => 'You may only modify users from your own facility.', 'class' => 'error');
       }
     }
@@ -462,7 +464,7 @@ class DbConn extends mysqli {
     } else {
       //insert this user.
       $bcrypt = new Bcrypt();
-      $insertUser = $this->stdQuery("INSERT INTO `users` (`name`, `email`, `password_hash`, `usermask`, `facility_id`) VALUES (".$this->quoteSmart($user_entry['name']).", ".$this->quoteSmart($user_entry['email']).", ".$this->quoteSmart($bcrypt->hash($user_entry['password'])).", ".intval(@array_sum($user_entry['usermask'])).", ".intval($user_entry['facility_id']).")");
+      $insertUser = $this->stdQuery("INSERT INTO `users` (`name`, `email`, `password_hash`, `usermask`, `facility_id`, `last_ip`) VALUES (".$this->quoteSmart($user_entry['name']).", ".$this->quoteSmart($user_entry['email']).", ".$this->quoteSmart($bcrypt->hash($user_entry['password'])).", ".intval(@array_sum($user_entry['usermask'])).", ".intval($user_entry['facility_id']).", ".$this->quoteSmart($_SERVER['REMOTE_ADDR']).")");
       if (!$insertUser) {
         return array('location' => 'user.php?action=new', 'status' => "Error while creating user. Please try again.", 'class' => 'error');
       }
@@ -471,7 +473,7 @@ class DbConn extends mysqli {
   }
   public function delete_user($user, $user_id) {
     // ensure that this user is an admin.
-    if (!$user->isAdmin()) {
+    if (!$user->loggedIn() || !$user->isAdmin()) {
       return array('location' => 'user.php', 'status' => 'Only facility administrators are allowed to delete users.', 'class' => 'error');
     }
     // get this user entry.
@@ -480,7 +482,7 @@ class DbConn extends mysqli {
       return array('location' => 'user.php', 'status' => 'The requested user was not found. Please try again.', 'class' => 'error');
     }
     // ensure that this user is an admin of the facility that the requested user belongs to.
-    if (intval($userObject['facility_id']) != $user->facility_id) {
+    if (intval($userObject['facility_id']) != $user->facility['id']) {
       return array('location' => 'user.php', 'status' => 'You may only delete users from your administrated facility.', 'class' => 'error');
     }
     // otherwise, delete this user.
