@@ -61,13 +61,8 @@ class Form {
     return $this->dbConn->queryAssoc("SELECT `form_fields`.`id`, `form_fields`.`name` FROM `form_fields` WHERE `form_id` = ".intval($this->id)." ORDER BY `id` ASC");
   }
   public function getFormEntries() {
-    // retrieves a list of FormEntry objects belonging to the current form, ordered by updated_at desc.
-    $formEntryQuery = $this->dbConn->stdQuery("SELECT `id` FROM `form_entries` WHERE `form_id` = ".intval($this->id)." ORDER BY `updated_at` DESC");
-    $formEntries = [];
-    while ($entry = $formEntryQuery->fetch_assoc()) {
-      $formEntries[] = new FormEntry($this->dbConn, intval($entry['id']));
-    }
-    return $formEntries;
+    // retrieves a list of ids corresponding to this form's entries, ordered by updated_at desc.
+    return $this->dbConn->queryAssoc("SELECT `id` FROM `form_entries` WHERE `form_id` = ".intval($this->id)." ORDER BY `updated_at` DESC");
   }
 }
 

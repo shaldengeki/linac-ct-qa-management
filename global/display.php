@@ -302,7 +302,7 @@ function display_facility_profile($user, $facility_id) {
     <tbody>\n";
   foreach ($facility->machines as $machine) {
     $machine = new Machine($facility->dbConn, $machine['id']);
-    $lastEntry = new FormEntry($machine->dbConn, (count($machine->formEntries) > 0) ? $machine->formEntries[0]->id : 0);
+    $lastEntry = new FormEntry($machine->dbConn, (count($machine->formEntries) > 0) ? $machine->formEntries[0] : 0);
     echo "    <tr>
       <td><a href='machine.php?action=show&id=".intval($machine->id)."'>".escape_output($machine->name)."</a></td>
       <td>".escape_output($machine->machineType['name'])."</td>
@@ -932,6 +932,7 @@ function display_user_profile($user, $user_id) {
     </thead>
     <tbody>\n";
   foreach ($userObject->formEntries as $form_entry) {
+    $form_entry = new FormEntry($userObject->dbConn, $form_entry);
     echo "    <tr>
       <td><a href='form.php?action=show&id=".intval($form_entry->form['id'])."'>".escape_output($form_entry->form['name'])."</a></td>
       <td><a href='machine.php?action=show&id=".intval($form_entry->machine['id'])."'>".escape_output($form_entry->machine['name'])."</a></td>
