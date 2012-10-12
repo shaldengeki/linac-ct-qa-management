@@ -37,6 +37,7 @@ function redirect_to($redirect_array) {
     }
   }
   header($redirect);
+  exit;
 }
 
 function display_error($title="Error", $text="An unknown error occurred. Please try again.") {
@@ -62,7 +63,8 @@ function start_html($user, $title="UC Medicine QA", $subtitle="", $status="", $s
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.18/jquery-ui.min.js"></script>
     <script type="text/javascript" src="js/jquery-ui-timepicker-addon.js"></script>
   	<script type="text/javascript" language="javascript" src="js/jquery.dropdownPlain.js"></script>
-  	<script type="text/javascript" language="javascript" src="js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" language="javascript" src="js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" language="javascript" src="js/jquery.autosave.js"></script>
     <script type="text/javascript" src="js/d3.v2.min.js"></script>
     <script type="text/javascript" src="js/d3-helpers.js"></script>
     <script type="text/javascript" src="js/highcharts.js"></script>
@@ -190,11 +192,11 @@ function display_month_year_dropdown($select_id="", $select_name_prefix="form_en
   }
   echo "<select id='".escape_output($select_id)."' name='".escape_output($select_name_prefix)."[qa_month]'>\n";
   for ($month_i = 1; $month_i <= 12; $month_i++) {
-    echo "  <option value='".$month_i."'".(($selected[0] === $month_i) ? "selected='selected'" : "").">".htmlentities(date('M', mktime(0, 0, 0, $month_i, 1, 2000)), ENT_QUOTES, "UTF-8")."</option>\n";
+    echo "  <option value='".$month_i."'".(($selected[0] === $month_i) ? " selected='selected'" : "").">".htmlentities(date('M', mktime(0, 0, 0, $month_i, 1, 2000)), ENT_QUOTES, "UTF-8")."</option>\n";
   }
   echo "</select>\n<select id='".escape_output($select_id)."' name='".escape_output($select_name_prefix)."[qa_year]'>\n";
   for ($year = intval(date('Y', time())); $year >= 2007; $year--) {
-    echo "  <option value='".$year."'".(($selected[1] === $year) ? "selected='selected'" : "").">".$year."</option>\n";
+    echo "  <option value='".$year."'".(($selected[1] === $year) ? " selected='selected'" : "").">".$year."</option>\n";
   }
   echo "</select>\n";
 }
@@ -237,81 +239,6 @@ function display_facility_dropdown($database, $select_id="facility_id", $selecte
     echo "  <option value='".intval($facility['id'])."'".(($selected == intval($facility['id'])) ? "selected='selected'" : "").">".escape_output($facility['name'])."</option>\n";
   }
   echo "</select>\n";
-}
-
-function display_facility_edit_form($user, $id=false) {
-  // displays a form to edit facility type parameters.
-  if (!($id === false)) {
-    try {
-      $facility = new Facility($user->dbConn, $id);
-    } catch (Exception $e) {
-      $id = false;
-    }
-  }
-  echo "<form action='facility.php".(($id === false) ? "" : "?id=".intval($id))."' method='POST' class='form-horizontal'>\n".(($id === false) ? "" : "<input type='hidden' name='facility[id]' value='".intval($id)."' />")."
-  <fieldset>
-    <div class='control-group'>
-      <label class='control-label' for='facility[name]'>Name</label>
-      <div class='controls'>
-        <input name='facility[name]' type='text' class='input-xlarge' id='facility[name]'".(($id === false) ? "" : " value='".escape_output($facility->name)."'").">
-      </div>
-    </div>
-    <div class='form-actions'>
-      <button type='submit' class='btn btn-primary'>".(($id === false) ? "Add Facility" : "Save changes")."</button>
-      <a href='#' onClick='window.location.replace(document.referrer);' class='btn'>".(($id === false) ? "Go back" : "Discard changes")."</a>
-    </div>
-  </fieldset>\n</form>\n";
-}
-
-function display_facility_profile($user, $facility_id) {
-  $facility = new Facility($user->dbConn, $facility_id);
-  $machines = $user->dbConn->stdQuery("SELECT `machines`.`id`, `machines`.`name`, `machine_types`.`name` AS `machine_type`, COUNT(`form_entries`.`id`) AS `form_entry_count`, MAX(`form_entries`.`updated_at`) AS `last_updated` FROM `machines` LEFT OUTER JOIN `machine_types` ON `machine_types`.`id` = `machines`.`machine_type_id` LEFT OUTER JOIN `form_entries` ON `form_entries`.`machine_id` = `machines`.`id` WHERE `facility_id` = ".intval($facilityObject['id'])." GROUP BY `form_entries`.`machine_id` ORDER BY `name` ASC;");
-
-  echo "  <h3>People</h3>
-  <table class='table table-striped table-bordered dataTable'>
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Email</th>
-        <th>Role</th>
-        <th>QA Entries</th>
-      </tr>
-    </thead>
-    <tbody>\n";
-  foreach ($facility->users as $thisUser) {
-    $thisUser = new User($facility->dbConn, $thisUser['id']);
-    echo "      <tr>
-        <td><a href='user.php?action=show&id=".intval($thisUser->id)."'>".escape_output($thisUser->name)."</a></td>
-        <td>".escape_output($thisUser->email)."</td>
-        <td>".escape_output(convert_usermask_to_text($thisUser->usermask))."</td>
-        <td>".escape_output(count($thisUser->formEntries))."</td>
-      </tr>\n";
-  }
-  echo "    </tbody>
-  </table>\n";
-  echo "  <h3>Machines</h3>
-  <table class='table table-striped table-bordered dataTable'>
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Type</th>
-        <th>QA Entries</th>
-        <th>Last Entry</th>
-      </tr>
-    </thead>
-    <tbody>\n";
-  foreach ($facility->machines as $machine) {
-    $machine = new Machine($facility->dbConn, $machine['id']);
-    $lastEntry = new FormEntry($machine->dbConn, (count($machine->formEntries) > 0) ? $machine->formEntries[0]['id'] : 0);
-    echo "    <tr>
-      <td><a href='machine.php?action=show&id=".intval($machine->id)."'>".escape_output($machine->name)."</a></td>
-      <td>".escape_output($machine->machineType['name'])."</td>
-      <td>".escape_output(count($machine->formEntries))."</td>
-      <td>".escape_output((($lastEntry->updatedAt == '') ? "N/A" : format_mysql_timestamp($lastEntry->updatedAt)))."</td>
-    </tr>\n";
-  }
-  echo "    </tbody>
-  </table>\n";
 }
 
 function display_register_form($database, $action=".") {
@@ -357,7 +284,7 @@ function display_register_form($database, $action=".") {
 
 function display_ionization_chamber_dropdown($select_id = "form_entry_form_values_ionization_chamber", $select_name_prefix="form_entry[form_values]", $selected="") {
   echo "<select class='span12' id='".escape_output($select_id)."' name='".escape_output($select_name_prefix)."[ionization_chamber]'>
-  <option value='Farmer (S/N 944, ND.SW(Gy/C) 5.18E+07)'".(($selected === 'Farmer (S/N 944, ND.SW(Gy/C) 5.18E+07)') ? "selected='selected'" : "").">Farmer (S/N 944, ND.SW(Gy/C) 5.18E+07)</option>
+  <option value='Farmer (S/N 944, ND.SW(Gy/C) 5.20E+07)'".(($selected === 'Farmer (S/N 944, ND.SW(Gy/C) 5.20E+07)') ? "selected='selected'" : "").">Farmer (S/N 944, ND.SW(Gy/C) 5.20E+07)</option>
   <option value='Farmer (S/N 269, ND.SW(Gy/C) 5.32E+07)'".(($selected === 'Farmer (S/N 269, ND.SW(Gy/C) 5.32E+07)') ? "selected='selected'" : "").">Farmer (S/N 269, ND.SW(Gy/C) 5.32E+07)</option>\n</select>\n";
 }
 
@@ -509,7 +436,7 @@ function display_machine_edit_form($user, $id=false) {
     <div class='control-group'>
       <label class='control-label' for='machine[machine_type_id]'>Machine Type</label>
       <div class='controls'>\n";
-  display_machine_type_dropdown($database, "machine[machine_type_id]", ($id === false) ? 0 : $machine->machineType['id']);
+  display_machine_type_dropdown($user->dbConn, "machine[machine_type_id]", ($id === false) ? 0 : $machine->machineType['id']);
   echo "      </div>
     </div>
     <div class='control-group'>
@@ -772,7 +699,17 @@ function display_form_entry_edit_form($user, $id=False, $form_id=False) {
     foreach ($jsParameters as $name => $value) {
       echo "var ".$name." = ".$value.";\n";
     }
-    echo $form->js."\n</script>\n";
+    echo $form->js."\n$('form').autosave({
+    callbacks: {
+      save: {
+        method: 'ajax',
+        options: {
+          url: $(location).attr('href') + '&autosave',
+          type: 'POST'
+        }
+      }
+    }
+    });</script>\n";
   }
 }
 

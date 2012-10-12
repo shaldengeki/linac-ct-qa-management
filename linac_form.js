@@ -12,8 +12,22 @@ function calculateTPCF() {
   }
 }
 function calculateOutputCalibrationStats(type, id_prefix) {
-  if ($('#' + id_prefix + '_q1').val() != '' && $('#' + id_prefix + '_q2').val() != '' && $('#' + id_prefix + '_q3').val() != '') {
-    var qAvg = (parseFloat($('#' + id_prefix + '_q1').val()) + parseFloat($('#' + id_prefix + '_q2').val()) + parseFloat($('#' + id_prefix + '_q3').val())) / 3.0;
+  if ($('#' + id_prefix + '_q1').val() != '' || $('#' + id_prefix + '_q2').val() != '' || $('#' + id_prefix + '_q3').val() != '') {
+    qSum = 0;
+    qCount = 0;
+    if (!isNaN(parseFloat($('#' + id_prefix + '_q1').val()))) {
+      qSum += parseFloat($('#' + id_prefix + '_q1').val());
+      qCount++;
+    }
+    if (!isNaN(parseFloat($('#' + id_prefix + '_q2').val()))) {
+      qSum += parseFloat($('#' + id_prefix + '_q2').val());
+      qCount++;
+    }
+    if (!isNaN(parseFloat($('#' + id_prefix + '_q3').val()))) {
+      qSum += parseFloat($('#' + id_prefix + '_q3').val());
+      qCount++;
+    }
+    var qAvg = qSum * 1.0 / qCount;
     $('#' + id_prefix + '_avg').val(qAvg);
     
     switch ($('#form_entry_form_values_electrometer').val()) {
@@ -35,8 +49,8 @@ function calculateOutputCalibrationStats(type, id_prefix) {
         break;
     }
     switch ($('#form_entry_form_values_ionization_chamber').val()) {
-      case 'Farmer (S/N 944, ND.SW(Gy/C) 5.18E+07)':
-        var chamber_constant = 0.518;
+      case 'Farmer (S/N 944, ND.SW(Gy/C) 5.20E+07)':
+        var chamber_constant = 0.520;
         var M_c_choices = {"_6MeV": 20.5, "_9MeV": 20.8, "12MeV": 21.0, "16MeV": 21.6, "20MeV": 21.8};
         break;
       case 'Farmer (S/N 269, ND.SW(Gy/C) 5.32E+07)':
@@ -55,7 +69,6 @@ function calculateOutputCalibrationStats(type, id_prefix) {
         $('#' + id_prefix + '_Dw_abs').val(D_w_abs);
         break;
     }
-    
 
     if ($('#form_entry_form_values_tpcf').val() != '') {
       var M = qAvg * parseFloat($('#form_entry_form_values_tpcf').val()) * p_ion * k_elec;
@@ -82,6 +95,7 @@ function calculateOutputCalibrationStats(type, id_prefix) {
             $('.form_entry_form_values_electron_output_calibration_diff').each(function() {
               anyFailures = anyFailures || (Math.abs($(this).val()) > 2.0);
               $(this).parent().toggleClass("error", (Math.abs($(this).val()) > 2.0));
+              $(this).parent().toggleClass("success", (Math.abs($(this).val()) <= 2.0));
             });
             $('#electron_output_calibration_adjustment').toggle(anyFailures);
             break;
@@ -91,19 +105,35 @@ function calculateOutputCalibrationStats(type, id_prefix) {
             $('.form_entry_form_values_photon_output_calibration_diff').each(function() {
               anyFailures = anyFailures || (Math.abs($(this).val()) > 2.0);
               $(this).parent().toggleClass("error", (Math.abs($(this).val()) > 2.0));
+              $(this).parent().toggleClass("success", (Math.abs($(this).val()) <= 2.0));
             });
             $('#photon_output_calibration_adjustment').toggle(anyFailures);
             break;
         }
       } else {
         $('#' + id_prefix + '_diff').parent().toggleClass("error", (Math.abs(percentDiff) > 2.0));
+        $('#' + id_prefix + '_diff').parent().toggleClass("success", (Math.abs(percentDiff) <= 2.0));
       }
     }
   }
 }
 function calculateTPRStats(id_prefix, outputCalibration_prefix) {
-  if ($('#' + id_prefix + '_q1').val() != '' && $('#' + id_prefix + '_q2').val() != '' && $('#' + id_prefix + '_q3').val() != '') {
-    var qAvg = (parseFloat($('#' + id_prefix + '_q1').val()) + parseFloat($('#' + id_prefix + '_q2').val()) + parseFloat($('#' + id_prefix + '_q3').val())) / 3.0;
+  if ($('#' + id_prefix + '_q1').val() != '' || $('#' + id_prefix + '_q2').val() != '' || $('#' + id_prefix + '_q3').val() != '') {
+    qSum = 0;
+    qCount = 0;
+    if (!isNaN(parseFloat($('#' + id_prefix + '_q1').val()))) {
+      qSum += parseFloat($('#' + id_prefix + '_q1').val());
+      qCount++;
+    }
+    if (!isNaN(parseFloat($('#' + id_prefix + '_q2').val()))) {
+      qSum += parseFloat($('#' + id_prefix + '_q2').val());
+      qCount++;
+    }
+    if (!isNaN(parseFloat($('#' + id_prefix + '_q3').val()))) {
+      qSum += parseFloat($('#' + id_prefix + '_q3').val());
+      qCount++;
+    }
+    var qAvg = qSum * 1.0 / qCount;
     $('#' + id_prefix + '_avg').val(qAvg);
     if ($('#' + outputCalibration_prefix + '_q1').val() == '' && outputCalibration_prefix.indexOf('_adjusted') > 0) {
       outputCalibration_prefix = outputCalibration_prefix.replace(/\_adjusted/gi, "");
@@ -119,12 +149,27 @@ function calculateTPRStats(id_prefix, outputCalibration_prefix) {
     $('#' + id_prefix + '_TPR').val(roundNumber(TPR, 7));
     $('#' + id_prefix + '_diff').val(roundNumber(percentDiff, 2));
     $('#' + id_prefix + '_diff').parent().toggleClass("error", (Math.abs(percentDiff) > 2.0));
+    $('#' + id_prefix + '_diff').parent().toggleClass("success", (Math.abs(percentDiff) <= 2.0));
     $('#' + id_prefix + '_TPR').trigger('change');
   }
 }
 function calculateGatingStats(id_prefix, TPR_prefix) {
-  if ($('#' + id_prefix + '_q1').val() != '' && $('#' + id_prefix + '_q2').val() != '' && $('#' + id_prefix + '_q3').val() != '') {
-    var qAvg = (parseFloat($('#' + id_prefix + '_q1').val()) + parseFloat($('#' + id_prefix + '_q2').val()) + parseFloat($('#' + id_prefix + '_q3').val())) / 3.0;
+  if ($('#' + id_prefix + '_q1').val() != '' || $('#' + id_prefix + '_q2').val() != '' || $('#' + id_prefix + '_q3').val() != '') {
+    qSum = 0;
+    qCount = 0;
+    if (!isNaN(parseFloat($('#' + id_prefix + '_q1').val()))) {
+      qSum += parseFloat($('#' + id_prefix + '_q1').val());
+      qCount++;
+    }
+    if (!isNaN(parseFloat($('#' + id_prefix + '_q2').val()))) {
+      qSum += parseFloat($('#' + id_prefix + '_q2').val());
+      qCount++;
+    }
+    if (!isNaN(parseFloat($('#' + id_prefix + '_q3').val()))) {
+      qSum += parseFloat($('#' + id_prefix + '_q3').val());
+      qCount++;
+    }
+    var qAvg = qSum * 1.0 / qCount;
     $('#' + id_prefix + '_avg').val(qAvg);
     if ($('#' + TPR_prefix + '_q1').val() != '' && $('#' + TPR_prefix + '_q2').val() != '' && $('#' + TPR_prefix + '_q3').val() != '') {
       var qAvg_TPR = (parseFloat($('#' + TPR_prefix + '_q1').val()) + parseFloat($('#' + TPR_prefix + '_q2').val()) + parseFloat($('#' + TPR_prefix + '_q3').val())) / 3.0;
@@ -135,12 +180,27 @@ function calculateGatingStats(id_prefix, TPR_prefix) {
       $('#' + id_prefix + '_TPR').trigger('change');
       $('#' + id_prefix + '_diff').val(roundNumber(percentDiff, 2));
       $('#' + id_prefix + '_diff').parent().toggleClass("error", (Math.abs(percentDiff) > 2.0));
+      $('#' + id_prefix + '_diff').parent().toggleClass("success", (Math.abs(percentDiff) <= 2.0));
     }
   }
 }
 function calculateEDWStats(id_prefix, TPR_prefix) {
-  if ($('#' + id_prefix + '_q1').val() != '' && $('#' + id_prefix + '_q2').val() != '' && $('#' + id_prefix + '_q3').val() != '') {
-    var qAvg = (parseFloat($('#' + id_prefix + '_q1').val()) + parseFloat($('#' + id_prefix + '_q2').val()) + parseFloat($('#' + id_prefix + '_q3').val())) / 3.0;
+  if ($('#' + id_prefix + '_q1').val() != '' || $('#' + id_prefix + '_q2').val() != '' || $('#' + id_prefix + '_q3').val() != '') {
+    qSum = 0;
+    qCount = 0;
+    if (!isNaN(parseFloat($('#' + id_prefix + '_q1').val()))) {
+      qSum += parseFloat($('#' + id_prefix + '_q1').val());
+      qCount++;
+    }
+    if (!isNaN(parseFloat($('#' + id_prefix + '_q2').val()))) {
+      qSum += parseFloat($('#' + id_prefix + '_q2').val());
+      qCount++;
+    }
+    if (!isNaN(parseFloat($('#' + id_prefix + '_q3').val()))) {
+      qSum += parseFloat($('#' + id_prefix + '_q3').val());
+      qCount++;
+    }
+    var qAvg = qSum * 1.0 / qCount;
     $('#' + id_prefix + '_avg').val(qAvg);
     var qAvg_TPR = (parseFloat($('#' + TPR_prefix + '_q1').val()) + parseFloat($('#' + TPR_prefix + '_q2').val()) + parseFloat($('#' + TPR_prefix + '_q3').val())) / 3.0;
 
@@ -155,11 +215,26 @@ function calculateEDWStats(id_prefix, TPR_prefix) {
     $('#' + id_prefix + '_WF').trigger('change');
     $('#' + id_prefix + '_diff').val(roundNumber(percentDiff, 2));
     $('#' + id_prefix + '_diff').parent().toggleClass("error", (Math.abs(percentDiff) > 2.0));
+    $('#' + id_prefix + '_diff').parent().toggleClass("success", (Math.abs(percentDiff) <= 2.0));
   }
 }
 function calculateEnergyRatioStats(id_prefix, outputCalibration_prefix) {
-  if ($('#' + id_prefix + '_q1').val() != '' && $('#' + id_prefix + '_q2').val() != '' && $('#' + id_prefix + '_q3').val() != '') {
-    var qAvg = (parseFloat($('#' + id_prefix + '_q1').val()) + parseFloat($('#' + id_prefix + '_q2').val()) + parseFloat($('#' + id_prefix + '_q3').val())) / 3.0;
+  if ($('#' + id_prefix + '_q1').val() != '' || $('#' + id_prefix + '_q2').val() != '' || $('#' + id_prefix + '_q3').val() != '') {
+    qSum = 0;
+    qCount = 0;
+    if (!isNaN(parseFloat($('#' + id_prefix + '_q1').val()))) {
+      qSum += parseFloat($('#' + id_prefix + '_q1').val());
+      qCount++;
+    }
+    if (!isNaN(parseFloat($('#' + id_prefix + '_q2').val()))) {
+      qSum += parseFloat($('#' + id_prefix + '_q2').val());
+      qCount++;
+    }
+    if (!isNaN(parseFloat($('#' + id_prefix + '_q3').val()))) {
+      qSum += parseFloat($('#' + id_prefix + '_q3').val());
+      qCount++;
+    }
+    var qAvg = qSum * 1.0 / qCount;
     $('#' + id_prefix + '_avg').val(qAvg);
     if ($('#' + outputCalibration_prefix + '_q1').val() == '' && outputCalibration_prefix.indexOf('_adjusted') > 0) {
       outputCalibration_prefix = outputCalibration_prefix.replace(/\_adjusted/gi, "");
@@ -179,6 +254,7 @@ function calculateEnergyRatioStats(id_prefix, outputCalibration_prefix) {
     $('#' + id_prefix + '_PDD_abs').trigger('change');
     $('#' + id_prefix + '_diff').val(roundNumber(percentDiff, 2));
     $('#' + id_prefix + '_diff').parent().toggleClass("error", ((PDD > percentDiff_maxes[id_prefix.substr(-5)]) || (PDD < percentDiff_mins[id_prefix.substr(-5)])));
+    $('#' + id_prefix + '_diff').parent().toggleClass("success", ((PDD <= percentDiff_maxes[id_prefix.substr(-5)]) && (PDD >= percentDiff_mins[id_prefix.substr(-5)])));
   }
 }
 
@@ -297,18 +373,6 @@ function bindAllOutputCalibrationStats() {
       });
     }
   }
-  $('#form_entry_form_values_photon_output_calibration_6MV_Dw').change(function() {
-    calculateTPRStats('form_entry_form_values_tpr_6MV', 'form_entry_form_values_photon_output_calibration_adjusted_6MV');
-  });
-  $('#form_entry_form_values_photon_output_calibration_18MV_Dw').change(function() {
-    calculateTPRStats('form_entry_form_values_tpr_18MV', 'form_entry_form_values_photon_output_calibration_adjusted_18MV');
-  });
-  $('#form_entry_form_values_photon_output_calibration_adjusted_6MV_Dw').change(function() {
-    calculateTPRStats('form_entry_form_values_tpr_6MV', 'form_entry_form_values_photon_output_calibration_adjusted_6MV');
-  });
-  $('#form_entry_form_values_photon_output_calibration_adjusted_18MV_Dw').change(function() {
-    calculateTPRStats('form_entry_form_values_tpr_18MV', 'form_entry_form_values_photon_output_calibration_adjusted_18MV');
-  });
 }
 
 function bindAllTPREvents() {
@@ -321,6 +385,18 @@ function bindAllTPREvents() {
     {'name': '6XFFF', 'type': 'photon'},
     {'name': '10XFFF', 'type': 'photon'}
   ];
+  $('#form_entry_form_values_photon_output_calibration_6MV_Dw').change(function() {
+    calculateTPRStats('form_entry_form_values_tpr_6MV', 'form_entry_form_values_photon_output_calibration_adjusted_6MV');
+  });
+  $('#form_entry_form_values_photon_output_calibration_18MV_Dw').change(function() {
+    calculateTPRStats('form_entry_form_values_tpr_18MV', 'form_entry_form_values_photon_output_calibration_adjusted_18MV');
+  });
+  $('#form_entry_form_values_photon_output_calibration_adjusted_6MV_Dw').change(function() {
+    calculateTPRStats('form_entry_form_values_tpr_6MV', 'form_entry_form_values_photon_output_calibration_adjusted_6MV');
+  });
+  $('#form_entry_form_values_photon_output_calibration_adjusted_18MV_Dw').change(function() {
+    calculateTPRStats('form_entry_form_values_tpr_18MV', 'form_entry_form_values_photon_output_calibration_adjusted_18MV');
+  });
   for (var i = 0; i < entries.length; i++) {
     $('.form_entry_form_values_tpr_' + entries[i]['name']).each(function() {
       $(this).change({entry: entries[i]}, function(event) {
@@ -382,16 +458,13 @@ $(document).ready(function() {
   $('#form_entry_form_values_pressure').change(function() {calculateTPCF();});
   $('#form_entry_form_values_tpcf').change(function() { 
     calculateAllOutputCalibrationStats();
-    calculateAllTPRStats();
   });
   
   $('#form_entry_form_values_ionization_chamber').change(function() {
     calculateAllOutputCalibrationStats();
-    calculateAllTPRStats();
   });
   $('#form_entry_form_values_electrometer').change(function() {
     calculateAllOutputCalibrationStats();
-    calculateAllTPRStats();
   });
   $('.form_entry_form_values_gating_6MV').each(function() {
     $(this).change(function() {

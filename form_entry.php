@@ -5,22 +5,78 @@ if (!$user->loggedIn()) {
 }
 
 if (isset($_POST['form_entry'])) {
-  $createFormEntry = $database->create_or_update_form_entry($user, $_POST['form_entry']);
-  redirect_to($createFormEntry);
-} elseif ($_REQUEST['action'] == 'approve') {
-  $approveFormEntry = $database->approve_form_entry($user, intval($_REQUEST['id']), 1);
-  redirect_to($approveFormEntry);
-} elseif ($_REQUEST['action'] == 'unapprove') {
-  $approveFormEntry = $database->approve_form_entry($user, intval($_REQUEST['id']), 0);
-  redirect_to($approveFormEntry);
+  // check if this is an autosave.
+  if (isset($_REQUEST['autosave'])) {
+    // save this partial form.
+    echo "Autosave";
+    exit;
+  } else {
+    // regular ol' POST.
+    // check if everything required is present.
+    if (!isset($_POST['form_entry']['machine_id']) || !isset($_POST['form_entry']['form_id']) || !isset($_POST['form_entry']['created_at']) || intval($_POST['form_entry']['machine_id']) == 0 || intval($_POST['form_entry']['form_id']) == 0 || intval($_POST['form_entry']['created_at']) == 0) {
+      redirect_to(array('location' => 'form_entry.php'.((isset($_POST['form_entry']['id'])) ? "?id=".intval($_POST['form_entry']['id']) : ""), 'status' => 'Please specify a machine ID, form ID, and recording time and try again.'));
+    }
+
+    // check if this facility exists and is the user's facility.
+    try {
+      $machine = new Machine($database, intval($_POST['form_entry']['machine_id']));
+      $facility = new Facility($database, intval($machine->facility['id']));
+    } catch (Exception $e) {
+      redirect_to(array('location' => 'form_entry.php'.((isset($form_entry['id'])) ? "?id=".intval($form_entry['id']) : ""), 'status' => 'This machine or facility does not exist.', 'class' => 'error'));
+    }
+    if ($facility->id != $user->facility['id']) {
+      redirect_to(array('location' => 'form_entry.php'.((isset($form_entry['id'])) ? "?id=".intval($form_entry['id']) : ""), 'status' => 'This machine does not belong to your facility.', 'class' => 'error'));
+    }
+
+    $formEntry = new FormEntry($database, intval($_POST['form_entry']['id']));
+
+    // check to ensure that this user is allowed to modify this form entry.
+    if ($formEntry->id != 0) {
+      if (!$formEntry->user['id'] || ($user->id != $formEntry->user['id'] && !$user->isPhysicist() && !$user->isAdmin())) {
+        redirect_to(array('location' => 'form_entry.php'.((isset($form_entry['id'])) ? "?id=".intval($form_entry['id']) : ""), 'status' => "You don't have permissions to update that entry.", 'class' => 'error'));
+      }
+      if ($formEntry->approvedOn != '') {
+        redirect_to(array('location' => 'form_entry.php'.((isset($form_entry['id'])) ? "?id=".intval($form_entry['id']) : ""), 'status' => "This entry has already been approved and must be un-approved to make changes."));
+      }
+    }
+    try {
+      $targetUser = new User($database, intval($_POST['form_entry']['user_id']));
+    } catch (Exception $e) {
+      redirect_to(array('location' => 'form_entry.php'.((isset($form_entry['id'])) ? "?id=".intval($form_entry['id']) : ""), 'status' => "The provided user who performed the QA does not exist.", 'class' => 'error'));      
+    }
+    if (($targetUser->id != $user->id && !$user->isAdmin()) || $targetUser->facility['id'] != $user->facility['id']) {
+      redirect_to(array('location' => 'form_entry.php?action=edit&id='.intval($formEntry->id), 'status' => "You aren't allowed to assign this form entry to that user."));
+    }
+
+    $createFormEntry = $formEntry->create_or_update($_POST['form_entry']);
+    redirect_to($createFormEntry);
+  }
+} elseif ($_REQUEST['action'] == 'approve' || $_REQUEST['action'] == 'unapprove') {
+  if ($_REQUEST['action'] == 'approve') {
+    $approvalVal = 1;
+  } else {
+    $approvalVal = 0;
+  }
+  $formEntry = new FormEntry($database, intval($_REQUEST['id']));
+  if (!$formEntry->user['id'] || ($user->id != $formEntry->user['id'] && !$user->isPhysicist() && !$user->isAdmin())) {
+    redirect_to(array('location' => 'form_entry.php?action=edit&id='.intval($formEntry->id), 'status' => "You don't have permissions to update that entry.", 'class' => 'error'));
+  }
+  if ($formEntry->setApproval($user, $approvalVal)) {
+    redirect_to(array('location' => 'form_entry.php?action=index&form_id='.intval($formEntry->form['id']), 'status' => "Successfully ".$_REQUEST['action']."d entry.", 'class' => 'success'));
+  } else {
+    redirect_to(array('location' => 'form_entry.php?action=edit&id='.intval($formEntry->id), 'status' => "An error occurred while un/approving this entry.", 'class' => 'error'));
+  }
+
 }
 
 start_html($user, "UC Medicine QA", "Manage Form Entries", $_REQUEST['status'], $_REQUEST['class']);
 
 switch($_REQUEST['action']) {
   case 'new':
-    echo "<h1>Submit a record</h1>
-";
+    echo "<div class='row-fluid'>
+  <div class='span12'>
+    <h1>Submit a record</h1>
+  </div>\n</div>\n";
     display_form_entry_edit_form($user, false, intval($_REQUEST['form_id']));
     break;
   case 'edit':
@@ -38,8 +94,10 @@ switch($_REQUEST['action']) {
       display_error("Error: Insufficient privileges", "You may only view and edit forms belonging to your facility.");
       break;
     }
-    echo "<h1>QA Record</h1>
-";
+    echo "<div class='row-fluid'>
+  <div class='span12'>
+    <h1>QA Record</h1>
+  </div>\n</div>\n";
     display_form_entry_edit_form($user, intval($_REQUEST['id']), false);
     break;
   default:

@@ -5,11 +5,38 @@ if (!$user->loggedIn()) {
 }
 
 if (isset($_POST['facility'])) {
-  $createFacility = $database->create_or_update_facility($user, $_POST['facility']);
-  redirect_to($createFacility);
+  // check to ensure this user has auths to manage this facility.
+  if (!$user->isAdmin() || (isset($_POST['facility']['id']) && intval($_POST['facility']['id']) != $user->facility['id'])) {
+    redirect_to(array('location' => 'facility.php', 'status' => "You don't have permissions to modify this facility."));
+  }
+  if (!isset($_POST['facility']['name'])) {
+    redirect_to(array('location' => 'facility.php'.(isset($_POST['facility']['id']) ? "?action=edit&id=".intval($_POST['facility']['id']) : "?action=new"), 'status' => "You don't have permissions to modify this facility.", 'class' => 'error'));
+  }
+  if (isset($_POST['facility']['id']) && is_numeric($_POST['facility']['id'])) {
+    $facility = new Facility($database, intval($_POST['facility']['id']));
+  } else {
+    $facility = new Facility($database, 0);
+  }
+  $createFacility = $facility->create_or_update($_POST['facility']);
+  if ($createFacility) {
+    redirect_to(array('location' => 'facility.php?action=show&id='.intval($createFacility), 'status' => "Successfully ".(isset($_POST['facility']['id']) ? "updated" : "created")." this facility.", 'class' => 'success'));
+  } else {
+    redirect_to(array('location' => 'facility.php'.(isset($_POST['facility']['id']) ? "?action=edit&id=".intval($_POST['facility']['id']) : "?action=new"), 'status' => "An error occurred while ".(isset($_POST['facility']['id']) ? "updating" : "creating")." this facility.", 'class' => 'error'));
+  }
+}
+
+if (!isset($_REQUEST['id'])) {
+  $_REQUEST['id'] = 0;
 }
 
 start_html($user, "UC Medicine QA", "Manage Facilities", $_REQUEST['status'], $_REQUEST['class']);
+try {
+  $facility = new Facility($database, intval($_REQUEST['id']));
+} catch (Exception $e) {
+  display_error("Error: Invalid facility ID", "Please check the facility ID and try again.");
+  display_footer();
+  exit;
+}
 
 switch($_REQUEST['action']) {
   case 'new':
@@ -18,33 +45,17 @@ switch($_REQUEST['action']) {
       display_error("Error: Insufficient privileges", "You must be an administrator to add facilities.");
       break;
     }
-    echo "<h1>Add a facility</h1>\n";
-    display_facility_edit_form($user);
+    $facility->displayEditForm("Add a facility");
     break;
   case 'edit':
-    if (!isset($_REQUEST['id']) || !is_numeric($_REQUEST['id'])) {
-      display_error("Error: Invalid facility ID", "Please check the facility ID and try again.");
-      break;
-    }
     if (intval($_REQUEST['id']) != $user->facility['id'] || !$user->isAdmin()) {
       display_error("Error: Insufficient privileges", "You are not allowed to modify this facility.");
       break;
     }
-    echo "<h1>Modify a facility</h1>\n";
-    display_facility_edit_form($user, intval($_REQUEST['id']));
+    $facility->displayEditForm("Modify a facility");
     break;
   case 'show':
-    if (!isset($_REQUEST['id']) || !is_numeric($_REQUEST['id'])) {
-      display_error("Error: Invalid facility ID", "Please check the facility ID and try again.");
-      break;
-    }
-    $facilityName = $database->queryFirstValue("SELECT `name` FROM `facilities` WHERE `id` = ".intval($_REQUEST['id'])." LIMIT 1");
-    if (!$facilityName) {
-      display_error("Error: Invalid facility ID", "Please check the facility ID and try again.");
-      break;
-    }
-    echo "<h1>".escape_output($facilityName)."</h1>\n";
-    display_facility_profile($user, intval($_REQUEST['id']));
+    $facility->displayProfile($user);
     break;
   default:
   case 'index':

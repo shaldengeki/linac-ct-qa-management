@@ -69,6 +69,133 @@ class FormEntry {
     }
     return $formValues;
   }
+  public function setApproval($user, $approval) {
+    // takes a user and an approval value and sets this form entry to be approved by this user / unapproved.
+    if (intval($approval)) {
+      $setApproval = $this->dbConn->stdQuery("UPDATE `form_entries` SET `updated_at` = NOW(), `approved_on` = NOW(), `approved_user_id` = ".intval($user->id)." WHERE `id` = ".intval($this->id)." LIMIT 1");
+    } else {
+      $setApproval = $this->dbConn->stdQuery("UPDATE `form_entries` SET `updated_at` = NOW(), `approved_on` = NULL, `approved_user_id` = NULL WHERE `id` = ".intval($this->id)." LIMIT 1");
+    }
+    if ($setApproval) {
+      return True;
+    } else {
+      return False;
+    }
+  }
+  public function create_or_update($form_entry) {
+    if ($this->id != 0) {
+      //update this form entry.
+      foreach ($form_entry['form_values'] as $name=>$value) {
+        if ($value == 'NULL') {
+          continue;
+        }
+        $findField = $this->dbConn->queryFirstValue("SELECT `id` FROM `form_fields` WHERE `form_id` = ".intval($form_entry['form_id'])." && `name` = ".$this->dbConn->quoteSmart($name));
+        if (!$findField) {
+          $insertField = $this->dbConn->stdQuery("INSERT INTO `form_fields` (`form_id`, `name`) VALUES (".intval($form_entry['form_id']).", ".$this->dbConn->quoteSmart($name).")");
+          $findField = $this->dbConn->insert_id;
+        }
+        $insertOrUpdateValue = $this->dbConn->stdQuery("INSERT INTO `form_values` (`value`, `form_field_id`, `form_entry_id`) VALUES (".$this->dbConn->quoteSmart($value).", ".intval($findField).", ".intval($this->id).") ON DUPLICATE KEY UPDATE `value` = ".$this->dbConn->quoteSmart($value));
+      }
+      // process uploaded image.
+      $file_array = $_FILES['form_image'];
+      $imagePath = "";
+      if (!empty($file_array['tmp_name']) && is_uploaded_file($file_array['tmp_name'])) {
+        if ($file_array['error'] != UPLOAD_ERR_OK) {
+          return array('location' => 'form_entry.php?action=edit&id='.intval($this->id), 'status' => "There was an error uploading your image file.", 'class' => 'error');
+        }
+        $file_contents = file_get_contents($file_array['tmp_name']);
+        if (!$file_contents) {
+          return array('location' => 'form_entry.php?action=edit&id='.intval($this->id), 'status' => "Could not read contents of uploaded image file.", 'class' => 'error');
+        }
+        $newIm = @imagecreatefromstring($file_contents);
+        if (!$newIm) {
+          return array('location' => 'form_entry.php?action=edit&id='.intval($this->id), 'status' => "The image file you uploaded is invalid.", 'class' => 'error');
+        }
+        $imageSize = getimagesize($file_array['tmp_name']);
+        if ($imageSize[0] > 5000 || $imageSize[1] > 5000) {
+          return array('location' => 'form_entry.php?action=edit&id='.intval($this->id), 'status' => "The maximum allowed size for images is 5000x5000 pixels.", 'class' => 'error');
+        }
+        // move file to destination and save path in db.
+        if (!is_dir(joinPaths($_SERVER[''], "uploads", "forms", intval($form_entry['form_id'])))) {
+          mkdir(joinPaths($_SERVER[''], "uploads", "forms", intval($form_entry['form_id'])));
+        }
+        $imagePathInfo = pathinfo($file_array['tmp_name']);
+        $imagePath = joinPaths("uploads", "forms", intval($form_entry['form_id']), $form_entry['id'].image_type_to_extension($imageSize[2]));
+        if (!move_uploaded_file($file_array['tmp_name'], $imagePath)) {
+          return array('location' => 'form_entry.php?action=edit&id='.intval($this->id), 'status' => "There was an error moving your uploaded file.", 'class' => 'error');
+        }
+      } else {
+        $imagePath = $this->imagePath;
+      }
+      $updateFormEntry = $this->dbConn->stdQuery("UPDATE `form_entries` SET `user_id` = ".intval($form_entry['user_id']).", `machine_id` = ".intval($form_entry['machine_id']).", `comments` = ".$this->dbConn->quoteSmart($form_entry['comments']).", `image_path` = ".$this->dbConn->quoteSmart($imagePath).", `created_at` = '".date('Y-m-d H:i:s', strtotime($form_entry['created_at']))."', `qa_month` = ".intval($form_entry['qa_month']).", `qa_year` = ".intval($form_entry['qa_year']).", `updated_at` = '".date('Y-m-d H:i:s')."' WHERE `id` = ".intval($form_entry['id'])." LIMIT 1");
+      return array('location' => 'form_entry.php?action=index&form_id='.$form_entry['form_id'], 'status' => "Successfully updated form entry.", 'class' => 'success');
+    } else {
+      // inserting a form entry.
+      // ensure that this form exists.
+      $checkForm = $this->dbConn->queryCount("SELECT COUNT(*) FROM `forms` WHERE `id` = ".intval($form_entry['form_id']));
+      if (!$checkForm || $checkForm != 1) {
+        return array('location' => 'form_entry.php?action=new'.((isset($form_entry['form_id'])) ? "&form_id=".intval($form_entry['form_id']) : ""), 'status' => "The specified form does not exist.", 'class' => 'error');                  
+      }
+
+      //check to ensure the provided user is valid.
+      if (intval($form_entry['user_id']) != $user->id && !$user->isAdmin($this)) {
+        return array('location' => 'form_entry.php?action=new'.((isset($form_entry['form_id'])) ? "&form_id=".intval($form_entry['form_id']) : ""), 'status' => "You aren't allowed to assign this form entry to that user.");
+      }
+      //check to ensure selected user exists and is part of this facility.
+      $checkUserExists = $this->dbConn->queryFirstValue("SELECT `facility_id` FROM `users` WHERE `id` = ".intval($form_entry['user_id'])." LIMIT 1");
+      if (!$checkUserExists || intval($checkUserExists) != $user->facility['id']) {
+        return array('location' => 'form_entry.php?action=new'.((isset($form_entry['form_id'])) ? "&form_id=".intval($form_entry['form_id']) : ""), 'status' => "You aren't allowed to assign this form entry to that user.");
+      }
+
+      $insertEntry = $this->dbConn->stdQuery("INSERT INTO `form_entries` (`form_id`, `machine_id`, `user_id`, `comments`, `image_path`, `created_at`, `qa_month`, `qa_year`, `updated_at`) VALUES (".intval($form_entry['form_id']).", ".intval($form_entry['machine_id']).", ".intval($form_entry['user_id']).", ".$this->dbConn->quoteSmart($form_entry['comments']).", '', '".date('Y-m-d H:i:s', strtotime($form_entry['created_at']))."', ".intval($form_entry['qa_month']).", ".intval($form_entry['qa_year']).", '".date('Y-m-d H:i:s')."')");
+      $form_entry['id'] = intval($this->dbConn->insert_id);
+      $valueQueryArray = [];
+      foreach ($form_entry['form_values'] as $name=>$value) {
+        $findField = $this->dbConn->queryFirstValue("SELECT `id` FROM `form_fields` WHERE `form_id` = ".intval($form_entry['form_id'])." && `name` = ".$this->dbConn->quoteSmart($name));
+        if (!$findField) {
+          $insertField = $this->dbConn->stdQuery("INSERT INTO `form_fields` (`form_id`, `name`) VALUES (".intval($form_entry['form_id']).", ".$this->dbConn->quoteSmart($name).")");
+          $findField = $this->dbConn->insert_id;
+        }
+        if ($value != '') {
+          $valueQueryArray[] = "(".$this->dbConn->quoteSmart($value).", ".intval($findField).", ".intval($form_entry['id']).")";
+        }
+      }
+      $insertFormValues = $this->dbConn->stdQuery("INSERT INTO `form_values` (`value`, `form_field_id`, `form_entry_id`) VALUES ".implode(",", $valueQueryArray));
+      if (!$insertFormValues) {
+        return array('location' => 'form_entry.php?action=new'.((isset($form_entry['form_id'])) ? "&form_id=".intval($form_entry['form_id']) : ""), 'status' => "Error while inserting form entry. Please try again.", 'class' => 'error');
+      }
+      // process uploaded image (if there is one)
+      $file_array = $_FILES['form_image'];
+      if (!empty($file_array['tmp_name']) && is_uploaded_file($file_array['tmp_name'])) {
+        if ($file_array['error'] != UPLOAD_ERR_OK) {
+          return array('location' => 'form_entry.php?action=new'.((isset($form_entry['form_id'])) ? "&form_id=".intval($form_entry['form_id']) : ""), 'status' => "There was an error uploading your image file.", 'class' => 'error');
+        }
+        $file_contents = file_get_contents($file_array['tmp_name']);
+        if (!$file_contents) {
+          return array('location' => 'form_entry.php?action=new'.((isset($form_entry['form_id'])) ? "&form_id=".intval($form_entry['form_id']) : ""), 'status' => "Could not read contents of uploaded image file.", 'class' => 'error');
+        }
+        $newIm = @imagecreatefromstring($file_contents);
+        if (!$newIm) {
+          return array('location' => 'form_entry.php?action=new'.((isset($form_entry['form_id'])) ? "&form_id=".intval($form_entry['form_id']) : ""), 'status' => "The image file you uploaded is invalid.", 'class' => 'error');
+        }
+        $imageSize = getimagesize($file_array['tmp_name']);
+        if ($imageSize[0] > 5000 || $imageSize[1] > 5000) {
+          return array('location' => 'form_entry.php?action=new'.((isset($form_entry['form_id'])) ? "&form_id=".intval($form_entry['form_id']) : ""), 'status' => "The maximum allowed size for images is 5000x5000 pixels.", 'class' => 'error');
+        }
+        // move file to destination and save path in db.
+        if (!is_dir(joinPaths($_SERVER[''], "uploads", "forms", $form_entry['form_id']))) {
+          mkdir(joinPaths($_SERVER[''], "uploads", "forms", $form_entry['form_id']));
+        }
+        $imagePathInfo = pathinfo($file_array['tmp_name']);
+        $imagePath = joinPaths("uploads", "forms", $form_entry['form_id'], $form_entry['id'].'.'.$imagePathInfo['extension']);
+        if (!move_uploaded_file($file_array['tmp_name'], $imagePath)) {
+          return array('location' => 'form_entry.php?action=new'.((isset($form_entry['form_id'])) ? "&form_id=".intval($form_entry['form_id']) : ""), 'status' => "There was an error moving your uploaded file.", 'class' => 'error');
+        }
+        $updateImagePath = $this->dbConn->stdQuery("UPDATE `form_entries` SET `image_path` = ".$this->dbConn->quoteSmart($imagePath)." WHERE `id` = ".intval($form_entry['id'])." LIMIT 1");
+      }
+      return array('location' => 'form_entry.php?action=index&form_id='.intval($form_entry['form_id']), 'status' => "Successfully inserted form entry.", 'class' => 'success');
+    }
+  }
 }
 
 ?>

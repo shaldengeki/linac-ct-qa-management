@@ -6,6 +6,10 @@ body {
   background-color: #B94A48;
   color: white;
 }
+.control-group.success input {
+  background-color: #468847;
+  color: white;
+}
 
 /* css for timepicker */
 .ui-timepicker-div .ui-widget-header { margin-bottom: 8px; }
