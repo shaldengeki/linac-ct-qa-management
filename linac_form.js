@@ -18,16 +18,20 @@ function calculateOutputCalibrationStats(type, id_prefix) {
     if (!isNaN(parseFloat($('#' + id_prefix + '_q1').val()))) {
       qSum += parseFloat($('#' + id_prefix + '_q1').val());
       qCount++;
+      console.log("q1: " + qSum + " | " + qCount);
     }
     if (!isNaN(parseFloat($('#' + id_prefix + '_q2').val()))) {
       qSum += parseFloat($('#' + id_prefix + '_q2').val());
       qCount++;
+      console.log("q2: " + qSum + " | " + qCount);
     }
     if (!isNaN(parseFloat($('#' + id_prefix + '_q3').val()))) {
       qSum += parseFloat($('#' + id_prefix + '_q3').val());
       qCount++;
+      console.log("q3: " + qSum + " | " + qCount);
     }
     var qAvg = qSum * 1.0 / qCount;
+    console.log("qAvg: " + qAvg);
     $('#' + id_prefix + '_avg').val(qAvg);
     
     switch ($('#form_entry_form_values_electrometer').val()) {
@@ -48,30 +52,36 @@ function calculateOutputCalibrationStats(type, id_prefix) {
         var k_elec = 0.995;
         break;
     }
+    console.log("electrometer: " + electrometer_adjustment + " | " + electrometer_electron_adjustment + " | " + k_elec);
     switch ($('#form_entry_form_values_ionization_chamber').val()) {
       case 'Farmer (S/N 944, ND.SW(Gy/C) 5.20E+07)':
         var chamber_constant = 0.520;
-        var M_c_choices = {"_6MeV": 20.5, "_9MeV": 20.8, "12MeV": 21.0, "16MeV": 21.6, "20MeV": 21.8};
+        var M_c_choices = {"6MeV": 20.5, "9MeV": 20.8, "12MeV": 21.0, "16MeV": 21.6, "20MeV": 21.8};
         break;
       case 'Farmer (S/N 269, ND.SW(Gy/C) 5.32E+07)':
         var chamber_constant = 0.532;
-        var M_c_choices = {"_6MeV": 20.0, "_9MeV": 20.3, "12MeV": 20.4, "16MeV": 21.0, "20MeV": 21.2};
+        var M_c_choices = {"6MeV": 20.0, "9MeV": 20.3, "12MeV": 20.4, "16MeV": 21.0, "20MeV": 21.2};
         break;
     }
+    console.log("chamber: " + chamber_constant + " | " + M_c_choices);
+    idPrefixParts = id_prefix.split("_");
+    idPrefixLastPart = idPrefixParts[idPrefixParts.length-1];
     switch (type) {
       case 'electron':
         var p_ion = 1.01;
         break;
       case 'photon':
-        p_ion = p_ion_choices[id_prefix.substr(-5)];
-        k_q = k_q_choices[id_prefix.substr(-5)];
-        D_w_abs = D_w_abs_choices[id_prefix.substr(-5)];
+        p_ion = p_ion_choices[idPrefixLastPart];
+        k_q = k_q_choices[idPrefixLastPart];
+        D_w_abs = D_w_abs_choices[idPrefixLastPart];
         $('#' + id_prefix + '_Dw_abs').val(D_w_abs);
         break;
     }
+    console.log("p_ion: " + p_ion + " | " + k_q + " | " + D_w_abs + " | " + idPrefixLastPart);
 
     if ($('#form_entry_form_values_tpcf').val() != '') {
       var M = qAvg * parseFloat($('#form_entry_form_values_tpcf').val()) * p_ion * k_elec;
+      console.log("M: " + M);
       $('#' + id_prefix + '_M').val(roundNumber(M, 7));
       $('#' + id_prefix + '_M').trigger('change');
       if (type == 'photon') {
@@ -80,7 +90,7 @@ function calculateOutputCalibrationStats(type, id_prefix) {
         $('#' + id_prefix + '_Dw').val(roundNumber(D_w, 7));
         $('#' + id_prefix + '_Dw').trigger('change');
       } else if (type == 'electron') {
-        var M_c = M_c_choices[id_prefix.substr(-5)] * electrometer_electron_adjustment;
+        var M_c = M_c_choices[idPrefixLastPart] * electrometer_electron_adjustment;
         var percentDiff = (M - M_c) / M_c * 100;
         $('#' + id_prefix + '_Mc').val(roundNumber(M_c, 7));
         $('#' + id_prefix + '_Mc').trigger('change');    
@@ -139,8 +149,11 @@ function calculateTPRStats(id_prefix, outputCalibration_prefix) {
       outputCalibration_prefix = outputCalibration_prefix.replace(/\_adjusted/gi, "");
     }
     var qAvg_outputCalibration = (parseFloat($('#' + outputCalibration_prefix + '_q1').val()) + parseFloat($('#' + outputCalibration_prefix + '_q2').val()) + parseFloat($('#' + outputCalibration_prefix + '_q3').val())) / 3.0;
+
+    idPrefixParts = id_prefix.split("_");
+    idPrefixLastPart = idPrefixParts[idPrefixParts.length-1];
     
-    TPR_abs = TPR_abs_choices[id_prefix.substr(-5)];
+    TPR_abs = TPR_abs_choices[idPrefixLastPart];
     $('#' + id_prefix + '_TPR_abs').val(TPR_abs);
     
     var TPR = qAvg / qAvg_outputCalibration;
@@ -204,7 +217,9 @@ function calculateEDWStats(id_prefix, TPR_prefix) {
     $('#' + id_prefix + '_avg').val(qAvg);
     var qAvg_TPR = (parseFloat($('#' + TPR_prefix + '_q1').val()) + parseFloat($('#' + TPR_prefix + '_q2').val()) + parseFloat($('#' + TPR_prefix + '_q3').val())) / 3.0;
 
-    WF_abs = WF_abs_choices[id_prefix.substr(-4)];
+    idPrefixParts = id_prefix.split("_");
+    idPrefixLastPart = idPrefixParts[idPrefixParts.length-1];
+    WF_abs = WF_abs_choices[idPrefixLastPart];
     
     $('#' + id_prefix + '_WF_abs').val(WF_abs);
     
@@ -241,11 +256,14 @@ function calculateEnergyRatioStats(id_prefix, outputCalibration_prefix) {
     }
     var qAvg_outputCalibration = (parseFloat($('#' + outputCalibration_prefix + '_q1').val()) + parseFloat($('#' + outputCalibration_prefix + '_q2').val()) + parseFloat($('#' + outputCalibration_prefix + '_q3').val())) / 3.0;
     
-    percentDiff_mins = {"_6MeV": 0.6921, "_9MeV": 0.7763, "12MeV": 0.861, "16MeV": 0.812, "20MeV": 0.840};
-    percentDiff_maxes = {"_6MeV": 0.9368, "_9MeV": 0.9362, "12MeV": 0.949, "16MeV": 0.889, "20MeV": 0.884};
-    
+    percentDiff_mins = {"6MeV": 0.6921, "9MeV": 0.7763, "12MeV": 0.861, "16MeV": 0.812, "20MeV": 0.840};
+    percentDiff_maxes = {"6MeV": 0.9368, "_9MeV": 0.9362, "12MeV": 0.949, "16MeV": 0.889, "20MeV": 0.884};
+
+    idPrefixParts = id_prefix.split("_");
+    idPrefixLastPart = idPrefixParts[idPrefixParts.length-1];
+
     var PDD = qAvg / qAvg_outputCalibration;
-    var PDD_ref = PDD_ref_choices[id_prefix.substr(-5)];
+    var PDD_ref = PDD_ref_choices[idPrefixLastPart];
     var percentDiff = (PDD - PDD_ref) / PDD_ref * 100;
 
     $('#' + id_prefix + '_PDD').val(roundNumber(PDD, 7));    
@@ -253,8 +271,8 @@ function calculateEnergyRatioStats(id_prefix, outputCalibration_prefix) {
     $('#' + id_prefix + '_PDD_abs').val(roundNumber(PDD_ref, 4));    
     $('#' + id_prefix + '_PDD_abs').trigger('change');
     $('#' + id_prefix + '_diff').val(roundNumber(percentDiff, 2));
-    $('#' + id_prefix + '_diff').parent().toggleClass("error", ((PDD > percentDiff_maxes[id_prefix.substr(-5)]) || (PDD < percentDiff_mins[id_prefix.substr(-5)])));
-    $('#' + id_prefix + '_diff').parent().toggleClass("success", ((PDD <= percentDiff_maxes[id_prefix.substr(-5)]) && (PDD >= percentDiff_mins[id_prefix.substr(-5)])));
+    $('#' + id_prefix + '_diff').parent().toggleClass("error", ((PDD > percentDiff_maxes[idPrefixLastPart]) || (PDD < percentDiff_mins[idPrefixLastPart])));
+    $('#' + id_prefix + '_diff').parent().toggleClass("success", ((PDD <= percentDiff_maxes[idPrefixLastPart]) && (PDD >= percentDiff_mins[idPrefixLastPart])));
   }
 }
 
