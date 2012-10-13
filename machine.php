@@ -5,8 +5,34 @@ if (!$user->loggedIn()) {
 }
 
 if (isset($_POST['machine'])) {
-  $createMachine = $database->create_or_update_machine($user, $_POST['machine']);
-  redirect_to($createmachine);
+  if (!$user->loggedIn() || !$user->isAdmin() || (intval($_POST['machine']['facility_id']) != $user->facility['id'])) {
+    redirect_to(array('location' => 'main.php', 'status' => 'You are not an administrator of this facility and cannot add machines to it.'));
+  } elseif (!isset($_POST['machine']['name']) || !isset($_POST['machine']['machine_type_id']) || !isset($_POST['machine']['facility_id'])) {
+    redirect_to(array('location' => 'machine.php'.((isset($_REQUEST['id'])) ? "?id=".intval($_REQUEST['id']) : ""), 'status' => 'One or more required fields are missing. Please check your input and try again.'));
+  }
+  //ensure that this facility exists.
+  try {
+    $facility = new Facility($database, $_POST['machine']['facility_id']);
+  } catch (Exception $e) {
+    redirect_to(array('location' => 'machine.php'.((isset($_REQUEST['id'])) ? "?id=".intval($_REQUEST['id']) : ""), 'status' => 'This facility does not exist.', 'class' => 'error'));
+  }
+  //ensure that this machine type exists.
+  try {
+    $machineType = new MachineType($database, $_POST['machine']['machine_type_id']);
+  } catch (Exception $e) {
+    redirect_to(array('location' => 'machine.php'.((isset($_REQUEST['id'])) ? "?id=".intval($_REQUEST['id']) : ""), 'status' => 'This machine type does not exist.', 'class' => 'error'));
+  }
+  try {
+    $machine = new Machine($database, intval($_REQUEST['id']));
+  } catch (Exception $e) {
+    redirect_to(array('location' => 'machine.php'.((isset($_REQUEST['id'])) ? "?id=".intval($_REQUEST['id']) : ""), 'status' => 'This machine does not exist.', 'class' => 'error'));
+  }
+  $machineID = $machine->create_or_update($_POST['machine']);
+  if ($machineID) {
+    redirect_to(array('location' => 'machine.php?action=view&id='.intval($machineID), 'status' => 'Successfully '.(intval($_REQUEST['id']) == 0 ? 'created' : 'updated').' machine.', 'class' => 'success'));
+  } else {
+    redirect_to(array('location' => 'machine.php'.((isset($_REQUEST['id'])) ? "?id=".intval($_REQUEST['id']) : ""), 'status' => 'An error occurred while '.(intval($_REQUEST['id']) == 0 ? 'creating' : 'updating').' this machine. Please try again.', 'class' => 'error'));
+  }
 } elseif ($_REQUEST['action'] == 'get_parameters' && isset($_REQUEST['id']) && is_numeric($_REQUEST['id'])) {
   // return a js response instantiating all the parameters and values for this machine.
   $machineParameters = $database->stdQuery("SELECT `machine_type_attributes`.`name`, `machine_parameters`.`value` FROM `machine_type_attributes` LEFT OUTER JOIN `machine_parameters` ON `machine_type_attributes`.`id` = `machine_parameters`.`machine_type_attribute_id` WHERE `machine_parameters`.`machine_id` = ".intval($_REQUEST['id']));

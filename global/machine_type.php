@@ -39,6 +39,32 @@ class MachineType {
     // retrieves a list of id,name arrays corresponding to this machine type's machines, ordered by name asc.
     return $this->dbConn->queryAssoc("SELECT `id`, `name` FROM `machines` WHERE `machines`.`machine_type_id` = ".intval($this->id)." ORDER BY `name` ASC");
   }
+  public function create_or_update($machine_type) {
+    // creates or updates a machine type based on the parameters passed in $machine_type and this object's attributes.
+    // returns False if failure, or the ID of the machine type if success.
+    $params = array();
+    foreach ($machine_type as $parameter => $value) {
+      if (!is_array($value)) {
+        $params[] = "`".$this->dbConn->real_escape_string($parameter)."` = ".$this->dbConn->quoteSmart($value);
+      }
+    }
+    // check to see if this is an update.
+    if ($this->id != 0) {
+      // update this machine type.
+      $updateMachineType = $this->dbConn->stdQuery("UPDATE `machine_types` SET ".implode(", ", $params)."  WHERE `id` = ".intval($this->id)." LIMIT 1");
+      if (!$updateMachineType) {
+        return False;
+      }
+      return intval($this->id);
+    } else {
+      // add this machine type.
+      $addMachineType = $this->dbConn->stdQuery("INSERT INTO `machine_types` SET ".implode(",", $params));
+      if (!$addMachineType) {
+        return False;
+      } else {
+        return intval($this->dbConn->insert_id);
+      }
+    }
+  }
 }
-
 ?>

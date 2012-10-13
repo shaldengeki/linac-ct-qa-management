@@ -18,7 +18,7 @@ class Form {
       $this->id = 0;
       $this->name = $name;
       $this->machineType = $this->machines = $this->formType = $this->formFields = $this->formEntries = array();
-      $this->$description = $this->js = $this->php = "";
+      $this->description = $this->js = $this->php = "";
     } else {
       if (!$id || !is_numeric($id)) {
         if (!($name === Null)) {
@@ -63,6 +63,33 @@ class Form {
   public function getFormEntries() {
     // retrieves a list of ids corresponding to this form's entries, ordered by updated_at desc.
     return $this->dbConn->queryAssoc("SELECT `id` FROM `form_entries` WHERE `form_id` = ".intval($this->id)." ORDER BY `updated_at` DESC");
+  }
+  public function create_or_update($form) {
+    // creates or updates a form based on the parameters passed in $form and this object's attributes.
+    // returns False if failure, or the ID of the form if success.
+    $params = array();
+    foreach ($form as $parameter => $value) {
+      if (!is_array($value)) {
+        $params[] = "`".$this->dbConn->real_escape_string($parameter)."` = ".$this->dbConn->quoteSmart($value);
+      }
+    }
+    // check to see if this is an update.
+    if ($this->id != 0) {
+      // update this form.
+      $updateForm = $this->dbConn->stdQuery("UPDATE `forms` SET ".implode(", ", $params)."  WHERE `id` = ".intval($this->id)." LIMIT 1");
+      if (!$updateForm) {
+        return False;
+      }
+      return intval($this->id);
+    } else {
+      // add this form.
+      $addForm = $this->dbConn->stdQuery("INSERT INTO `forms` SET ".implode(",", $params));
+      if (!$addForm) {
+        return False;
+      } else {
+        return intval($this->dbConn->insert_id);
+      }
+    }
   }
 }
 

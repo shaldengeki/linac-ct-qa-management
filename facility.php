@@ -6,22 +6,23 @@ if (!$user->loggedIn()) {
 
 if (isset($_POST['facility'])) {
   // check to ensure this user has auths to manage this facility.
-  if (!$user->isAdmin() || (isset($_POST['facility']['id']) && intval($_POST['facility']['id']) != $user->facility['id'])) {
+  if (!$user->isAdmin() || (isset($_REQUEST['id']) && intval($_REQUEST['id']) != $user->facility['id'])) {
     redirect_to(array('location' => 'facility.php', 'status' => "You don't have permissions to modify this facility."));
   }
   if (!isset($_POST['facility']['name'])) {
-    redirect_to(array('location' => 'facility.php'.(isset($_POST['facility']['id']) ? "?action=edit&id=".intval($_POST['facility']['id']) : "?action=new"), 'status' => "You don't have permissions to modify this facility.", 'class' => 'error'));
+    redirect_to(array('location' => 'facility.php'.(isset($_REQUEST['id']) ? "?action=edit&id=".intval($_REQUEST['id']) : "?action=new"), 'status' => "You don't have permissions to modify this facility.", 'class' => 'error'));
   }
-  if (isset($_POST['facility']['id']) && is_numeric($_POST['facility']['id'])) {
-    $facility = new Facility($database, intval($_POST['facility']['id']));
-  } else {
-    $facility = new Facility($database, 0);
+  try {
+    $facility = new Facility($database, intval($_REQUEST['id']));
+  } catch (Exception $e) {
+    redirect_to(array('location' => 'facility.php'.((isset($_REQUEST['id'])) ? "?action=show&id=".intval($_REQUEST['id']) : ""), 'status' => 'This facility does not exist.', 'class' => 'error'));
   }
-  $createFacility = $facility->create_or_update($_POST['facility']);
-  if ($createFacility) {
-    redirect_to(array('location' => 'facility.php?action=show&id='.intval($createFacility), 'status' => "Successfully ".(isset($_POST['facility']['id']) ? "updated" : "created")." this facility.", 'class' => 'success'));
+
+  $updateFacility = $facility->create_or_update($_POST['facility']);
+  if ($updateFacility) {
+    redirect_to(array('location' => 'facility.php?action=show&id='.intval($updateFacility), 'status' => "Successfully ".(isset($_REQUEST['id']) ? "updated" : "created")." this facility.", 'class' => 'success'));
   } else {
-    redirect_to(array('location' => 'facility.php'.(isset($_POST['facility']['id']) ? "?action=edit&id=".intval($_POST['facility']['id']) : "?action=new"), 'status' => "An error occurred while ".(isset($_POST['facility']['id']) ? "updating" : "creating")." this facility.", 'class' => 'error'));
+    redirect_to(array('location' => 'facility.php'.(isset($_REQUEST['id']) ? "?action=edit&id=".intval($_REQUEST['id']) : "?action=new"), 'status' => "An error occurred while ".(isset($_REQUEST['id']) ? "updating" : "creating")." this facility.", 'class' => 'error'));
   }
 }
 

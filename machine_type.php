@@ -5,8 +5,23 @@ if (!$user->loggedIn()) {
 }
 
 if (isset($_POST['machine_type'])) {
-  $createMachineType = $database->create_or_update_machine_type($user, $_POST['machine_type']);
-  redirect_to($createMachineType);
+  if (!$user->loggedIn() || !$user->isAdmin()) {
+    redirect_to(array('location' => 'main.php', 'status' => "You don't have permissions to modify machine types.", 'class' => 'error'));
+  } elseif (!isset($_POST['machine_type']['name']) || !isset($_POST['machine_type']['description'])) {
+    redirect_to(array('location' => 'machine_type.php'.((isset($_REQUEST['id'])) ? "?id=".intval($_REQUEST['id']) : ""), 'status' => 'One or more required fields are missing. Please check your input and try again.'));
+  }
+  try {
+    $machineType = new MachineType($database, intval($_REQUEST['id']));
+  } catch (Exception $e) {
+    redirect_to(array('location' => 'machine_type.php'.((isset($_REQUEST['id'])) ? "?action=show&id=".intval($_REQUEST['id']) : ""), 'status' => 'This machine type does not exist.', 'class' => 'error'));
+  }
+
+  $machineTypeID = $machineType->create_or_update($_POST['machine_type']);
+  if ($machineTypeID) {
+    redirect_to(array('location' => 'machine_type.php?action=view&id='.intval($machineTypeID), 'status' => 'Successfully '.(intval($_REQUEST['id']) == 0 ? 'created' : 'updated').' machine type.', 'class' => 'success'));
+  } else {
+    redirect_to(array('location' => 'machine_type.php'.((isset($_REQUEST['id'])) ? "?id=".intval($_REQUEST['id']) : ""), 'status' => 'An error occurred while '.(intval($_REQUEST['id']) == 0 ? 'creating' : 'updating').' this machine type. Please try again.', 'class' => 'error'));
+  }
 }
 
 start_html($user, "UC Medicine QA", "Manage Machine Types", $_REQUEST['status'], $_REQUEST['class']);

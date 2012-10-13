@@ -110,6 +110,55 @@ class User {
     }
     return $returnArray;
   }
+  public function delete() {
+    // delete this user from the database.
+    // returns a boolean.
+    $deleteUser = $this->dbConn->stdQuery("DELETE FROM `users` WHERE `id` = ".intval($this->id)." LIMIT 1");
+    if (!$deleteUser) {
+      return False;
+    }
+    return True;
+  }
+  public function create_or_update($user) {
+    // creates or updates a user based on the parameters passed in $user and this object's attributes.
+    // returns False if failure, or the ID of the user if success.
+
+    // filter some parameters out first and replace them with their corresponding db fields.
+    if (isset($user['password']) && $user['password'] != '') {
+      $bcrypt = new Bcrypt();
+      $user['password_hash'] = $bcrypt->hash($user['password']);
+    }
+    unset($user['password']);
+    unset($user['password_confirmation']);
+    if (isset($user['usermask']) && intval(@array_sum($user['usermask'])) != 0) {
+      $user['usermask'] = intval(@array_sum($user['usermask']));
+    } else {
+      unset($user['usermask']);
+    }
+    $params = array();
+    foreach ($user as $parameter => $value) {
+      if (!is_array($value)) {
+        $params[] = "`".$this->dbConn->real_escape_string($parameter)."` = ".$this->dbConn->quoteSmart($value);
+      }
+    }
+    //go ahead and register or update this user.
+    if ($this->id != 0) {
+      //update this user.
+      $updateUser = $this->dbConn->stdQuery("UPDATE `users` SET ".implode(", ", $params)."  WHERE `id` = ".intval($this->id)." LIMIT 1");
+      if (!$updateUser) {
+        return False;
+      }
+      return intval($this->id);
+    } else {
+      // add this facility.
+      $insertUser = $this->dbConn->stdQuery("INSERT INTO `users` SET ".implode(",", $params));
+      if (!$insertUser) {
+        return False;
+      } else {
+        return intval($this->dbConn->insert_id);
+      }
+    }
+  }
   public function isResident() {
     if (!$this->usermask or !(intval($this->usermask) & 1)) {
       return false;

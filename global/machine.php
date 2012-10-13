@@ -56,6 +56,33 @@ class Machine {
     }
     return $machineParameters;
   }
+  public function create_or_update($machine) {
+    // creates or updates a machine type based on the parameters passed in $machine_type and this object's attributes.
+    // returns False if failure, or the ID of the machine type if success.
+    $params = array();
+    foreach ($machine as $parameter => $value) {
+      if (!is_array($value)) {
+        $params[] = "`".$this->dbConn->real_escape_string($parameter)."` = ".$this->dbConn->quoteSmart($value);
+      }
+    }
+    // check to see if this is an update.
+    if ($this->id != 0) {
+      // update this machine type.
+      $updateMachine = $this->dbConn->stdQuery("UPDATE `machines` SET ".implode(", ", $params)."  WHERE `id` = ".intval($this->id)." LIMIT 1");
+      if (!$updateMachine) {
+        return False;
+      }
+      return intval($this->id);
+    } else {
+      // add this machine type.
+      $addMachine = $this->dbConn->stdQuery("INSERT INTO `machines` SET ".implode(",", $params));
+      if (!$addMachine) {
+        return False;
+      } else {
+        return intval($this->dbConn->insert_id);
+      }
+    }
+  }
 }
 
 ?>

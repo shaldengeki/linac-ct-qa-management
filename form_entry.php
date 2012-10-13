@@ -14,7 +14,7 @@ if (isset($_POST['form_entry'])) {
     // regular ol' POST.
     // check if everything required is present.
     if (!isset($_POST['form_entry']['machine_id']) || !isset($_POST['form_entry']['form_id']) || !isset($_POST['form_entry']['created_at']) || intval($_POST['form_entry']['machine_id']) == 0 || intval($_POST['form_entry']['form_id']) == 0 || intval($_POST['form_entry']['created_at']) == 0) {
-      redirect_to(array('location' => 'form_entry.php'.((isset($_POST['form_entry']['id'])) ? "?id=".intval($_POST['form_entry']['id']) : ""), 'status' => 'Please specify a machine ID, form ID, and recording time and try again.'));
+      redirect_to(array('location' => 'form_entry.php'.((isset($_REQUEST['id'])) ? "?id=".intval($_REQUEST['id']) : ""), 'status' => 'Please specify a machine ID, form ID, and recording time and try again.'));
     }
 
     // check if this facility exists and is the user's facility.
@@ -27,8 +27,11 @@ if (isset($_POST['form_entry'])) {
     if ($facility->id != $user->facility['id']) {
       redirect_to(array('location' => 'form_entry.php'.((isset($form_entry['id'])) ? "?id=".intval($form_entry['id']) : ""), 'status' => 'This machine does not belong to your facility.', 'class' => 'error'));
     }
-
-    $formEntry = new FormEntry($database, intval($_POST['form_entry']['id']));
+    try {
+      $formEntry = new FormEntry($database, intval($_REQUEST['id']));
+    } catch (Exception $e) {
+      redirect_to(array('location' => 'form_entry.php'.((isset($form_entry['id'])) ? "?id=".intval($form_entry['id']) : ""), 'status' => 'This form entry does not exist.', 'class' => 'error'));
+    }
 
     // check to ensure that this user is allowed to modify this form entry.
     if ($formEntry->id != 0) {
