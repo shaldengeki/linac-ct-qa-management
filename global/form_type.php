@@ -31,7 +31,7 @@ class FormType {
   }
   public function getForms() {
     // retrieves a list of id,name arrays belonging to the current form type.
-    return $this->dbConn->queryAssoc("SELECT `id`, `name` FROM `forms` WHERE `form_type_id` = ".intval($this->id));
+    return $this->dbConn->queryAssoc("SELECT `id`, `name` FROM `forms` WHERE `form_type_id` = ".intval($this->id)." ORDER BY `name` ASC");
   }
 }
 

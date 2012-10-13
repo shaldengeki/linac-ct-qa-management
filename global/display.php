@@ -511,6 +511,15 @@ function display_machine_info($user, $machine_id, $graph_div_prefix = "machine_i
   }
 }
 
+function display_form_type_dropdown($database, $select_id="machine_id", $selected=0) {
+  $formTypes = $database->stdQuery("SELECT `id`, `name` FROM `form_types` ORDER BY `id` ASC");
+  echo "<select id='".escape_output($select_id)."' name='".escape_output($select_id)."'>\n";
+  while ($formType = $formTypes->fetch_assoc()) {
+    echo "  <option value='".intval($formType['id'])."'".(($selected == intval($formType['id'])) ? "selected='selected'" : "").">".escape_output($formType['name'])."</option>\n";
+  }
+  echo "</select>\n";
+}
+
 function display_forms($user) {
   //lists all forms.
   echo "<table class='table table-striped table-bordered dataTable'>
@@ -572,6 +581,13 @@ function display_form_edit_form($user, $id=false) {
       <div class='controls'>
         <input name='form[description]' type='text' class='input-xlarge' id='form[description]'".(($id === false) ? "" : " value='".escape_output($form->description)."'").">
       </div>
+    </div>
+    <div class='control-group'>
+      <label class='control-label' for='form[form_type_id]'>Type</label>
+      <div class='controls'>
+    ";
+    display_form_type_dropdown($user->dbConn, "form[form_type_id]", (($id === false) ? 0 : intval($form->formType['id'])));
+    echo "      </div>
     </div>
     <div class='control-group'>
       <label class='control-label' for='form[machine_type_id]'>Machine Type</label>

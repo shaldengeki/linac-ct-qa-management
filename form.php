@@ -1,7 +1,4 @@
 <?php
-/*
-TODO: ADD FORM_TYPE DROPDOWN TO FORM EDIT FORM
-*/
 include_once("global/includes.php");
 if (!$user->loggedIn()) {
   header("Location: index.php");

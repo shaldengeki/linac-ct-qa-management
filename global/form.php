@@ -39,7 +39,7 @@ class Form {
       $this->php = $info['php'];
       $this->machineType = $this->getMachineType();
       $this->machines = $this->getMachines();
-      $this->facility = $this->getFormType();
+      $this->formType = $this->getFormType();
       $this->formFields = $this->getFormFields();
       $this->formEntries = $this->getFormEntries();
     }
