@@ -11,27 +11,28 @@ function calculateTPCF() {
     $('#form_entry_form_values_tpcf').trigger('change');
   }
 }
+function getMeasurementAverage(id_prefix) {
+  qSum = 0;
+  qCount = 0;
+  if (!isNaN(parseFloat($('#' + id_prefix + '_q1').val()))) {
+    qSum += parseFloat($('#' + id_prefix + '_q1').val());
+    qCount++;
+  }
+  if (!isNaN(parseFloat($('#' + id_prefix + '_q2').val()))) {
+    qSum += parseFloat($('#' + id_prefix + '_q2').val());
+    qCount++;
+  }
+  if (!isNaN(parseFloat($('#' + id_prefix + '_q3').val()))) {
+    qSum += parseFloat($('#' + id_prefix + '_q3').val());
+    qCount++;
+  }
+  return qSum * 1.0 / qCount;
+}
+
 function calculateOutputCalibrationStats(type, id_prefix) {
   if ($('#' + id_prefix + '_q1').val() != '' || $('#' + id_prefix + '_q2').val() != '' || $('#' + id_prefix + '_q3').val() != '') {
-    qSum = 0;
-    qCount = 0;
-    if (!isNaN(parseFloat($('#' + id_prefix + '_q1').val()))) {
-      qSum += parseFloat($('#' + id_prefix + '_q1').val());
-      qCount++;
-      console.log("q1: " + qSum + " | " + qCount);
-    }
-    if (!isNaN(parseFloat($('#' + id_prefix + '_q2').val()))) {
-      qSum += parseFloat($('#' + id_prefix + '_q2').val());
-      qCount++;
-      console.log("q2: " + qSum + " | " + qCount);
-    }
-    if (!isNaN(parseFloat($('#' + id_prefix + '_q3').val()))) {
-      qSum += parseFloat($('#' + id_prefix + '_q3').val());
-      qCount++;
-      console.log("q3: " + qSum + " | " + qCount);
-    }
-    var qAvg = qSum * 1.0 / qCount;
-    console.log("qAvg: " + qAvg);
+
+    var qAvg = getMeasurementAverage(id_prefix);
     $('#' + id_prefix + '_avg').val(qAvg);
     
     switch ($('#form_entry_form_values_electrometer').val()) {
@@ -52,7 +53,6 @@ function calculateOutputCalibrationStats(type, id_prefix) {
         var k_elec = 0.995;
         break;
     }
-    console.log("electrometer: " + electrometer_adjustment + " | " + electrometer_electron_adjustment + " | " + k_elec);
     switch ($('#form_entry_form_values_ionization_chamber').val()) {
       case 'Farmer (S/N 944, ND.SW(Gy/C) 5.20E+07)':
         var chamber_constant = 0.520;
@@ -63,7 +63,6 @@ function calculateOutputCalibrationStats(type, id_prefix) {
         var M_c_choices = {"6MeV": 20.0, "9MeV": 20.3, "12MeV": 20.4, "16MeV": 21.0, "20MeV": 21.2};
         break;
     }
-    console.log("chamber: " + chamber_constant + " | " + M_c_choices);
     idPrefixParts = id_prefix.split("_");
     idPrefixLastPart = idPrefixParts[idPrefixParts.length-1];
     switch (type) {
@@ -77,11 +76,9 @@ function calculateOutputCalibrationStats(type, id_prefix) {
         $('#' + id_prefix + '_Dw_abs').val(D_w_abs);
         break;
     }
-    console.log("p_ion: " + p_ion + " | " + k_q + " | " + D_w_abs + " | " + idPrefixLastPart);
 
     if ($('#form_entry_form_values_tpcf').val() != '') {
       var M = qAvg * parseFloat($('#form_entry_form_values_tpcf').val()) * p_ion * k_elec;
-      console.log("M: " + M);
       $('#' + id_prefix + '_M').val(roundNumber(M, 7));
       $('#' + id_prefix + '_M').trigger('change');
       if (type == 'photon') {
@@ -129,26 +126,14 @@ function calculateOutputCalibrationStats(type, id_prefix) {
 }
 function calculateTPRStats(id_prefix, outputCalibration_prefix) {
   if ($('#' + id_prefix + '_q1').val() != '' || $('#' + id_prefix + '_q2').val() != '' || $('#' + id_prefix + '_q3').val() != '') {
-    qSum = 0;
-    qCount = 0;
-    if (!isNaN(parseFloat($('#' + id_prefix + '_q1').val()))) {
-      qSum += parseFloat($('#' + id_prefix + '_q1').val());
-      qCount++;
-    }
-    if (!isNaN(parseFloat($('#' + id_prefix + '_q2').val()))) {
-      qSum += parseFloat($('#' + id_prefix + '_q2').val());
-      qCount++;
-    }
-    if (!isNaN(parseFloat($('#' + id_prefix + '_q3').val()))) {
-      qSum += parseFloat($('#' + id_prefix + '_q3').val());
-      qCount++;
-    }
-    var qAvg = qSum * 1.0 / qCount;
+    var qAvg = getMeasurementAverage(id_prefix);
+    console.log("qAvg: " + qAvg);
     $('#' + id_prefix + '_avg').val(qAvg);
     if ($('#' + outputCalibration_prefix + '_q1').val() == '' && outputCalibration_prefix.indexOf('_adjusted') > 0) {
       outputCalibration_prefix = outputCalibration_prefix.replace(/\_adjusted/gi, "");
     }
-    var qAvg_outputCalibration = (parseFloat($('#' + outputCalibration_prefix + '_q1').val()) + parseFloat($('#' + outputCalibration_prefix + '_q2').val()) + parseFloat($('#' + outputCalibration_prefix + '_q3').val())) / 3.0;
+    var qAvg_outputCalibration = getMeasurementAverage(outputCalibration_prefix);
+    console.log("outputCal: " + outputCalibration_prefix + " | " + qAvg_outputCalibration);
 
     idPrefixParts = id_prefix.split("_");
     idPrefixLastPart = idPrefixParts[idPrefixParts.length-1];
@@ -168,24 +153,10 @@ function calculateTPRStats(id_prefix, outputCalibration_prefix) {
 }
 function calculateGatingStats(id_prefix, TPR_prefix) {
   if ($('#' + id_prefix + '_q1').val() != '' || $('#' + id_prefix + '_q2').val() != '' || $('#' + id_prefix + '_q3').val() != '') {
-    qSum = 0;
-    qCount = 0;
-    if (!isNaN(parseFloat($('#' + id_prefix + '_q1').val()))) {
-      qSum += parseFloat($('#' + id_prefix + '_q1').val());
-      qCount++;
-    }
-    if (!isNaN(parseFloat($('#' + id_prefix + '_q2').val()))) {
-      qSum += parseFloat($('#' + id_prefix + '_q2').val());
-      qCount++;
-    }
-    if (!isNaN(parseFloat($('#' + id_prefix + '_q3').val()))) {
-      qSum += parseFloat($('#' + id_prefix + '_q3').val());
-      qCount++;
-    }
-    var qAvg = qSum * 1.0 / qCount;
+    var qAvg = getMeasurementAverage(id_prefix);
     $('#' + id_prefix + '_avg').val(qAvg);
-    if ($('#' + TPR_prefix + '_q1').val() != '' && $('#' + TPR_prefix + '_q2').val() != '' && $('#' + TPR_prefix + '_q3').val() != '') {
-      var qAvg_TPR = (parseFloat($('#' + TPR_prefix + '_q1').val()) + parseFloat($('#' + TPR_prefix + '_q2').val()) + parseFloat($('#' + TPR_prefix + '_q3').val())) / 3.0;
+    if ($('#' + TPR_prefix + '_q1').val() != '' || $('#' + TPR_prefix + '_q2').val() != '' || $('#' + TPR_prefix + '_q3').val() != '') {
+      var qAvg_TPR = getMeasurementAverage(TPR_prefix);
       $('#' + id_prefix + '_TPR_abs').val(qAvg_TPR);
       var percentDiff = (qAvg - qAvg_TPR) / qAvg_TPR * 100;
 
@@ -199,23 +170,9 @@ function calculateGatingStats(id_prefix, TPR_prefix) {
 }
 function calculateEDWStats(id_prefix, TPR_prefix) {
   if ($('#' + id_prefix + '_q1').val() != '' || $('#' + id_prefix + '_q2').val() != '' || $('#' + id_prefix + '_q3').val() != '') {
-    qSum = 0;
-    qCount = 0;
-    if (!isNaN(parseFloat($('#' + id_prefix + '_q1').val()))) {
-      qSum += parseFloat($('#' + id_prefix + '_q1').val());
-      qCount++;
-    }
-    if (!isNaN(parseFloat($('#' + id_prefix + '_q2').val()))) {
-      qSum += parseFloat($('#' + id_prefix + '_q2').val());
-      qCount++;
-    }
-    if (!isNaN(parseFloat($('#' + id_prefix + '_q3').val()))) {
-      qSum += parseFloat($('#' + id_prefix + '_q3').val());
-      qCount++;
-    }
-    var qAvg = qSum * 1.0 / qCount;
+    var qAvg = getMeasurementAverage(id_prefix);
     $('#' + id_prefix + '_avg').val(qAvg);
-    var qAvg_TPR = (parseFloat($('#' + TPR_prefix + '_q1').val()) + parseFloat($('#' + TPR_prefix + '_q2').val()) + parseFloat($('#' + TPR_prefix + '_q3').val())) / 3.0;
+    var qAvg_TPR = getMeasurementAverage(TPR_prefix);
 
     idPrefixParts = id_prefix.split("_");
     idPrefixLastPart = idPrefixParts[idPrefixParts.length-1];
@@ -235,26 +192,12 @@ function calculateEDWStats(id_prefix, TPR_prefix) {
 }
 function calculateEnergyRatioStats(id_prefix, outputCalibration_prefix) {
   if ($('#' + id_prefix + '_q1').val() != '' || $('#' + id_prefix + '_q2').val() != '' || $('#' + id_prefix + '_q3').val() != '') {
-    qSum = 0;
-    qCount = 0;
-    if (!isNaN(parseFloat($('#' + id_prefix + '_q1').val()))) {
-      qSum += parseFloat($('#' + id_prefix + '_q1').val());
-      qCount++;
-    }
-    if (!isNaN(parseFloat($('#' + id_prefix + '_q2').val()))) {
-      qSum += parseFloat($('#' + id_prefix + '_q2').val());
-      qCount++;
-    }
-    if (!isNaN(parseFloat($('#' + id_prefix + '_q3').val()))) {
-      qSum += parseFloat($('#' + id_prefix + '_q3').val());
-      qCount++;
-    }
-    var qAvg = qSum * 1.0 / qCount;
+    var qAvg = getMeasurementAverage(id_prefix);
     $('#' + id_prefix + '_avg').val(qAvg);
     if ($('#' + outputCalibration_prefix + '_q1').val() == '' && outputCalibration_prefix.indexOf('_adjusted') > 0) {
       outputCalibration_prefix = outputCalibration_prefix.replace(/\_adjusted/gi, "");
     }
-    var qAvg_outputCalibration = (parseFloat($('#' + outputCalibration_prefix + '_q1').val()) + parseFloat($('#' + outputCalibration_prefix + '_q2').val()) + parseFloat($('#' + outputCalibration_prefix + '_q3').val())) / 3.0;
+    var qAvg_outputCalibration = getMeasurementAverage(outputCalibration_prefix);
     
     percentDiff_mins = {"6MeV": 0.6921, "9MeV": 0.7763, "12MeV": 0.861, "16MeV": 0.812, "20MeV": 0.840};
     percentDiff_maxes = {"6MeV": 0.9368, "_9MeV": 0.9362, "12MeV": 0.949, "16MeV": 0.889, "20MeV": 0.884};
