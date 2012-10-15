@@ -15,7 +15,7 @@ class FormEntry {
   public $approvedUser;
   public $formValues;
   public $dbConn;
-  public function __construct($database, $id) {
+  public function __construct($database, $id, $form_id=Null) {
     $this->dbConn = $database;
     if ($id === 0) {
       // creating a new entry. initialize blank values.
@@ -23,6 +23,15 @@ class FormEntry {
       $this->qaMonth = $this->qaYear = 0;
       $this->comments = $this->imagePath =  $this->createdAt = $this->updatedAt = $this->approvedOn = "";
       $this->form = $this->machine = $this->user = $this->approvedUser = $this->formValues = array();
+      if ($form_id === Null || !is_numeric($form_id)) {
+      } else {
+        try {
+          $targetForm = new Form($database, intval($form_id));
+          $this->form = array('id' => $targetForm->id, 'name' => $targetForm->name);
+        } catch (Exception $e) {
+          $this->form = array();
+        }
+      }
     } else {
       $this->id = intval($this->dbConn->queryFirstValue("SELECT `id` FROM `form_entries` WHERE `id` = ".intval($id)." LIMIT 1"));
       if (!$this->id) {
@@ -69,8 +78,23 @@ class FormEntry {
     }
     return $formValues;
   }
+  public function getAutosaveValues($user) {
+    // retrieve this user's autosave values for this form.
+    if (!$this->form) {
+      return array();
+    }
+    $formValues = [];
+    $autosaveValues = $this->dbConn->stdQuery("SELECT `form_field_id`, `value` FROM `form_values_autosave` LEFT OUTER JOIN `form_fields` ON `form_fields`.`id` = `form_field_id` WHERE `form_id` = ".intval($this->form['id'])." && `user_id` = ".intval($user->id));
+    while ($value = $autosaveValues->fetch_assoc()) {
+      $formValue = new FormValue($this->dbConn, 0, intval($value['form_field_id']));
+      $formValue->value = $value['value'];
+      $formValues[$formValue->formField['name']] = $formValue;
+    }
+    return $formValues;
+  }
   public function setApproval($user, $approval) {
     // takes a user and an approval value and sets this form entry to be approved by this user / unapproved.
+    // returns a boolean.
     if (intval($approval)) {
       $setApproval = $this->dbConn->stdQuery("UPDATE `form_entries` SET `updated_at` = NOW(), `approved_on` = NOW(), `approved_user_id` = ".intval($user->id)." WHERE `id` = ".intval($this->id)." LIMIT 1");
     } else {
@@ -83,6 +107,8 @@ class FormEntry {
     }
   }
   public function create_or_update($form_entry) {
+    // creates or updates the current form entry with the information in $form_entry
+    // returns a redirect_to array.
     if ($this->id != 0) {
       //update this form entry.
       foreach ($form_entry['form_values'] as $name=>$value) {
@@ -136,17 +162,6 @@ class FormEntry {
       if (!$checkForm || $checkForm != 1) {
         return array('location' => 'form_entry.php?action=new'.((isset($form_entry['form_id'])) ? "&form_id=".intval($form_entry['form_id']) : ""), 'status' => "The specified form does not exist.", 'class' => 'error');                  
       }
-
-      //check to ensure the provided user is valid.
-      if (intval($form_entry['user_id']) != $user->id && !$user->isAdmin($this)) {
-        return array('location' => 'form_entry.php?action=new'.((isset($form_entry['form_id'])) ? "&form_id=".intval($form_entry['form_id']) : ""), 'status' => "You aren't allowed to assign this form entry to that user.");
-      }
-      //check to ensure selected user exists and is part of this facility.
-      $checkUserExists = $this->dbConn->queryFirstValue("SELECT `facility_id` FROM `users` WHERE `id` = ".intval($form_entry['user_id'])." LIMIT 1");
-      if (!$checkUserExists || intval($checkUserExists) != $user->facility['id']) {
-        return array('location' => 'form_entry.php?action=new'.((isset($form_entry['form_id'])) ? "&form_id=".intval($form_entry['form_id']) : ""), 'status' => "You aren't allowed to assign this form entry to that user.");
-      }
-
       $insertEntry = $this->dbConn->stdQuery("INSERT INTO `form_entries` (`form_id`, `machine_id`, `user_id`, `comments`, `image_path`, `created_at`, `qa_month`, `qa_year`, `updated_at`) VALUES (".intval($form_entry['form_id']).", ".intval($form_entry['machine_id']).", ".intval($form_entry['user_id']).", ".$this->dbConn->quoteSmart($form_entry['comments']).", '', '".date('Y-m-d H:i:s', strtotime($form_entry['created_at']))."', ".intval($form_entry['qa_month']).", ".intval($form_entry['qa_year']).", '".date('Y-m-d H:i:s')."')");
       $form_entry['id'] = intval($this->dbConn->insert_id);
       $valueQueryArray = [];
@@ -195,6 +210,35 @@ class FormEntry {
       }
       return array('location' => 'form_entry.php?action=index&form_id='.intval($form_entry['form_id']), 'status' => "Successfully inserted form entry.", 'class' => 'success');
     }
+  }
+  public function create_or_update_autosave($user, $form_id, $form_entry) {
+    // takes a user and a form entry value and creates or updates an autosave entry for it.
+    // check to see if this user already has an autosave entry under this value.
+    foreach ($form_entry['form_values'] as $fieldName => $entryValue) {
+      // get this form field.
+      $formField = $this->dbConn->queryFirstValue("SELECT `id` FROM `form_fields` WHERE `form_id` = ".intval($form_id)." && `name` = ".$this->dbConn->quoteSmart($fieldName)." LIMIT 1");
+      if (!$formField) {
+        return False;
+      }
+      // see if this user already has an autosave entry under this form field.
+      $extantValue = $this->dbConn->queryFirstValue("SELECT `value` FROM `form_values_autosave` WHERE `form_field_id` = ".intval($formField)." && `user_id` = ".intval($user->id)." LIMIT 1");
+      if ($extantValue) {
+        if ($extantValue != $entryValue) {
+          // update extant entry.
+          $updateEntry = $this->dbConn->stdQuery("UPDATE `form_values_autosave` SET `value` = ".$this->dbConn->quoteSmart($entryValue)." WHERE `form_field_id` = ".intval($formField)." && `user_id` = ".intval($user->id)." LIMIT 1");
+          if (!$updateEntry) {
+            return False;
+          }
+        }
+      } else {
+        $insertEntry = $this->dbConn->stdQuery("INSERT INTO `form_values_autosave` (`form_field_id`, `user_id`, `value`) VALUES (".intval($formField).", ".intval($user->id).", ".$this->dbConn->quoteSmart($entryValue).")");
+        if (!$insertEntry) {
+          return False;
+        }
+      }
+    }
+
+    return True;
   }
 }
 

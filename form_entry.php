@@ -6,9 +6,33 @@ if (!$user->loggedIn()) {
 
 if (isset($_POST['form_entry'])) {
   // check if this is an autosave.
-  if (isset($_REQUEST['autosave'])) {
-    // save this partial form.
-    echo "Autosave";
+  if (isset($_REQUEST['autosave']) && isset($_POST['form_entry']) && is_array($_POST['form_entry'])) {
+    // save this partial form for this user.
+    // if entry ID is set, then check perms and update if appropriate.
+    $targetEntry = new FormEntry($database, intval($_REQUEST['id']));
+    if (isset($_REQUEST['id']) && is_numeric($_REQUEST['id'])) {/*
+      // check to see if this user has update permissions to this form entry.
+      if ($targetEntry->user['id'] != $user->id && !$user->isPhysicist() && !$user->isAdmin()) {
+        echo "0";
+        exit;
+      }
+      try {
+        $targetMachine = new Machine($database, intval($targetEntry->machine['id']));
+      } catch (Exception $e) {
+        echo "0";
+        exit;
+      }
+      if (intval($targetMachine->facility['id']) != $user->facility['id']) {
+        echo "0";
+        exit;
+      }
+      // update this form entry.
+      $finalStatus = $targetEntry->create_or_update($_POST['form_entry']);
+    */} else {
+      // otherwise, simply create or update a form entry autosave for this user.
+      $finalStatus = $targetEntry->create_or_update_autosave($user, intval($_REQUEST['form_id']), $_POST['form_entry']);
+    }
+    echo intval($finalStatus);
     exit;
   } else {
     // regular ol' POST.
@@ -16,7 +40,6 @@ if (isset($_POST['form_entry'])) {
     if (!isset($_POST['form_entry']['machine_id']) || !isset($_POST['form_entry']['form_id']) || !isset($_POST['form_entry']['created_at']) || intval($_POST['form_entry']['machine_id']) == 0 || intval($_POST['form_entry']['form_id']) == 0 || intval($_POST['form_entry']['created_at']) == 0) {
       redirect_to(array('location' => 'form_entry.php'.((isset($_REQUEST['id'])) ? "?id=".intval($_REQUEST['id']) : ""), 'status' => 'Please specify a machine ID, form ID, and recording time and try again.'));
     }
-
     // check if this facility exists and is the user's facility.
     try {
       $machine = new Machine($database, intval($_POST['form_entry']['machine_id']));
@@ -28,7 +51,7 @@ if (isset($_POST['form_entry'])) {
       redirect_to(array('location' => 'form_entry.php'.((isset($form_entry['id'])) ? "?id=".intval($form_entry['id']) : ""), 'status' => 'This machine does not belong to your facility.', 'class' => 'error'));
     }
     try {
-      $formEntry = new FormEntry($database, intval($_REQUEST['id']));
+      $formEntry = new FormEntry($database, intval($_POST['form_entry']['id']));
     } catch (Exception $e) {
       redirect_to(array('location' => 'form_entry.php'.((isset($form_entry['id'])) ? "?id=".intval($form_entry['id']) : ""), 'status' => 'This form entry does not exist.', 'class' => 'error'));
     }
@@ -52,6 +75,10 @@ if (isset($_POST['form_entry'])) {
     }
 
     $createFormEntry = $formEntry->create_or_update($_POST['form_entry']);
+
+    // clear autosave entries for this user.
+    $targetForm = new Form($database, intval($_POST['form_entry']['form_id']));
+    $targetForm->clearAutosaveEntries($user);
     redirect_to($createFormEntry);
   }
 } elseif ($_REQUEST['action'] == 'approve' || $_REQUEST['action'] == 'unapprove') {

@@ -511,7 +511,7 @@ function display_machine_info($user, $machine_id, $graph_div_prefix = "machine_i
   }
 }
 
-function display_form_type_dropdown($database, $select_id="machine_id", $selected=0) {
+function display_form_type_dropdown($database, $select_id="form_type_id", $selected=0) {
   $formTypes = $database->stdQuery("SELECT `id`, `name` FROM `form_types` ORDER BY `id` ASC");
   echo "<select id='".escape_output($select_id)."' name='".escape_output($select_id)."'>\n";
   while ($formType = $formTypes->fetch_assoc()) {
@@ -671,7 +671,8 @@ function display_form_entry_edit_form($user, $id=False, $form_id=False) {
       $caught = True;
     }
   } else {
-    $formEntry = new FormEntry($user->dbConn, 0);
+    $formEntry = new FormEntry($user->dbConn, 0, ($form_id ? intval($form_id) : Null));
+    $formEntry->formValues = $formEntry->getAutosaveValues($user);
   }
   if (!($form_id === False)) {
     try {
@@ -685,7 +686,7 @@ function display_form_entry_edit_form($user, $id=False, $form_id=False) {
     return;
   }
   $jsParameters = array();
-  if (!($id === False)) {
+  if ($formEntry->machine) {
     // instantiate all machine_type_attributes in php and js.
     $machine = new Machine($user->dbConn, $formEntry->machine['id']);
     foreach ($machine->machineParameters as $parameter) {

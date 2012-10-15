@@ -91,6 +91,16 @@ class Form {
       }
     }
   }
+  public function clearAutosaveEntries($user) {
+    // deletes all autosave entries for this form and user.
+    // returns boolean.
+    $deleteEntries = $this->dbConn->stdQuery("DELETE `form_values_autosave` FROM `form_values_autosave` INNER JOIN `form_fields` ON `form_fields`.`id` = `form_field_id` WHERE `form_fields`.`form_id` = ".intval($this->id)." && `user_id` = ".intval($user->id));
+    if (!$deleteEntries) {
+      return False;
+    } else {
+      return True;
+    }
+  }
 }
 
 ?>

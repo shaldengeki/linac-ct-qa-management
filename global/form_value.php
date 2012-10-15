@@ -12,7 +12,11 @@ class FormValue {
       // creating a new value. initialize blank values.
       $this->id = 0;
       $this->value = $this->formEntry = 0;
-      $this->formField = array();
+      if (!($formField === Null) && is_numeric($formField)) {
+        $this->formField = $this->dbConn->queryFirstRow("SELECT `id`, `name` FROM `form_fields` WHERE `id` = ".intval($formField)." LIMIT 1");
+      } else {
+        $this->formField = array();
+      }
     } else {
       if (!$id || !is_numeric($id)) {
         if (!($formField === Null || !is_numeric($formField)) && !($formEntry === Null || !is_numeric($formEntry))) {
