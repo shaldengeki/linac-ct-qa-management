@@ -93,6 +93,50 @@ $.extend( $.fn.dataTableExt.oPagination, {
 	}
 } );
 
+function createAlert(targetClass, title, contents) {
+  targetAlert = $('<div></div>').addClass('alert').text(contents);
+  if (!(typeof(targetClass) === 'undefined' || targetClass === '')) {
+    targetAlert.addClass('alert-' + targetClass);
+  }
+  targetButton = $('<button></button>').attr('type', 'button').addClass("close").attr('data-dismiss', 'alert').text('×');
+  targetTitle = $('<strong></strong>').text(title);
+  targetAlert.prepend(targetTitle).prepend(targetButton);
+  return targetAlert;
+}
+
+function deleteEntry(buttonElt) {
+  id = $(buttonElt).attr('data-id');
+	$('<div></div>').appendTo('body')
+                  .html('<div><h6>Are you sure you want to delete this entry?</h6></div>')
+                  .dialog({
+                      modal: true, title: 'Delete Entry', zIndex: 10000, autoOpen: true,
+                      width: 'auto', resizable: false,
+                      buttons: {
+                          Yes: function () {
+                              $(buttonElt).addClass('disabled').text('Deleting...');
+                              $.get('form_entry.php?action=delete&id=' + id,
+                                function (data) {
+                                  if (data == "1") {
+                                    $(buttonElt).removeClass('btn-danger').addClass('btn-success').text('Entry successfully deleted.');
+                                    var appendAlert = createAlert('success', '', 'Entry successfully deleted.');
+                                  } else {
+                                    $(buttonElt).removeClass('disabled').text('An error occurred deleting this entry.');
+                                    var appendAlert = createAlert('error', '', 'An error occurred deleting this entry.');
+                                  }
+                                  $('body > .container-fluid').prepend(appendAlert);
+                                });
+                              $(this).dialog("close");
+                          },
+                          No: function () {
+                              $(this).dialog("close");
+                          }
+                      },
+                      close: function (event, ui) {
+                          $(this).remove();
+                      }
+                  });
+    }
+
 $(document).ready(function () {
   $('.dropdown-toggle').dropdown();
   /* Table initialisation */
@@ -119,6 +163,12 @@ $(document).ready(function () {
     });
 		
   });
+  $('.delete-button').each(function() {
+    $(this).click(function (e) {
+      e.preventDefault();
+      deleteEntry(this);
+    });
+  })
   if ($('#vis').length > 0) {
     drawLargeD3Plot();
   }

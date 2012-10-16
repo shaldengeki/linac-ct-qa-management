@@ -347,6 +347,9 @@
 ";
       }
     }
+    if ($id != false && $user->isAdmin()) {
+      echo "<button class='btn btn-danger delete-button' data-id='".intval($id)."'>Delete</button>\n";
+    }
     echo "    </div>
     </fieldset>
 </form>

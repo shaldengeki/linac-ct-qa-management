@@ -35,6 +35,8 @@ start_html($user, "UC Medicine QA", "", $_REQUEST['status'], $_REQUEST['class'])
       <li><s>Restructure machines to account for machine-specific parameters</s></li>
       <li><s>Linac Monthly form tabs</s></li>
       <li><s>Allow admins to reassign form entries</s></li>
+      <li><s>QA submission autosave</s></li>
+      <li><s>QA submission deletion</s></li>
       <li>Equipment profiles</li>
       <li>Print to PDF</li>
       <li>Form entry pass/fail</li>

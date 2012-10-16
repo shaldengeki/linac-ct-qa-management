@@ -1150,6 +1150,9 @@
         echo "      <a class='btn btn-warning' href='form_entry.php?action=unapprove&id=".intval($id)."'>Unapprove</a>\n";
       }
     }
+    if ($id != false && $user->isAdmin()) {
+      echo "<button class='btn btn-danger delete-button' data-id='".intval($id)."'>Delete</button>\n";
+    }
     echo "    </div>
   </fieldset>
 </form>\n";

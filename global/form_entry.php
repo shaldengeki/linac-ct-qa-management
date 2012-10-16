@@ -240,6 +240,19 @@ class FormEntry {
 
     return True;
   }
+  public function delete() {
+    // deletes the current form entry.
+    // returns a boolean.
+    if (!is_numeric($this->id) || !$this->id) {
+      return False;
+    }
+    $deleteEntry = $this->dbConn->stdQuery("DELETE FROM `form_entries` WHERE `id` = ".intval($this->id)." LIMIT 1");
+    if ($deleteEntry) {
+      return True;
+    } else {
+      return False;
+    }
+  }
 }
 
 ?>

@@ -96,7 +96,37 @@ if (isset($_POST['form_entry'])) {
   } else {
     redirect_to(array('location' => 'form_entry.php?action=edit&id='.intval($formEntry->id), 'status' => "An error occurred while un/approving this entry.", 'class' => 'error'));
   }
-
+} elseif ($_REQUEST['action'] == 'delete' && isset($_REQUEST['id'])) {
+  // check to see if this user has perms to delete.
+  try {
+    $targetEntry = new FormEntry($database, intval($_REQUEST['id']));
+  } catch (Exception $e) {
+    echo "0";
+    exit;
+  }
+  if ($targetEntry->user['id'] != $user->id && !$user->isPhysicist() && !$user->isAdmin()) {
+    echo "0";
+    exit;
+  }
+  try {
+    $targetMachine = new Machine($database, intval($targetEntry->machine['id']));
+  } catch (Exception $e) {
+    echo "0";
+    exit;
+  }
+  if (intval($targetMachine->facility['id']) != $user->facility['id']) {
+    echo "0";
+    exit;
+  }
+  // otherwise, delete this entry.
+  $deleteEntry = $targetEntry->delete();
+  if ($deleteEntry) {
+    echo "1";
+    exit;
+  } else {
+    echo "0";
+    exit;
+  }
 }
 
 start_html($user, "UC Medicine QA", "Manage Form Entries", $_REQUEST['status'], $_REQUEST['class']);
