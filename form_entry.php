@@ -40,40 +40,20 @@ if (isset($_POST['form_entry'])) {
     if (!isset($_POST['form_entry']['machine_id']) || !isset($_POST['form_entry']['form_id']) || !isset($_POST['form_entry']['created_at']) || intval($_POST['form_entry']['machine_id']) == 0 || intval($_POST['form_entry']['form_id']) == 0 || intval($_POST['form_entry']['created_at']) == 0) {
       redirect_to(array('location' => 'form_entry.php'.((isset($_REQUEST['id'])) ? "?id=".intval($_REQUEST['id']) : ""), 'status' => 'Please specify a machine ID, form ID, and recording time and try again.'));
     }
-    // check if this facility exists and is the user's facility.
-    try {
-      $machine = new Machine($database, intval($_POST['form_entry']['machine_id']));
-      $facility = new Facility($database, intval($machine->facility['id']));
-    } catch (Exception $e) {
-      redirect_to(array('location' => 'form_entry.php'.((isset($form_entry['id'])) ? "?id=".intval($form_entry['id']) : ""), 'status' => 'This machine or facility does not exist.', 'class' => 'error'));
-    }
-    if ($facility->id != $user->facility['id']) {
-      redirect_to(array('location' => 'form_entry.php'.((isset($form_entry['id'])) ? "?id=".intval($form_entry['id']) : ""), 'status' => 'This machine does not belong to your facility.', 'class' => 'error'));
-    }
     try {
       $formEntry = new FormEntry($database, intval($_POST['form_entry']['id']));
     } catch (Exception $e) {
       redirect_to(array('location' => 'form_entry.php'.((isset($form_entry['id'])) ? "?id=".intval($form_entry['id']) : ""), 'status' => 'This form entry does not exist.', 'class' => 'error'));
     }
 
-    // check to ensure that this user is allowed to modify this form entry.
-    if ($formEntry->id != 0) {
-      if (!$formEntry->user['id'] || ($user->id != $formEntry->user['id'] && !$user->isPhysicist() && !$user->isAdmin())) {
-        redirect_to(array('location' => 'form_entry.php'.((isset($form_entry['id'])) ? "?id=".intval($form_entry['id']) : ""), 'status' => "You don't have permissions to update that entry.", 'class' => 'error'));
-      }
-      if ($formEntry->approvedOn != '') {
-        redirect_to(array('location' => 'form_entry.php'.((isset($form_entry['id'])) ? "?id=".intval($form_entry['id']) : ""), 'status' => "This entry has already been approved and must be un-approved to make changes."));
-      }
+    // check to ensure that the user is authed to modify this form entry.
+    if (intval($_POST['form_entry']['id']) == 0) {
+      $formEntry->machine = array('id' => intval($_POST['form_entry']['machine_id']), 'name' => '');
+      $formEntry->user = array('id' => intval($_POST['form_entry']['user_id']), 'name' => '');
     }
-    try {
-      $targetUser = new User($database, intval($_POST['form_entry']['user_id']));
-    } catch (Exception $e) {
-      redirect_to(array('location' => 'form_entry.php'.((isset($form_entry['id'])) ? "?id=".intval($form_entry['id']) : ""), 'status' => "The provided user who performed the QA does not exist.", 'class' => 'error'));      
+    if (!$formEntry->allow($user, $_REQUEST['action'])) {
+      redirect_to(array('location' => 'form_entry.php'.((isset($form_entry['id'])) ? "?id=".intval($form_entry['id']) : ""), 'status' => 'You do not have permissions to do this.', 'class' => 'error'));
     }
-    if (($targetUser->id != $user->id && !$user->isAdmin()) || $targetUser->facility['id'] != $user->facility['id']) {
-      redirect_to(array('location' => 'form_entry.php?action=edit&id='.intval($formEntry->id), 'status' => "You aren't allowed to assign this form entry to that user."));
-    }
-
     $createFormEntry = $formEntry->create_or_update($_POST['form_entry']);
 
     // clear autosave entries for this user.
@@ -101,6 +81,10 @@ if (isset($_POST['form_entry'])) {
   try {
     $targetEntry = new FormEntry($database, intval($_REQUEST['id']));
   } catch (Exception $e) {
+    echo "0";
+    exit;
+  }
+  if ($targetEntry->approvedOn != '') {
     echo "0";
     exit;
   }

@@ -186,25 +186,32 @@ function display_login_form() {
   </form>'."\n";
 }
 
+function display_dropdown($id="", $name="", array $choices=array(), $selected=Null) {
+  echo "<select id='".escape_output($id)."' name='".escape_output($name)."'>\n";
+  foreach ($choices as $key=>$value) {
+    echo "<option value='".escape_output($value)."'".($selected == $value ? " selected='selected'" : "").">".escape_output($key)."</option>\n";
+  }
+  echo "</select>";
+}
+
 function display_month_year_dropdown($select_id="", $select_name_prefix="form_entry", $selected=False) {
   if ($selected === false) {
     $selected = array( 0 => intval(date('n')), 1 => intval(date('Y')));
   }
-  echo "<select id='".escape_output($select_id)."' name='".escape_output($select_name_prefix)."[qa_month]'>\n";
+  $months = [];
   for ($month_i = 1; $month_i <= 12; $month_i++) {
-    echo "  <option value='".$month_i."'".(($selected[0] === $month_i) ? " selected='selected'" : "").">".htmlentities(date('M', mktime(0, 0, 0, $month_i, 1, 2000)), ENT_QUOTES, "UTF-8")."</option>\n";
+    $months[date('M', mktime(0, 0, 0, $month_i, 1, 2000))] = $month_i;
   }
-  echo "</select>\n<select id='".escape_output($select_id)."' name='".escape_output($select_name_prefix)."[qa_year]'>\n";
+  $years = [];
   for ($year = intval(date('Y', time())); $year >= 2007; $year--) {
-    echo "  <option value='".$year."'".(($selected[1] === $year) ? " selected='selected'" : "").">".$year."</option>\n";
+    $years[$year] = $year;
   }
-  echo "</select>\n";
+  display_dropdown($select_id, $select_name_prefix."[qa_month]", $months, $selected[0]);
+  display_dropdown($select_id, $select_name_prefix."[qa_year]", $years, $selected[1]);
 }
 
 function display_ok_notok_dropdown($select_id="ok_notok", $selected=0) {
-  echo "<select id='".escape_output($select_id)."' name='".escape_output($select_id)."'>
-                    <option value=1".((intval($selected) == 1) ? " selected='selected'" : "").">OK</option>
-                    <option value=0".((intval($selected) == 0) ? " selected='selected'" : "").">NOT OK</option>\n</select>\n";
+  display_dropdown($select_id, $select_id, array("OK" => 1, "NOT OK" => 0), $selected);
 }
 
 function display_facilities($user) {
@@ -233,12 +240,12 @@ function display_facilities($user) {
 }
 
 function display_facility_dropdown($database, $select_id="facility_id", $selected=0) {
-  echo "<select id='".escape_output($select_id)."' name='".escape_output($select_id)."'>\n";
-  $facilities = $database->stdQuery("SELECT `id`, `name` FROM `facilities`");
-  while ($facility = mysqli_fetch_assoc($facilities)) {
-    echo "  <option value='".intval($facility['id'])."'".(($selected == intval($facility['id'])) ? "selected='selected'" : "").">".escape_output($facility['name'])."</option>\n";
+  $facilityQuery = $database->stdQuery("SELECT `id`, `name` FROM `facilities`");
+  $facilities = [];
+  while ($facility = mysqli_fetch_assoc($facilityQuery)) {
+    $facilities[$facility['name']] = $facility['id'];
   }
-  echo "</select>\n";
+  display_dropdown($select_id, $select_id, $facilities, $selected);
 }
 
 function display_register_form($database, $action=".") {
@@ -316,12 +323,12 @@ function display_machine_types($user) {
 }
 
 function display_machine_type_dropdown($database, $select_id="machine_type_id", $selected=0) {
-  echo "<select id='".escape_output($select_id)."' name='".escape_output($select_id)."'>\n";
-  $machineTypes = $database->stdQuery("SELECT `id`, `name` FROM `machine_types`");
-  while ($machineType = mysqli_fetch_assoc($machineTypes)) {
-    echo "  <option value='".intval($machineType['id'])."'".(($selected == intval($machineType['id'])) ? "selected='selected'" : "").">".escape_output($machineType['name'])."</option>\n";
+  $machineTypesQuery = $database->stdQuery("SELECT `id`, `name` FROM `machine_types`");
+  $machineTypes = [];
+  while ($machineType = mysqli_fetch_assoc($machineTypesQuery)) {
+    $machineTypes[$machineType['name']] = $machineType['id'];
   }
-  echo "</select>\n";
+  display_dropdown($select_id, $select_id, $machineTypes, $selected);
 }
 
 function display_machine_type_edit_form($user, $id=false) {
@@ -512,12 +519,12 @@ function display_machine_info($user, $machine_id, $graph_div_prefix = "machine_i
 }
 
 function display_form_type_dropdown($database, $select_id="form_type_id", $selected=0) {
-  $formTypes = $database->stdQuery("SELECT `id`, `name` FROM `form_types` ORDER BY `id` ASC");
-  echo "<select id='".escape_output($select_id)."' name='".escape_output($select_id)."'>\n";
-  while ($formType = $formTypes->fetch_assoc()) {
-    echo "  <option value='".intval($formType['id'])."'".(($selected == intval($formType['id'])) ? "selected='selected'" : "").">".escape_output($formType['name'])."</option>\n";
+  $formTypesQuery = $database->stdQuery("SELECT `id`, `name` FROM `form_types` ORDER BY `id` ASC");
+  $formTypes = [];
+  while ($formType = $formTypesQuery->fetch_assoc()) {
+    $formTypes[$formType['name']] = $formType['id'];
   }
-  echo "</select>\n";
+  display_dropdown($select_id, $select_id, $formTypes, $selected);
 }
 
 function display_forms($user) {
@@ -764,11 +771,11 @@ function display_users($user) {
 
 function display_user_dropdown($user, $select_id="user_id", $selected=0) {
   $facility = new Facility($user->dbConn, $user->facility['id']);
-  echo "<select id='".escape_output($select_id)."' name='".escape_output($select_id)."'>\n";
+  $users = [];
   foreach ($facility->users as $user) {
-    echo "  <option value='".intval($user['id'])."'".(($selected == intval($user['id'])) ? "selected='selected'" : "").">".escape_output($user['name'])."</option>\n";
+    $users[$user['name']] = $user['id'];
   }
-  echo "</select>\n";
+  display_dropdown($select_id, $select_id, $users, $selected);
 }
 
 function display_user_roles_select($select_id="usermask[]", $mask=0) {

@@ -1,6 +1,6 @@
 <?php
   // displays a form to edit form parameters.
-  echo "<form action='form_entry.php' method='POST' class='form-horizontal' enctype='multipart/form-data'>
+  echo "<form action='".$_SERVER['SCRIPT_NAME']."?".$_SERVER['QUERY_STRING']."' method='POST' class='form-horizontal' enctype='multipart/form-data'>
   <fieldset>
 ".(($id === false) ? "" : "<input type='hidden' name='form_entry[id]' value='".intval($id)."' />");
   if (isset($_REQUEST['form_id'])) {

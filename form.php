@@ -5,9 +5,6 @@ if (!$user->loggedIn()) {
 }
 
 if (isset($_POST['form'])) {
-  if (!$user->loggedIn() || !$user->isAdmin()) {
-    redirect_to(array('location' => 'main.php', 'status' => 'You are not allowed to modify or create forms without first logging in.', 'class' => 'error'));
-  }
   if (!isset($_POST['form']['name']) || !isset($_POST['form']['description']) || !isset($_POST['form']['machine_type_id'])) {
     redirect_to(array('location' => 'form.php'.((isset($_REQUEST['id'])) ? "?id=".intval($_REQUEST['id']) : ""), 'status' => 'One or more required fields are missing. Please check your input and try again.'));
   }
@@ -15,6 +12,9 @@ if (isset($_POST['form'])) {
     $form = new Form($database, intval($_REQUEST['id']));
   } catch (Exception $e) {
     redirect_to(array('location' => 'form.php'.((isset($_REQUEST['id'])) ? "?action=show&id=".intval($_REQUEST['id']) : ""), 'status' => 'This form does not exist.', 'class' => 'error'));
+  }
+  if (!$form->allow($user, '')) {
+    redirect_to(array('location' => 'form.php'.((isset($_REQUEST['id'])) ? "?action=show&id=".intval($_REQUEST['id']) : ""), 'status' => 'You are not authorized to create or update forms.', 'class' => 'error'));
   }
   $formID = $form->create_or_update($_POST['form']);
   if ($formID) {

@@ -29,6 +29,17 @@ class FormType {
       $this->forms = $this->getForms();
     }
   }
+  public function allow($user, $action) {
+    /* Takes a user and an action and returns a bool reflecting whether or not user is authed to perform action on this form type. */
+    switch ($action) {
+      default:
+          if (!$user->loggedIn() || !$user->isAdmin()) {
+            return False;
+          }
+          return True;
+          break;
+    }
+  }
   public function getForms() {
     // retrieves a list of id,name arrays belonging to the current form type.
     return $this->dbConn->queryAssoc("SELECT `id`, `name` FROM `forms` WHERE `form_type_id` = ".intval($this->id)." ORDER BY `name` ASC");

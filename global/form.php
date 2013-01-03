@@ -91,6 +91,20 @@ class Form {
       }
     }
   }
+  public function allow($user, $action) {
+    /* Takes a user and an action and returns a bool reflecting whether or not user is authed to perform action on this form. */
+    if (!$user->loggedIn()) {
+      return False;
+    }
+    switch ($action) {
+      default:
+          if (!$user->isAdmin()) {
+            return False;
+          }
+          return True;
+          break;
+    }
+  }
   public function clearAutosaveEntries($user) {
     // deletes all autosave entries for this form and user.
     // returns boolean.

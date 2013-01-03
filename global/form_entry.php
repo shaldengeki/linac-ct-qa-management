@@ -5,6 +5,7 @@ class FormEntry {
   public $form;
   public $machine;
   public $user;
+  public $equipment;
   public $comments;
   public $imagePath;
   public $createdAt;
@@ -15,7 +16,7 @@ class FormEntry {
   public $approvedUser;
   public $formValues;
   public $dbConn;
-  public function __construct($database, $id, $form_id=Null) {
+  public function __construct($database, $id=Null, $form_id=Null) {
     $this->dbConn = $database;
     if ($id === 0) {
       // creating a new entry. initialize blank values.
@@ -23,8 +24,7 @@ class FormEntry {
       $this->qaMonth = $this->qaYear = 0;
       $this->comments = $this->imagePath =  $this->createdAt = $this->updatedAt = $this->approvedOn = "";
       $this->form = $this->machine = $this->user = $this->approvedUser = $this->formValues = array();
-      if ($form_id === Null || !is_numeric($form_id)) {
-      } else {
+      if ($form_id !== Null && is_numeric($form_id)) {
         try {
           $targetForm = new Form($database, intval($form_id));
           $this->form = array('id' => $targetForm->id, 'name' => $targetForm->name);
@@ -48,6 +48,7 @@ class FormEntry {
       $this->form = $this->getForm();
       $this->machine = $this->getMachine();
       $this->user = $this->getUser();
+      $this->equipment = $this->getEquipment();
       $this->approvedUser = $this->getApprovedUser();
       $this->formValues = $this->getFormValues();
     }
@@ -59,6 +60,10 @@ class FormEntry {
   public function getMachine() {
     // retrieves an id,name,facility_id,machine_type_id array corresponding to the machine for which this entry is submitted.
     return $this->dbConn->queryFirstRow("SELECT `machines`.`id`, `machines`.`name`, `machines`.`facility_id`, `machines`.`machine_type_id` FROM `form_entries` LEFT OUTER JOIN `machines` ON `machines`.`id` = `form_entries`.`machine_id` WHERE `form_entries`.`id` = ".intval($this->id));
+  }
+  public function getEquipment() {
+    // retrieves an id,name,parameters array corresponding to the equipment with which this entry is submitted.
+    return $this->dbConn->queryAssoc("SELECT `equipment`.`id`, `equipment`.`name`, `equipment`.`parameters` FROM `form_entries_equipment` LEFT OUTER JOIN `equipment` ON `equipment`.`id` = `form_entries_equipment`.`equipment_id` WHERE `form_entries_equipment`.`form_entry_id` = ".intval($this->id));
   }
   public function getUser() {
     // retrieves an id,name array corresponding to the user who submitted this form entry.
@@ -252,6 +257,57 @@ class FormEntry {
     } else {
       return False;
     }
+  }
+  public function allow($user, $action) {
+    /* Takes a user and an action and returns a bool reflecting whether or not user is authed to perform action on this form entry. */
+    if (!$user->loggedIn()) {
+      return False;
+    }
+    // check if this facility exists and is the user's facility.
+    try {
+      $machine = new Machine($this->dbConn, intval($this->machine['id']));
+    } catch (Exception $e) {
+      return False;
+    }
+    if ($machine->facility['id'] != $user->facility['id']) {
+      return False;
+    }
+    // check to ensure that either the targeted user is this user or this user is an admin / physicist.
+    try {
+      $targetUser = new User($this->dbConn, intval($this->user['id']));
+    } catch (Exception $e) {
+      return False;
+    }
+    if (($targetUser->id != $user->id && !$user->isAdmin()) || $targetUser->facility['id'] != $user->facility['id']) {
+      return False;
+    }
+
+    switch ($action) {
+      case 'new':
+        if (!$this->user['id'] || ($user->id != $this->user['id'] && !$user->isPhysicist() && !$user->isAdmin())) {
+          return False;
+        }
+        break;
+      case 'show':
+        break;
+      case 'edit':
+        if (!$this->user['id'] || ($user->id != $this->user['id'] && !$user->isPhysicist() && !$user->isAdmin())) {
+          return False;
+        }
+        if ($this->approvedOn != '') {
+          return False;
+        }
+        break;
+      case 'delete':
+        if (!$user->isAdmin()) {
+          return False;
+        }
+        break;
+      default:
+        return False;
+        break;
+    }
+    return True;
   }
 }
 

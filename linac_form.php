@@ -1,6 +1,6 @@
 ﻿<?php
   // displays a form to edit form parameters.
-  echo "<form name='linac-monthly' id='linac-monthly' action='form_entry.php' method='POST' class='form-horizontal' enctype='multipart/form-data'>
+  echo "<form name='linac-monthly' id='linac-monthly' action='".$_SERVER['SCRIPT_NAME']."?".$_SERVER['QUERY_STRING']."' method='POST' class='form-horizontal' enctype='multipart/form-data'>
   <fieldset>\n".(($id === false) ? "" : "<input type='hidden' name='form_entry[id]' value='".intval($id)."' />");
   if (isset($_REQUEST['form_id'])) {
     echo "<input type='hidden' name='form_entry[form_id]' value='".intval($_REQUEST['form_id'])."' />\n";
@@ -1004,7 +1004,7 @@
     </div>
     <div class='tab-pane' id='tab-imaging'>
       <div class='row-fluid'>
-            <div class='span6'>
+        <div class='span6'>
           <h3 class='center-horizontal'>MV/kV/CBCT</h3>
           <table class='table table-bordered table-striped'>
             <thead>
@@ -1018,25 +1018,23 @@
             <tbody>
               <tr>
                 <td>Resolution (lp/mm)</td>
-                <td class='control-group'>\n";
-  display_ok_notok_dropdown('form_entry[form_values][resolution_lp_mm_status]', ($id != false) ? $formEntry->formValues['resolution_lp_mm']->value : '');
-  echo "                </td>
+                <td class='control-group'><input type='number' step='0.01' name='form_entry[form_values][resolution_lp_mm_mv]' class='span12' id='form_entry_form_values_resolution_lp_mm_mv' ".(!($formEntry->formValues) ? " placeholder='5'" : " value='".escape_output($formEntry->formValues['resolution_lp_mm_mv']->value)."'")."/></td>
                 <td class='control-group'><input type='number' step='0.01' name='form_entry[form_values][resolution_lp_mm_measurement]' class='span12' id='form_entry_form_values_resolution_lp_mm_measurement' ".(!($formEntry->formValues) ? " placeholder='>1.25'" : " value='".escape_output($formEntry->formValues['resolution_lp_mm_measurement']->value)."'")."/></td>
                 <td class='control-group'><input name='form_entry[form_values][resolution_lp_mm_row]' class='span12' id='form_entry_form_values_resolution_lp_mm_row' ".(!($formEntry->formValues) ? " placeholder='row 5'" : " value='".escape_output($formEntry->formValues['resolution_lp_mm_row']->value)."'")."/></td>
               </tr>
               <tr>
                 <td>Contrast (disks)</td>
                 <td class='control-group'>\n";
-  display_ok_notok_dropdown('form_entry[form_values][contrast_disks_status]', ($id != false) ? $formEntry->formValues['contrast_disks']->value : '');
+  display_dropdown('form_entry[form_values][contrast_disks_status]', 'form_entry[form_values][contrast_disks_status]', array('E' => 'E', 'D' => 'D'), ($id != false) ? $formEntry->formValues['contrast_disks']->value : '');
   echo "               </td>
                 <td class='control-group'><input type='number' step='0.1' name='form_entry[form_values][contrast_disks_measurement]' class='span12' id='form_entry_form_values_contrast_disks_measurement' ".(!($formEntry->formValues) ? " placeholder='18'" : " value='".escape_output($formEntry->formValues['contrast_disks_measurement']->value)."'")."/></td>
                 <td class='control-group'><input name='form_entry[form_values][contrast_disks_row]' class='span12' id='form_entry_form_values_contrast_disks_row' ".(!($formEntry->formValues) ? " placeholder='8mm disk'" : " value='".escape_output($formEntry->formValues['contrast_disks_row']->value)."'")."/></td>
               </tr>
               <tr>
                 <td>Scaling (mm)</td>
-                <td class='control-group'><input type='number' step='0.1' name='form_entry[form_values][scaling_mv]' class='span12' id='form_entry_form_values_scaling_mv' ".(!($formEntry->formValues) ? " placeholder='97'" : " value='".escape_output($formEntry->formValues['scaling_mv']->value)."'")."/></td>
-                <td class='control-group'><input type='number' step='0.1' name='form_entry[form_values][scaling_kv]' class='span12' id='form_entry_form_values_scaling_kv' ".(!($formEntry->formValues) ? " placeholder='125'" : " value='".escape_output($formEntry->formValues['scaling_kv']->value)."'")."/></td>
-                <td class='control-group'><input type='number' step='0.1' name='form_entry[form_values][scaling_cbct]' class='span12' id='form_entry_form_values_scaling_cbct' ".(!($formEntry->formValues) ? " placeholder='50'" : " value='".escape_output($formEntry->formValues['scaling_cbct']->value)."'")."/></td>
+                <td class='control-group'><input type='number' step='0.1' name='form_entry[form_values][scaling_mv]' class='span12' id='form_entry_form_values_scaling_mv' ".(!($formEntry->formValues) ? " placeholder='97&plusmn;1'" : " value='".escape_output($formEntry->formValues['scaling_mv']->value)."'")."/></td>
+                <td class='control-group'><input type='number' step='0.1' name='form_entry[form_values][scaling_kv]' class='span12' id='form_entry_form_values_scaling_kv' ".(!($formEntry->formValues) ? " placeholder='125&plusmn;1'" : " value='".escape_output($formEntry->formValues['scaling_kv']->value)."'")."/></td>
+                <td class='control-group'><input type='number' step='0.1' name='form_entry[form_values][scaling_cbct]' class='span12' id='form_entry_form_values_scaling_cbct' ".(!($formEntry->formValues) ? " placeholder='50&plusmn;0.5'" : " value='".escape_output($formEntry->formValues['scaling_cbct']->value)."'")."/></td>
               </tr>
               <tr>
                 <td>Uniformity/HU</td>
@@ -1045,84 +1043,129 @@
                 <td class='control-group'><input type='number' step='0.0000000000000001' name='form_entry[form_values][uniformity_center_cbct]' class='span12' id='form_entry_form_values_max_diff_wr_cbct' ".(!($formEntry->formValues) ? " placeholder='center'" : " value='".escape_output($formEntry->formValues['max_diff_wr_cbct']->value)."'")."/></td>
               </tr>
               <tr>
-                <td>Top</td>
-                <td class='control-group'><input type='number' step='1' name='form_entry[form_values][uniformity_mv_top]' class='span12' id='form_entry_form_values_uniformity_mv_top' ".(!($formEntry->formValues) ? " placeholder='1160&plusmn;30'" : " value='".escape_output($formEntry->formValues['uniformity_mv_top']->value)."'")."/></td>
-                <td class='control-group'><input type='number' step='1' name='form_entry[form_values][uniformity_kv_top]' class='span12' id='form_entry_form_values_uniformity_kv_top' ".(!($formEntry->formValues) ? " placeholder='203000&plusmn;3000'" : " value='".escape_output($formEntry->formValues['uniformity_kv_top']->value)."'")."/></td>
-                <td class='control-group'><input type='number' step='1' name='form_entry[form_values][uniformity_cbct_top]' class='span12' id='form_entry_form_values_uniformity_cbct_top' ".(!($formEntry->formValues) ? " placeholder=''" : " value='".escape_output($formEntry->formValues['uniformity_cbct_top']->value)."'")."/></td>
+                <td>#1/Top</td>
+                <td class='control-group'><input type='number' step='1' name='form_entry[form_values][uniformity_mv_top]' class='span12' id='form_entry_form_values_uniformity_mv_top' ".(!($formEntry->formValues) ? "" : " value='".escape_output($formEntry->formValues['uniformity_mv_top']->value)."'")."/></td>
+                <td class='control-group'><input type='number' step='1' name='form_entry[form_values][uniformity_kv_top]' class='span12' id='form_entry_form_values_uniformity_kv_top' ".(!($formEntry->formValues) ? "" : " value='".escape_output($formEntry->formValues['uniformity_kv_top']->value)."'")."/></td>
+                <td class='control-group'><input type='number' step='1' name='form_entry[form_values][uniformity_cbct_top]' class='span12' id='form_entry_form_values_uniformity_cbct_top' ".(!($formEntry->formValues) ? " placeholder='<&plusmn;40HU'" : " value='".escape_output($formEntry->formValues['uniformity_cbct_top']->value)."'")."/></td>
               </tr>
               <tr>
-                <td>Bottom</td>
-                <td class='control-group'><input type='number' step='1' name='form_entry[form_values][uniformity_mv_bottom]' class='span12' id='form_entry_form_values_uniformity_mv_bottom' ".(!($formEntry->formValues) ? " placeholder='1160&plusmn;30'" : " value='".escape_output($formEntry->formValues['uniformity_mv_bottom']->value)."'")."/></td>
-                <td class='control-group'><input type='number' step='1' name='form_entry[form_values][uniformity_kv_bottom]' class='span12' id='form_entry_form_values_uniformity_kv_bottom' ".(!($formEntry->formValues) ? " placeholder='203000&plusmn;3000'" : " value='".escape_output($formEntry->formValues['uniformity_kv_bottom']->value)."'")."/></td>
-                <td class='control-group'><input type='number' step='1' name='form_entry[form_values][uniformity_cbct_bottom]' class='span12' id='form_entry_form_values_uniformity_cbct_bottom' ".(!($formEntry->formValues) ? " placeholder=''" : " value='".escape_output($formEntry->formValues['uniformity_cbct_bottom']->value)."'")."/></td>
+                <td>#2/Right</td>
+                <td class='control-group'><input type='number' step='1' name='form_entry[form_values][uniformity_mv_right]' class='span12' id='form_entry_form_values_uniformity_mv_right' ".(!($formEntry->formValues) ? "" : " value='".escape_output($formEntry->formValues['uniformity_mv_right']->value)."'")."/></td>
+                <td class='control-group'><input type='number' step='1' name='form_entry[form_values][uniformity_kv_right]' class='span12' id='form_entry_form_values_uniformity_kv_right' ".(!($formEntry->formValues) ? "" : " value='".escape_output($formEntry->formValues['uniformity_kv_right']->value)."'")."/></td>
+                <td class='control-group'><input type='number' step='1' name='form_entry[form_values][uniformity_cbct_right]' class='span12' id='form_entry_form_values_uniformity_cbct_right' ".(!($formEntry->formValues) ? " placeholder='<&plusmn;40HU'" : " value='".escape_output($formEntry->formValues['uniformity_cbct_right']->value)."'")."/></td>
               </tr>
               <tr>
-                <td>Left</td>
-                <td class='control-group'><input type='number' step='1' name='form_entry[form_values][uniformity_mv_left]' class='span12' id='form_entry_form_values_uniformity_mv_left' ".(!($formEntry->formValues) ? " placeholder='1160&plusmn;30'" : " value='".escape_output($formEntry->formValues['uniformity_mv_left']->value)."'")."/></td>
-                <td class='control-group'><input type='number' step='1' name='form_entry[form_values][uniformity_kv_left]' class='span12' id='form_entry_form_values_uniformity_kv_left' ".(!($formEntry->formValues) ? " placeholder='203000&plusmn;3000'" : " value='".escape_output($formEntry->formValues['uniformity_kv_left']->value)."'")."/></td>
-                <td class='control-group'><input type='number' step='1' name='form_entry[form_values][uniformity_cbct_left]' class='span12' id='form_entry_form_values_uniformity_cbct_left' ".(!($formEntry->formValues) ? " placeholder=''" : " value='".escape_output($formEntry->formValues['uniformity_cbct_left']->value)."'")."/></td>
+                <td>#3/Bottom</td>
+                <td class='control-group'><input type='number' step='1' name='form_entry[form_values][uniformity_mv_bottom]' class='span12' id='form_entry_form_values_uniformity_mv_bottom' ".(!($formEntry->formValues) ? "" : " value='".escape_output($formEntry->formValues['uniformity_mv_bottom']->value)."'")."/></td>
+                <td class='control-group'><input type='number' step='1' name='form_entry[form_values][uniformity_kv_bottom]' class='span12' id='form_entry_form_values_uniformity_kv_bottom' ".(!($formEntry->formValues) ? "" : " value='".escape_output($formEntry->formValues['uniformity_kv_bottom']->value)."'")."/></td>
+                <td class='control-group'><input type='number' step='1' name='form_entry[form_values][uniformity_cbct_bottom]' class='span12' id='form_entry_form_values_uniformity_cbct_bottom' ".(!($formEntry->formValues) ? " placeholder='<&plusmn;40HU'" : " value='".escape_output($formEntry->formValues['uniformity_cbct_bottom']->value)."'")."/></td>
               </tr>
               <tr>
-                <td>Right</td>
-                <td class='control-group'><input type='number' step='1' name='form_entry[form_values][uniformity_mv_right]' class='span12' id='form_entry_form_values_uniformity_mv_right' ".(!($formEntry->formValues) ? " placeholder='1160&plusmn;30'" : " value='".escape_output($formEntry->formValues['uniformity_mv_right']->value)."'")."/></td>
-                <td class='control-group'><input type='number' step='1' name='form_entry[form_values][uniformity_kv_right]' class='span12' id='form_entry_form_values_uniformity_kv_right' ".(!($formEntry->formValues) ? " placeholder='203000&plusmn;3000'" : " value='".escape_output($formEntry->formValues['uniformity_kv_right']->value)."'")."/></td>
-                <td class='control-group'><input type='number' step='1' name='form_entry[form_values][uniformity_cbct_right]' class='span12' id='form_entry_form_values_uniformity_cbct_right' ".(!($formEntry->formValues) ? " placeholder=''" : " value='".escape_output($formEntry->formValues['uniformity_cbct_right']->value)."'")."/></td>
+                <td>#4/Left</td>
+                <td class='control-group'><input type='number' step='1' name='form_entry[form_values][uniformity_mv_left]' class='span12' id='form_entry_form_values_uniformity_mv_left' ".(!($formEntry->formValues) ? "" : " value='".escape_output($formEntry->formValues['uniformity_mv_left']->value)."'")."/></td>
+                <td class='control-group'><input type='number' step='1' name='form_entry[form_values][uniformity_kv_left]' class='span12' id='form_entry_form_values_uniformity_kv_left' ".(!($formEntry->formValues) ? "" : " value='".escape_output($formEntry->formValues['uniformity_kv_left']->value)."'")."/></td>
+                <td class='control-group'><input type='number' step='1' name='form_entry[form_values][uniformity_cbct_left]' class='span12' id='form_entry_form_values_uniformity_cbct_left' ".(!($formEntry->formValues) ? " placeholder='<&plusmn;40HU'" : " value='".escape_output($formEntry->formValues['uniformity_cbct_left']->value)."'")."/></td>
               </tr>
               <tr>
-                <td>Noise</td>
+                <td>Max Diff %</td>
+                <td class='control-group'><input type='number' step='0.0000000000000001' name='form_entry[form_values][uniformity_mv_diff]' class='span12' id='form_entry_form_values_uniformity_mv_diff' ".(!($formEntry->formValues) ? "" : " value='".escape_output($formEntry->formValues['uniformity_mv_diff']->value)."'")."/></td>
+                <td class='control-group'><input type='number' step='0.0000000000000001' name='form_entry[form_values][uniformity_kv_diff]' class='span12' id='form_entry_form_values_uniformity_kv_diff' ".(!($formEntry->formValues) ? "" : " value='".escape_output($formEntry->formValues['uniformity_kv_diff']->value)."'")."/></td>
+                <td class='control-group'><input type='number' step='0.0000000000000001' name='form_entry[form_values][uniformity_cbct_diff]' class='span12' id='form_entry_form_values_uniformity_cbct_diff' ".(!($formEntry->formValues) ? " placeholder='<&plusmn;40HU'" : " value='".escape_output($formEntry->formValues['uniformity_cbct_diff']->value)."'")."/></td>
+              </tr>
+              <tr>
+                <td>Stdev</td>
                 <td class='control-group'></td>
                 <td class='control-group'></td>
                 <td class='control-group'></td>
               </tr>
               <tr>
-                <td>Top</td>
-                <td class='control-group'><input type='number' step='0.01' name='form_entry[form_values][noise_mv_top]' class='span12' id='form_entry_form_values_noise_mv_top' ".(!($formEntry->formValues) ? " placeholder='1160&plusmn;30'" : " value='".escape_output($formEntry->formValues['noise_mv_top']->value)."'")."/></td>
-                <td class='control-group'><input type='number' step='0.01' name='form_entry[form_values][noise_kv_top]' class='span12' id='form_entry_form_values_noise_kv_top' ".(!($formEntry->formValues) ? " placeholder='203000&plusmn;3000'" : " value='".escape_output($formEntry->formValues['noise_kv_top']->value)."'")."/></td>
+                <td>#1/Top</td>
+                <td class='control-group'><input type='number' step='0.01' name='form_entry[form_values][noise_mv_top]' class='span12' id='form_entry_form_values_noise_mv_top' ".(!($formEntry->formValues) ? " placeholder='18&plusmn;5'" : " value='".escape_output($formEntry->formValues['noise_mv_top']->value)."'")."/></td>
+                <td class='control-group'><input type='number' step='0.01' name='form_entry[form_values][noise_kv_top]' class='span12' id='form_entry_form_values_noise_kv_top' ".(!($formEntry->formValues) ? " placeholder='250&plusmn;30'" : " value='".escape_output($formEntry->formValues['noise_kv_top']->value)."'")."/></td>
                 <td class='control-group'><input type='number' step='0.01' name='form_entry[form_values][noise_cbct_top]' class='span12' id='form_entry_form_values_noise_cbct_top' ".(!($formEntry->formValues) ? " placeholder=''" : " value='".escape_output($formEntry->formValues['noise_cbct_top']->value)."'")."/></td>
               </tr>
               <tr>
-                <td>Bottom</td>
-                <td class='control-group'><input type='number' step='0.01' name='form_entry[form_values][noise_mv_bottom]' class='span12' id='form_entry_form_values_noise_mv_bottom' ".(!($formEntry->formValues) ? " placeholder='1160&plusmn;30'" : " value='".escape_output($formEntry->formValues['noise_mv_bottom']->value)."'")."/></td>
-                <td class='control-group'><input type='number' step='0.01' name='form_entry[form_values][noise_kv_bottom]' class='span12' id='form_entry_form_values_noise_kv_bottom' ".(!($formEntry->formValues) ? " placeholder='203000&plusmn;3000'" : " value='".escape_output($formEntry->formValues['noise_kv_bottom']->value)."'")."/></td>
+                <td>#2/Right</td>
+                <td class='control-group'><input type='number' step='0.01' name='form_entry[form_values][noise_mv_right]' class='span12' id='form_entry_form_values_noise_mv_right' ".(!($formEntry->formValues) ? " placeholder='18&plusmn;5'" : " value='".escape_output($formEntry->formValues['noise_mv_right']->value)."'")."/></td>
+                <td class='control-group'><input type='number' step='0.01' name='form_entry[form_values][noise_kv_right]' class='span12' id='form_entry_form_values_noise_kv_right' ".(!($formEntry->formValues) ? " placeholder='250&plusmn;30'" : " value='".escape_output($formEntry->formValues['noise_kv_right']->value)."'")."/></td>
+                <td class='control-group'><input type='number' step='0.01' name='form_entry[form_values][noise_cbct_right]' class='span12' id='form_entry_form_values_noise_cbct_right' ".(!($formEntry->formValues) ? " placeholder=''" : " value='".escape_output($formEntry->formValues['noise_cbct_right']->value)."'")."/></td>
+              </tr>
+              <tr>
+                <td>#3/Bottom</td>
+                <td class='control-group'><input type='number' step='0.01' name='form_entry[form_values][noise_mv_bottom]' class='span12' id='form_entry_form_values_noise_mv_bottom' ".(!($formEntry->formValues) ? " placeholder='18&plusmn;5'" : " value='".escape_output($formEntry->formValues['noise_mv_bottom']->value)."'")."/></td>
+                <td class='control-group'><input type='number' step='0.01' name='form_entry[form_values][noise_kv_bottom]' class='span12' id='form_entry_form_values_noise_kv_bottom' ".(!($formEntry->formValues) ? " placeholder='250&plusmn;30'" : " value='".escape_output($formEntry->formValues['noise_kv_bottom']->value)."'")."/></td>
                 <td class='control-group'><input type='number' step='0.01' name='form_entry[form_values][noise_cbct_bottom]' class='span12' id='form_entry_form_values_noise_cbct_bottom' ".(!($formEntry->formValues) ? " placeholder=''" : " value='".escape_output($formEntry->formValues['noise_cbct_bottom']->value)."'")."/></td>
               </tr>
               <tr>
-                <td>Left</td>
-                <td class='control-group'><input type='number' step='0.01' name='form_entry[form_values][noise_mv_left]' class='span12' id='form_entry_form_values_noise_mv_left' ".(!($formEntry->formValues) ? " placeholder='1160&plusmn;30'" : " value='".escape_output($formEntry->formValues['noise_mv_left']->value)."'")."/></td>
-                <td class='control-group'><input type='number' step='0.01' name='form_entry[form_values][noise_kv_left]' class='span12' id='form_entry_form_values_noise_kv_left' ".(!($formEntry->formValues) ? " placeholder='203000&plusmn;3000'" : " value='".escape_output($formEntry->formValues['noise_kv_left']->value)."'")."/></td>
+                <td>#4/Left</td>
+                <td class='control-group'><input type='number' step='0.01' name='form_entry[form_values][noise_mv_left]' class='span12' id='form_entry_form_values_noise_mv_left' ".(!($formEntry->formValues) ? " placeholder='18&plusmn;5'" : " value='".escape_output($formEntry->formValues['noise_mv_left']->value)."'")."/></td>
+                <td class='control-group'><input type='number' step='0.01' name='form_entry[form_values][noise_kv_left]' class='span12' id='form_entry_form_values_noise_kv_left' ".(!($formEntry->formValues) ? " placeholder='250&plusmn;30'" : " value='".escape_output($formEntry->formValues['noise_kv_left']->value)."'")."/></td>
                 <td class='control-group'><input type='number' step='0.01' name='form_entry[form_values][noise_cbct_left]' class='span12' id='form_entry_form_values_noise_cbct_left' ".(!($formEntry->formValues) ? " placeholder=''" : " value='".escape_output($formEntry->formValues['noise_cbct_left']->value)."'")."/></td>
               </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class='span6'>
+          <h3 class='center-horizontal'>HU Linearity</h3>
+          <table class='table table-bordered table-striped'>
+            <thead>
               <tr>
-                <td>Right</td>
-                <td class='control-group'><input type='number' step='0.01' name='form_entry[form_values][noise_mv_right]' class='span12' id='form_entry_form_values_noise_mv_right' ".(!($formEntry->formValues) ? " placeholder='1160&plusmn;30'" : " value='".escape_output($formEntry->formValues['noise_mv_right']->value)."'")."/></td>
-                <td class='control-group'><input type='number' step='0.01' name='form_entry[form_values][noise_kv_right]' class='span12' id='form_entry_form_values_noise_kv_right' ".(!($formEntry->formValues) ? " placeholder='203000&plusmn;3000'" : " value='".escape_output($formEntry->formValues['noise_kv_right']->value)."'")."/></td>
-                <td class='control-group'><input type='number' step='0.01' name='form_entry[form_values][noise_cbct_right]' class='span12' id='form_entry_form_values_noise_cbct_right' ".(!($formEntry->formValues) ? " placeholder=''" : " value='".escape_output($formEntry->formValues['noise_cbct_right']->value)."'")."/></td>
+                <th></th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Air</td>
+                <td><input type='number' step='1' name='form_entry[form_values][hu_linearity_air]' class='span12' id='form_entry_form_values_hu_linearity_air' ".(!($formEntry->formValues) ? " placeholder='-1000&plusmn;40'" : " value='".escape_output($formEntry->formValues['hu_linearity_air']->value)."'")."/></td>
+              </tr>
+              <tr>
+                <td>Acrylic</td>
+                <td><input type='number' step='1' name='form_entry[form_values][hu_linearity_acrylic]' class='span12' id='form_entry_form_values_hu_linearity_acrylic' ".(!($formEntry->formValues) ? " placeholder='120&plusmn;40'" : " value='".escape_output($formEntry->formValues['hu_linearity_acrylic']->value)."'")."/></td>
+              </tr>
+              <tr>
+                <td>LDPE</td>
+                <td><input type='number' step='1' name='form_entry[form_values][hu_linearity_ldpe]' class='span12' id='form_entry_form_values_hu_linearity_ldpe' ".(!($formEntry->formValues) ? " placeholder='-100&plusmn;40'" : " value='".escape_output($formEntry->formValues['hu_linearity_ldpe']->value)."'")."/></td>
               </tr>
             </tbody>
           </table>
           <table class='table table-bordered table-striped'>
             <thead>
               <tr>
-                <th>CBCT</th>
-              </tr>
-              <tr>
-                <th>HU Calibration</th>
-                <th>Air</th>
-                <th>Acrylic</th>
-                <th>LDPE</th>
+                <th></th>
+                <th></th>
               </tr>
             </thead>
             <tbody>
               <tr>
-                <td><input type='number' step='0.01' name='form_entry[form_values][hu_calibration_cbct]' class='span12' id='form_entry_form_values_hu_calibration_cbct' ".(!($formEntry->formValues) ? " placeholder=''" : " value='".escape_output($formEntry->formValues['hu_calibration_cbct']->value)."'")."/></td>
-                <td><input type='number' step='1' name='form_entry[form_values][air_cbct]' class='span12' id='form_entry_form_values_air_cbct' ".(!($formEntry->formValues) ? " placeholder='-1000&plusmn;30'" : " value='".escape_output($formEntry->formValues['air_cbct']->value)."'")."/></td>
-                <td><input type='number' step='1' name='form_entry[form_values][acrylic_cbct]' class='span12' id='form_entry_form_values_acrylic_cbct' ".(!($formEntry->formValues) ? " placeholder='120&plusmn;40'" : " value='".escape_output($formEntry->formValues['acrylic_cbct']->value)."'")."/></td>
-                <td><input type='number' step='1' name='form_entry[form_values][ldpe_cbct]' class='span12' id='form_entry_form_values_ldpe_cbct' ".(!($formEntry->formValues) ? " placeholder='1160&plusmn;30'" : " value='".escape_output($formEntry->formValues['ldpe_cbct']->value)."'")."/></td>
+                <td>Scan Slice Thickness</td>
+                <td><input type='number' step='0.01' name='form_entry[form_values][scan_slice_thickness]' class='span12' id='form_entry_form_values_scan_slice_thickness' ".(!($formEntry->formValues) ? " placeholder='2.5&plusmn;0.125'" : " value='".escape_output($formEntry->formValues['scan_slice_thickness']->value)."'")."/></td>
               </tr>
             </tbody>
           </table>
+          <h3 class='center-horizontal'>MLC</h3>
+          <table class='table table-bordered table-striped'>
+            <thead>
+              <tr>
+                <th>Gantry Angle</th>
+              </tr>
+            </thead>
+            <tbody>
+            <tr><td>PA</td><td>";
+  display_ok_notok_dropdown('form_entry[form_values][mlc_mv_gantry_angle_pa]', ($id != false) ? $formEntry->formValues['mlc_mv_gantry_angle_pa']->value : '');
+  echo "</td></tr>
+            <tr><td>LR</td><td>";
+  display_ok_notok_dropdown('form_entry[form_values][mlc_mv_gantry_angle_lr]', ($id != false) ? $formEntry->formValues['mlc_mv_gantry_angle_lr']->value : '');
+  echo "</td></tr>
+            <tr><td>AP</td><td>";
+  display_ok_notok_dropdown('form_entry[form_values][mlc_mv_gantry_angle_ap]', ($id != false) ? $formEntry->formValues['mlc_mv_gantry_angle_ap']->value : '');
+  echo "</td></tr>
+            <tr><td>RL</td><td>";
+  display_ok_notok_dropdown('form_entry[form_values][mlc_mv_gantry_angle_rl]', ($id != false) ? $formEntry->formValues['mlc_mv_gantry_angle_rl']->value : '');
+  echo "</td></tr>
+          </table>
         </div>
-    </div>
+      </div>
     </div>
     <h3>Image</h3>\n";
     if ($id != false && $formEntry->imagePath != '') {

@@ -6,6 +6,7 @@ include_once("./global/facility.php");
 include_once("./global/machine_type.php");
 include_once("./global/machine.php");
 include_once("./global/machine_parameter.php");
+include_once("./global/equipment.php");
 include_once("./global/form_type.php");
 include_once("./global/form.php");
 include_once("./global/form_entry.php");
