@@ -105,6 +105,7 @@
                 <th>18MV</th>
                 <th>6XFFF</th>
                 <th>10XFFF</th>
+                <th>SRS</th>
               </tr>
             </thead>
             <tbody>
@@ -116,6 +117,7 @@
                 <td class='control-group'><input type='number' step='0.0000000000000001' step='0.001' name='form_entry[form_values][photon_output_calibration_18MV_q1]' class='form_entry_form_values_photon_output_calibration_18MV span12' id='form_entry_form_values_photon_output_calibration_18MV_q1' ".(!($formEntry->formValues) ? "" : " value='".escape_output($formEntry->formValues['photon_output_calibration_18MV_q1']->value)."'")."/></td>
                 <td class='control-group'><input type='number' step='0.0000000000000001' step='0.001' name='form_entry[form_values][photon_output_calibration_6XFFF_q1]' class='form_entry_form_values_photon_output_calibration_6XFFF span12' id='form_entry_form_values_photon_output_calibration_6XFFF_q1' ".(!($formEntry->formValues) ? "" : " value='".escape_output($formEntry->formValues['photon_output_calibration_6XFFF_q1']->value)."'")."/></td>
                 <td class='control-group'><input type='number' step='0.0000000000000001' step='0.001' name='form_entry[form_values][photon_output_calibration_10XFFF_q1]' class='form_entry_form_values_photon_output_calibration_10XFFF span12' id='form_entry_form_values_photon_output_calibration_10XFFF_q1' ".(!($formEntry->formValues) ? "" : " value='".escape_output($formEntry->formValues['photon_output_calibration_10XFFF_q1']->value)."'")."/></td>
+                <td class='control-group'><input type='number' step='0.0000000000000001' step='0.001' name='form_entry[form_values][photon_output_calibration_SRS_q1]' class='form_entry_form_values_photon_output_calibration_SRS span12' id='form_entry_form_values_photon_output_calibration_SRS_q1' ".(!($formEntry->formValues) ? "" : " value='".escape_output($formEntry->formValues['photon_output_calibration_SRS_q1']->value)."'")."/></td>
               </tr>
               <tr>
                 <td>Q<sub>2</sub></td>
@@ -125,6 +127,7 @@
                 <td class='control-group'><input type='number' step='0.0000000000000001' step='0.001' name='form_entry[form_values][photon_output_calibration_18MV_q2]' class='form_entry_form_values_photon_output_calibration_18MV span12' id='form_entry_form_values_photon_output_calibration_18MV_q2' ".(!($formEntry->formValues) ? "" : " value='".escape_output($formEntry->formValues['photon_output_calibration_18MV_q2']->value)."'")."/></td>
                 <td class='control-group'><input type='number' step='0.0000000000000001' step='0.001' name='form_entry[form_values][photon_output_calibration_6XFFF_q2]' class='form_entry_form_values_photon_output_calibration_6XFFF span12' id='form_entry_form_values_photon_output_calibration_6XFFF_q2' ".(!($formEntry->formValues) ? "" : " value='".escape_output($formEntry->formValues['photon_output_calibration_6XFFF_q2']->value)."'")."/></td>
                 <td class='control-group'><input type='number' step='0.0000000000000001' step='0.001' name='form_entry[form_values][photon_output_calibration_10XFFF_q2]' class='form_entry_form_values_photon_output_calibration_10XFFF span12' id='form_entry_form_values_photon_output_calibration_10XFFF_q2' ".(!($formEntry->formValues) ? "" : " value='".escape_output($formEntry->formValues['photon_output_calibration_10XFFF_q2']->value)."'")."/></td>
+                <td class='control-group'><input type='number' step='0.0000000000000001' step='0.001' name='form_entry[form_values][photon_output_calibration_SRS_q2]' class='form_entry_form_values_photon_output_calibration_SRS span12' id='form_entry_form_values_photon_output_calibration_SRS_q2' ".(!($formEntry->formValues) ? "" : " value='".escape_output($formEntry->formValues['photon_output_calibration_SRS_q2']->value)."'")."/></td>
               </tr>
               <tr>
                 <td>Q<sub>3</sub></td>
@@ -134,6 +137,7 @@
                 <td class='control-group'><input type='number' step='0.0000000000000001' step='0.001' name='form_entry[form_values][photon_output_calibration_18MV_q3]' class='form_entry_form_values_photon_output_calibration_18MV span12' id='form_entry_form_values_photon_output_calibration_18MV_q3' ".(!($formEntry->formValues) ? "" : " value='".escape_output($formEntry->formValues['photon_output_calibration_18MV_q3']->value)."'")."/></td>
                 <td class='control-group'><input type='number' step='0.0000000000000001' step='0.001' name='form_entry[form_values][photon_output_calibration_6XFFF_q3]' class='form_entry_form_values_photon_output_calibration_6XFFF span12' id='form_entry_form_values_photon_output_calibration_6XFFF_q3' ".(!($formEntry->formValues) ? "" : " value='".escape_output($formEntry->formValues['photon_output_calibration_6XFFF_q3']->value)."'")."/></td>
                 <td class='control-group'><input type='number' step='0.0000000000000001' step='0.001' name='form_entry[form_values][photon_output_calibration_10XFFF_q3]' class='form_entry_form_values_photon_output_calibration_10XFFF span12' id='form_entry_form_values_photon_output_calibration_10XFFF_q3' ".(!($formEntry->formValues) ? "" : " value='".escape_output($formEntry->formValues['photon_output_calibration_10XFFF_q3']->value)."'")."/></td>
+                <td class='control-group'><input type='number' step='0.0000000000000001' step='0.001' name='form_entry[form_values][photon_output_calibration_SRS_q3]' class='form_entry_form_values_photon_output_calibration_SRS span12' id='form_entry_form_values_photon_output_calibration_SRS_q3' ".(!($formEntry->formValues) ? "" : " value='".escape_output($formEntry->formValues['photon_output_calibration_SRS_q3']->value)."'")."/></td>
               </tr>
               <tr>
                 <td>Avg</td>
@@ -143,6 +147,7 @@
                 <td class='control-group'><input type='number' step='0.0000000000000001' step='0.0000000000000001' name='form_entry[form_values][photon_output_calibration_18MV_avg]' class='span12' id='form_entry_form_values_photon_output_calibration_18MV_avg' ".(!($formEntry->formValues) ? "" : " value='".escape_output($formEntry->formValues['photon_output_calibration_18MV_avg']->value)."'")."/></td>
                 <td class='control-group'><input type='number' step='0.0000000000000001' step='0.0000000000000001' name='form_entry[form_values][photon_output_calibration_6XFFF_avg]' class='span12' id='form_entry_form_values_photon_output_calibration_6XFFF_avg' ".(!($formEntry->formValues) ? "" : " value='".escape_output($formEntry->formValues['photon_output_calibration_6XFFF_avg']->value)."'")."/></td>
                 <td class='control-group'><input type='number' step='0.0000000000000001' step='0.0000000000000001' name='form_entry[form_values][photon_output_calibration_10XFFF_avg]' class='span12' id='form_entry_form_values_photon_output_calibration_10XFFF_avg' ".(!($formEntry->formValues) ? "" : " value='".escape_output($formEntry->formValues['photon_output_calibration_10XFFF_avg']->value)."'")."/></td>
+                <td class='control-group'><input type='number' step='0.0000000000000001' step='0.0000000000000001' name='form_entry[form_values][photon_output_calibration_SRS_avg]' class='span12' id='form_entry_form_values_photon_output_calibration_SRS_avg' ".(!($formEntry->formValues) ? "" : " value='".escape_output($formEntry->formValues['photon_output_calibration_SRS_avg']->value)."'")."/></td>
               </tr>
               <tr>
                 <td>M</td>
@@ -152,6 +157,7 @@
                 <td class='control-group'><input type='number' step='0.0000000000000001' step='0.0000000000000001' name='form_entry[form_values][photon_output_calibration_18MV_M]' class='span12' id='form_entry_form_values_photon_output_calibration_18MV_M' ".(!($formEntry->formValues) ? "" : " value='".escape_output($formEntry->formValues['photon_output_calibration_18MV_M']->value)."'")."/></td>
                 <td class='control-group'><input type='number' step='0.0000000000000001' step='0.0000000000000001' name='form_entry[form_values][photon_output_calibration_6XFFF_M]' class='span12' id='form_entry_form_values_photon_output_calibration_6XFFF_M' ".(!($formEntry->formValues) ? "" : " value='".escape_output($formEntry->formValues['photon_output_calibration_6XFFF_M']->value)."'")."/></td>
                 <td class='control-group'><input type='number' step='0.0000000000000001' step='0.0000000000000001' name='form_entry[form_values][photon_output_calibration_10XFFF_M]' class='span12' id='form_entry_form_values_photon_output_calibration_10XFFF_M' ".(!($formEntry->formValues) ? "" : " value='".escape_output($formEntry->formValues['photon_output_calibration_10XFFF_M']->value)."'")."/></td>
+                <td class='control-group'><input type='number' step='0.0000000000000001' step='0.0000000000000001' name='form_entry[form_values][photon_output_calibration_SRS_M]' class='span12' id='form_entry_form_values_photon_output_calibration_SRS_M' ".(!($formEntry->formValues) ? "" : " value='".escape_output($formEntry->formValues['photon_output_calibration_SRS_M']->value)."'")."/></td>
               </tr>
               <tr>
                 <td>Dw</td>
@@ -161,6 +167,7 @@
                 <td class='control-group'><input type='number' step='0.0000000000000001' step='0.0000000000000001' name='form_entry[form_values][photon_output_calibration_18MV_Dw]' class='span12' id='form_entry_form_values_photon_output_calibration_18MV_Dw' ".(!($formEntry->formValues) ? "" : " value='".escape_output($formEntry->formValues['photon_output_calibration_18MV_Dw']->value)."'")."/></td>
                 <td class='control-group'><input type='number' step='0.0000000000000001' step='0.0000000000000001' name='form_entry[form_values][photon_output_calibration_6XFFF_Dw]' class='span12' id='form_entry_form_values_photon_output_calibration_6XFFF_Dw' ".(!($formEntry->formValues) ? "" : " value='".escape_output($formEntry->formValues['photon_output_calibration_6XFFF_Dw']->value)."'")."/></td>
                 <td class='control-group'><input type='number' step='0.0000000000000001' step='0.0000000000000001' name='form_entry[form_values][photon_output_calibration_10XFFF_Dw]' class='span12' id='form_entry_form_values_photon_output_calibration_10XFFF_Dw' ".(!($formEntry->formValues) ? "" : " value='".escape_output($formEntry->formValues['photon_output_calibration_10XFFF_Dw']->value)."'")."/></td>
+                <td class='control-group'><input type='number' step='0.0000000000000001' step='0.0000000000000001' name='form_entry[form_values][photon_output_calibration_SRS_Dw]' class='span12' id='form_entry_form_values_photon_output_calibration_SRS_Dw' ".(!($formEntry->formValues) ? "" : " value='".escape_output($formEntry->formValues['photon_output_calibration_SRS_Dw']->value)."'")."/></td>
               </tr>
               <tr>
                 <td>Dw(abs)</td>
@@ -170,6 +177,7 @@
                 <td class='control-group'><input type='number' step='0.0000000000000001' step='0.001' name='form_entry[form_constants][photon_output_calibration_18MV_Dw_abs]' class='span12' id='form_entry_form_values_photon_output_calibration_18MV_Dw_abs' ".(!($formEntry->formValues) ? "" : " value='".escape_output($formEntry->formValues['photon_output_calibration_18MV_Dw_abs']->value)."'")."/></td>
                 <td class='control-group'><input type='number' step='0.0000000000000001' step='0.001' name='form_entry[form_constants][photon_output_calibration_6XFFF_Dw_abs]' class='span12' id='form_entry_form_values_photon_output_calibration_6XFFF_Dw_abs' ".(!($formEntry->formValues) ? "" : " value='".escape_output($formEntry->formValues['photon_output_calibration_6XFFF_Dw_abs']->value)."'")."/></td>
                 <td class='control-group'><input type='number' step='0.0000000000000001' step='0.001' name='form_entry[form_constants][photon_output_calibration_10XFFF_Dw_abs]' class='span12' id='form_entry_form_values_photon_output_calibration_10XFFF_Dw_abs' ".(!($formEntry->formValues) ? "" : " value='".escape_output($formEntry->formValues['photon_output_calibration_10XFFF_Dw_abs']->value)."'")."/></td>
+                <td class='control-group'><input type='number' step='0.0000000000000001' step='0.001' name='form_entry[form_constants][photon_output_calibration_SRS_Dw_abs]' class='span12' id='form_entry_form_values_photon_output_calibration_SRS_Dw_abs' ".(!($formEntry->formValues) ? "" : " value='".escape_output($formEntry->formValues['photon_output_calibration_SRS_Dw_abs']->value)."'")."/></td>
               </tr>
               <tr>
                 <td>%diff</td>
@@ -179,6 +187,7 @@
                 <td class='control-group'><input type='number' step='0.0000000000000001' step='0.0001' name='form_entry[form_values][photon_output_calibration_18MV_diff]' class='span12 form_entry_form_values_photon_output_calibration_diff' id='form_entry_form_values_photon_output_calibration_18MV_diff' ".(!($formEntry->formValues) ? "" : " value='".escape_output($formEntry->formValues['photon_output_calibration_18MV_diff']->value)."'")."/></td>
                 <td class='control-group'><input type='number' step='0.0000000000000001' step='0.0001' name='form_entry[form_values][photon_output_calibration_6XFFF_diff]' class='span12 form_entry_form_values_photon_output_calibration_diff' id='form_entry_form_values_photon_output_calibration_6XFFF_diff' ".(!($formEntry->formValues) ? "" : " value='".escape_output($formEntry->formValues['photon_output_calibration_6XFFF_diff']->value)."'")."/></td>
                 <td class='control-group'><input type='number' step='0.0000000000000001' step='0.0001' name='form_entry[form_values][photon_output_calibration_10XFFF_diff]' class='span12 form_entry_form_values_photon_output_calibration_diff' id='form_entry_form_values_photon_output_calibration_10XFFF_diff' ".(!($formEntry->formValues) ? "" : " value='".escape_output($formEntry->formValues['photon_output_calibration_10XFFF_diff']->value)."'")."/></td>
+                <td class='control-group'><input type='number' step='0.0000000000000001' step='0.0001' name='form_entry[form_values][photon_output_calibration_SRS_diff]' class='span12 form_entry_form_values_photon_output_calibration_diff' id='form_entry_form_values_photon_output_calibration_SRS_diff' ".(!($formEntry->formValues) ? "" : " value='".escape_output($formEntry->formValues['photon_output_calibration_SRS_diff']->value)."'")."/></td>
               </tr>
             </tbody>
           </table>
@@ -195,6 +204,7 @@
                 <th>18MV</th>
                 <th>6XFFF</th>
                 <th>10XFFF</th>
+                <th>SRS</th>
               </tr>
             </thead>
             <tbody>
@@ -206,6 +216,7 @@
                 <td class='control-group'><input type='number' step='0.0000000000000001' step='0.001' name='form_entry[form_values][tpr_18MV_q1]' class='form_entry_form_values_tpr_18MV span12' id='form_entry_form_values_tpr_18MV_q1' ".(!($formEntry->formValues) ? "" : " value='".escape_output($formEntry->formValues['tpr_18MV_q1']->value)."'")."/></td>
                 <td class='control-group'><input type='number' step='0.0000000000000001' step='0.001' name='form_entry[form_values][tpr_6XFFF_q1]' class='form_entry_form_values_tpr_6XFFF span12' id='form_entry_form_values_tpr_6XFFF_q1' ".(!($formEntry->formValues) ? "" : " value='".escape_output($formEntry->formValues['tpr_6XFFF_q1']->value)."'")."/></td>
                 <td class='control-group'><input type='number' step='0.0000000000000001' step='0.001' name='form_entry[form_values][tpr_10XFFF_q1]' class='form_entry_form_values_tpr_10XFFF span12' id='form_entry_form_values_tpr_10XFFF_q1' ".(!($formEntry->formValues) ? "" : " value='".escape_output($formEntry->formValues['tpr_10XFFF_q1']->value)."'")."/></td>
+                <td class='control-group'><input type='number' step='0.0000000000000001' step='0.001' name='form_entry[form_values][tpr_SRS_q1]' class='form_entry_form_values_tpr_SRS span12' id='form_entry_form_values_tpr_SRS_q1' ".(!($formEntry->formValues) ? "" : " value='".escape_output($formEntry->formValues['tpr_SRS_q1']->value)."'")."/></td>
               </tr>
               <tr>
                 <td>Q<sub>2</sub></td>
@@ -215,6 +226,7 @@
                 <td class='control-group'><input type='number' step='0.0000000000000001' step='0.001' name='form_entry[form_values][tpr_18MV_q2]' class='form_entry_form_values_tpr_18MV span12' id='form_entry_form_values_tpr_18MV_q2' ".(!($formEntry->formValues) ? "" : " value='".escape_output($formEntry->formValues['tpr_18MV_q2']->value)."'")."/></td>
                 <td class='control-group'><input type='number' step='0.0000000000000001' step='0.001' name='form_entry[form_values][tpr_6XFFF_q2]' class='form_entry_form_values_tpr_6XFFF span12' id='form_entry_form_values_tpr_6XFFF_q2' ".(!($formEntry->formValues) ? "" : " value='".escape_output($formEntry->formValues['tpr_6XFFF_q2']->value)."'")."/></td>
                 <td class='control-group'><input type='number' step='0.0000000000000001' step='0.001' name='form_entry[form_values][tpr_10XFFF_q2]' class='form_entry_form_values_tpr_10XFFF span12' id='form_entry_form_values_tpr_10XFFF_q2' ".(!($formEntry->formValues) ? "" : " value='".escape_output($formEntry->formValues['tpr_10XFFF_q2']->value)."'")."/></td>
+                <td class='control-group'><input type='number' step='0.0000000000000001' step='0.001' name='form_entry[form_values][tpr_SRS_q2]' class='form_entry_form_values_tpr_SRS span12' id='form_entry_form_values_tpr_SRS_q2' ".(!($formEntry->formValues) ? "" : " value='".escape_output($formEntry->formValues['tpr_SRS_q2']->value)."'")."/></td>
               </tr>
               <tr>
                 <td>Q<sub>3</sub></td>
@@ -224,6 +236,7 @@
                 <td class='control-group'><input type='number' step='0.0000000000000001' step='0.001' name='form_entry[form_values][tpr_18MV_q3]' class='form_entry_form_values_tpr_18MV span12' id='form_entry_form_values_tpr_18MV_q3' ".(!($formEntry->formValues) ? "" : " value='".escape_output($formEntry->formValues['tpr_18MV_q3']->value)."'")."/></td>
                 <td class='control-group'><input type='number' step='0.0000000000000001' step='0.001' name='form_entry[form_values][tpr_6XFFF_q3]' class='form_entry_form_values_tpr_6XFFF span12' id='form_entry_form_values_tpr_6XFFF_q3' ".(!($formEntry->formValues) ? "" : " value='".escape_output($formEntry->formValues['tpr_6XFFF_q3']->value)."'")."/></td>
                 <td class='control-group'><input type='number' step='0.0000000000000001' step='0.001' name='form_entry[form_values][tpr_10XFFF_q3]' class='form_entry_form_values_tpr_10XFFF span12' id='form_entry_form_values_tpr_10XFFF_q3' ".(!($formEntry->formValues) ? "" : " value='".escape_output($formEntry->formValues['tpr_10XFFF_q3']->value)."'")."/></td>
+                <td class='control-group'><input type='number' step='0.0000000000000001' step='0.001' name='form_entry[form_values][tpr_SRS_q3]' class='form_entry_form_values_tpr_SRS span12' id='form_entry_form_values_tpr_SRS_q3' ".(!($formEntry->formValues) ? "" : " value='".escape_output($formEntry->formValues['tpr_SRS_q3']->value)."'")."/></td>
               </tr>
               <tr>
                 <td>Avg</td>
@@ -233,6 +246,7 @@
                 <td class='control-group'><input type='number' step='0.0000000000000001' step='0.0000000000000001' name='form_entry[form_values][tpr_18MV_avg]' class='span12' id='form_entry_form_values_tpr_18MV_avg' ".(!($formEntry->formValues) ? "" : " value='".escape_output($formEntry->formValues['tpr_18MV_avg']->value)."'")."/></td>
                 <td class='control-group'><input type='number' step='0.0000000000000001' step='0.0000000000000001' name='form_entry[form_values][tpr_6XFFF_avg]' class='span12' id='form_entry_form_values_tpr_6XFFF_avg' ".(!($formEntry->formValues) ? "" : " value='".escape_output($formEntry->formValues['tpr_6XFFF_avg']->value)."'")."/></td>
                 <td class='control-group'><input type='number' step='0.0000000000000001' step='0.0000000000000001' name='form_entry[form_values][tpr_10XFFF_avg]' class='span12' id='form_entry_form_values_tpr_10XFFF_avg' ".(!($formEntry->formValues) ? "" : " value='".escape_output($formEntry->formValues['tpr_10XFFF_avg']->value)."'")."/></td>
+                <td class='control-group'><input type='number' step='0.0000000000000001' step='0.0000000000000001' name='form_entry[form_values][tpr_SRS_avg]' class='span12' id='form_entry_form_values_tpr_SRS_avg' ".(!($formEntry->formValues) ? "" : " value='".escape_output($formEntry->formValues['tpr_SRS_avg']->value)."'")."/></td>
               </tr>
               <tr>
                 <td>TPR</td>
@@ -242,6 +256,7 @@
                 <td class='control-group'><input type='number' step='0.0000000000000001' step='0.0000000000000001' name='form_entry[form_values][tpr_18MV_tpr]' class='span12' id='form_entry_form_values_tpr_18MV_TPR' ".(!($formEntry->formValues) ? "" : " value='".escape_output($formEntry->formValues['tpr_18MV_tpr']->value)."'")."/></td>
                 <td class='control-group'><input type='number' step='0.0000000000000001' step='0.0000000000000001' name='form_entry[form_values][tpr_6XFFF_tpr]' class='span12' id='form_entry_form_values_tpr_6XFFF_TPR' ".(!($formEntry->formValues) ? "" : " value='".escape_output($formEntry->formValues['tpr_6XFFF_tpr']->value)."'")."/></td>
                 <td class='control-group'><input type='number' step='0.0000000000000001' step='0.0000000000000001' name='form_entry[form_values][tpr_10XFFF_tpr]' class='span12' id='form_entry_form_values_tpr_10XFFF_TPR' ".(!($formEntry->formValues) ? "" : " value='".escape_output($formEntry->formValues['tpr_10XFFF_tpr']->value)."'")."/></td>
+                <td class='control-group'><input type='number' step='0.0000000000000001' step='0.0000000000000001' name='form_entry[form_values][tpr_SRS_tpr]' class='span12' id='form_entry_form_values_tpr_SRS_TPR' ".(!($formEntry->formValues) ? "" : " value='".escape_output($formEntry->formValues['tpr_SRS_tpr']->value)."'")."/></td>
               </tr>
               <tr>
                 <td>TPR(ref)</td>
@@ -251,6 +266,7 @@
                 <td class='control-group'><input type='number' step='0.0000000000000001' step='0.001' name='form_entry[constants][tpr_18MV_TPR_abs]' class='span12' id='form_entry_form_values_tpr_18MV_TPR_abs' /></td>
                 <td class='control-group'><input type='number' step='0.0000000000000001' step='0.001' name='form_entry[constants][tpr_6XFFF_TPR_abs]' class='span12' id='form_entry_form_values_tpr_6XFFF_TPR_abs' /></td>
                 <td class='control-group'><input type='number' step='0.0000000000000001' step='0.001' name='form_entry[constants][tpr_10XFFF_TPR_abs]' class='span12' id='form_entry_form_values_tpr_10XFFF_TPR_abs' /></td>
+                <td class='control-group'><input type='number' step='0.0000000000000001' step='0.001' name='form_entry[constants][tpr_SRS_TPR_abs]' class='span12' id='form_entry_form_values_tpr_SRS_TPR_abs' /></td>
               </tr>
               <tr>
                 <td>%diff</td>
@@ -260,6 +276,7 @@
                 <td class='control-group'><input type='number' step='0.0000000000000001' step='0.001' name='form_entry[form_values][tpr_18MV_diff]' class='span12' id='form_entry_form_values_tpr_18MV_diff' ".(!($formEntry->formValues) ? "" : " value='".escape_output($formEntry->formValues['tpr_18MV_diff']->value)."'")."/></td>
                 <td class='control-group'><input type='number' step='0.0000000000000001' step='0.001' name='form_entry[form_values][tpr_6XFFF_diff]' class='span12' id='form_entry_form_values_tpr_6XFFF_diff' ".(!($formEntry->formValues) ? "" : " value='".escape_output($formEntry->formValues['tpr_6XFFF_diff']->value)."'")."/></td>
                 <td class='control-group'><input type='number' step='0.0000000000000001' step='0.001' name='form_entry[form_values][tpr_10XFFF_diff]' class='span12' id='form_entry_form_values_tpr_10XFFF_diff' ".(!($formEntry->formValues) ? "" : " value='".escape_output($formEntry->formValues['tpr_10XFFF_diff']->value)."'")."/></td>
+                <td class='control-group'><input type='number' step='0.0000000000000001' step='0.001' name='form_entry[form_values][tpr_SRS_diff]' class='span12' id='form_entry_form_values_tpr_SRS_diff' ".(!($formEntry->formValues) ? "" : " value='".escape_output($formEntry->formValues['tpr_SRS_diff']->value)."'")."/></td>
               </tr>
             </tbody>
           </table>
@@ -278,6 +295,7 @@
                 <th>18MV</th>
                 <th>6XFFF</th>
                 <th>10XFFF</th>
+                <th>SRS</th>
               </tr>
             </thead>
             <tbody>
@@ -289,6 +307,7 @@
                 <td class='control-group'><input type='number' step='0.0000000000000001' step='0.001' name='form_entry[form_values][photon_output_calibration_adjusted_18MV_q1]' class='form_entry_form_values_photon_output_calibration_adjusted_18MV span12' id='form_entry_form_values_photon_output_calibration_adjusted_18MV_q1' ".(!($formEntry->formValues) ? "" : " value='".escape_output($formEntry->formValues['photon_output_calibration_adjusted_18MV_q1']->value)."'")."/></td>
                 <td class='control-group'><input type='number' step='0.0000000000000001' step='0.001' name='form_entry[form_values][photon_output_calibration_adjusted_6XFFF_q1]' class='form_entry_form_values_photon_output_calibration_adjusted_6XFFF span12' id='form_entry_form_values_photon_output_calibration_adjusted_6XFFF_q1' ".(!($formEntry->formValues) ? "" : " value='".escape_output($formEntry->formValues['photon_output_calibration_adjusted_6XFFF_q1']->value)."'")."/></td>
                 <td class='control-group'><input type='number' step='0.0000000000000001' step='0.001' name='form_entry[form_values][photon_output_calibration_adjusted_10XFFF_q1]' class='form_entry_form_values_photon_output_calibration_adjusted_10XFFF span12' id='form_entry_form_values_photon_output_calibration_adjusted_10XFFF_q1' ".(!($formEntry->formValues) ? "" : " value='".escape_output($formEntry->formValues['photon_output_calibration_adjusted_10XFFF_q1']->value)."'")."/></td>
+                <td class='control-group'><input type='number' step='0.0000000000000001' step='0.001' name='form_entry[form_values][photon_output_calibration_adjusted_SRS_q1]' class='form_entry_form_values_photon_output_calibration_adjusted_SRS span12' id='form_entry_form_values_photon_output_calibration_adjusted_SRS_q1' ".(!($formEntry->formValues) ? "" : " value='".escape_output($formEntry->formValues['photon_output_calibration_adjusted_SRS_q1']->value)."'")."/></td>
               </tr>
               <tr>
                 <td>Q<sub>2</sub></td>
@@ -298,6 +317,7 @@
                 <td class='control-group'><input type='number' step='0.0000000000000001' step='0.001' name='form_entry[form_values][photon_output_calibration_adjusted_18MV_q2]' class='form_entry_form_values_photon_output_calibration_adjusted_18MV span12' id='form_entry_form_values_photon_output_calibration_adjusted_18MV_q2' ".(!($formEntry->formValues) ? "" : " value='".escape_output($formEntry->formValues['photon_output_calibration_adjusted_18MV_q2']->value)."'")."/></td>
                 <td class='control-group'><input type='number' step='0.0000000000000001' step='0.001' name='form_entry[form_values][photon_output_calibration_adjusted_6XFFF_q2]' class='form_entry_form_values_photon_output_calibration_adjusted_6XFFF span12' id='form_entry_form_values_photon_output_calibration_adjusted_6XFFF_q2' ".(!($formEntry->formValues) ? "" : " value='".escape_output($formEntry->formValues['photon_output_calibration_adjusted_6XFFF_q2']->value)."'")."/></td>
                 <td class='control-group'><input type='number' step='0.0000000000000001' step='0.001' name='form_entry[form_values][photon_output_calibration_adjusted_10XFFF_q2]' class='form_entry_form_values_photon_output_calibration_adjusted_10XFFF span12' id='form_entry_form_values_photon_output_calibration_adjusted_10XFFF_q2' ".(!($formEntry->formValues) ? "" : " value='".escape_output($formEntry->formValues['photon_output_calibration_adjusted_10XFFF_q2']->value)."'")."/></td>
+                <td class='control-group'><input type='number' step='0.0000000000000001' step='0.001' name='form_entry[form_values][photon_output_calibration_adjusted_SRS_q2]' class='form_entry_form_values_photon_output_calibration_adjusted_SRS span12' id='form_entry_form_values_photon_output_calibration_adjusted_SRS_q2' ".(!($formEntry->formValues) ? "" : " value='".escape_output($formEntry->formValues['photon_output_calibration_adjusted_SRS_q2']->value)."'")."/></td>
               </tr>
               <tr>
                 <td>Q<sub>3</sub></td>
@@ -307,6 +327,7 @@
                 <td class='control-group'><input type='number' step='0.0000000000000001' step='0.001' name='form_entry[form_values][photon_output_calibration_adjusted_18MV_q3]' class='form_entry_form_values_photon_output_calibration_adjusted_18MV span12' id='form_entry_form_values_photon_output_calibration_adjusted_18MV_q3' ".(!($formEntry->formValues) ? "" : " value='".escape_output($formEntry->formValues['photon_output_calibration_adjusted_18MV_q3']->value)."'")."/></td>
                 <td class='control-group'><input type='number' step='0.0000000000000001' step='0.001' name='form_entry[form_values][photon_output_calibration_adjusted_6XFFF_q3]' class='form_entry_form_values_photon_output_calibration_adjusted_6XFFF span12' id='form_entry_form_values_photon_output_calibration_adjusted_6XFFF_q3' ".(!($formEntry->formValues) ? "" : " value='".escape_output($formEntry->formValues['photon_output_calibration_adjusted_6XFFF_q3']->value)."'")."/></td>
                 <td class='control-group'><input type='number' step='0.0000000000000001' step='0.001' name='form_entry[form_values][photon_output_calibration_adjusted_10XFFF_q3]' class='form_entry_form_values_photon_output_calibration_adjusted_10XFFF span12' id='form_entry_form_values_photon_output_calibration_adjusted_10XFFF_q3' ".(!($formEntry->formValues) ? "" : " value='".escape_output($formEntry->formValues['photon_output_calibration_adjusted_10XFFF_q3']->value)."'")."/></td>
+                <td class='control-group'><input type='number' step='0.0000000000000001' step='0.001' name='form_entry[form_values][photon_output_calibration_adjusted_SRS_q3]' class='form_entry_form_values_photon_output_calibration_adjusted_SRS span12' id='form_entry_form_values_photon_output_calibration_adjusted_SRS_q3' ".(!($formEntry->formValues) ? "" : " value='".escape_output($formEntry->formValues['photon_output_calibration_adjusted_SRS_q3']->value)."'")."/></td>
               </tr>
               <tr>
                 <td>Avg</td>
@@ -316,6 +337,7 @@
                 <td class='control-group'><input type='number' step='0.0000000000000001' step='0.0000000000000001' name='form_entry[form_values][photon_output_calibration_adjusted_18MV_avg]' class='span12' id='form_entry_form_values_photon_output_calibration_adjusted_18MV_avg' ".(!($formEntry->formValues) ? "" : " value='".escape_output($formEntry->formValues['photon_output_calibration_adjusted_18MV_avg']->value)."'")."/></td>
                 <td class='control-group'><input type='number' step='0.0000000000000001' step='0.0000000000000001' name='form_entry[form_values][photon_output_calibration_adjusted_6XFFF_avg]' class='span12' id='form_entry_form_values_photon_output_calibration_adjusted_6XFFF_avg' ".(!($formEntry->formValues) ? "" : " value='".escape_output($formEntry->formValues['photon_output_calibration_adjusted_6XFFF_avg']->value)."'")."/></td>
                 <td class='control-group'><input type='number' step='0.0000000000000001' step='0.0000000000000001' name='form_entry[form_values][photon_output_calibration_adjusted_10XFFF_avg]' class='span12' id='form_entry_form_values_photon_output_calibration_adjusted_10XFFF_avg' ".(!($formEntry->formValues) ? "" : " value='".escape_output($formEntry->formValues['photon_output_calibration_adjusted_10XFFF_avg']->value)."'")."/></td>
+                <td class='control-group'><input type='number' step='0.0000000000000001' step='0.0000000000000001' name='form_entry[form_values][photon_output_calibration_adjusted_SRS_avg]' class='span12' id='form_entry_form_values_photon_output_calibration_adjusted_SRS_avg' ".(!($formEntry->formValues) ? "" : " value='".escape_output($formEntry->formValues['photon_output_calibration_adjusted_SRS_avg']->value)."'")."/></td>
               </tr>
               <tr>
                 <td>M</td>
@@ -325,6 +347,7 @@
                 <td class='control-group'><input type='number' step='0.0000000000000001' name='form_entry[form_values][photon_output_calibration_adjusted_18MV_M]' class='span12' id='form_entry_form_values_photon_output_calibration_adjusted_18MV_M' ".(!($formEntry->formValues) ? "" : " value='".escape_output($formEntry->formValues['photon_output_calibration_adjusted_18MV_M']->value)."'")."/></td>
                 <td class='control-group'><input type='number' step='0.0000000000000001' name='form_entry[form_values][photon_output_calibration_adjusted_6XFFF_M]' class='span12' id='form_entry_form_values_photon_output_calibration_adjusted_6XFFF_M' ".(!($formEntry->formValues) ? "" : " value='".escape_output($formEntry->formValues['photon_output_calibration_adjusted_6XFFF_M']->value)."'")."/></td>
                 <td class='control-group'><input type='number' step='0.0000000000000001' name='form_entry[form_values][photon_output_calibration_adjusted_10XFFF_M]' class='span12' id='form_entry_form_values_photon_output_calibration_adjusted_10XFFF_M' ".(!($formEntry->formValues) ? "" : " value='".escape_output($formEntry->formValues['photon_output_calibration_adjusted_10XFFF_M']->value)."'")."/></td>
+                <td class='control-group'><input type='number' step='0.0000000000000001' name='form_entry[form_values][photon_output_calibration_adjusted_SRS_M]' class='span12' id='form_entry_form_values_photon_output_calibration_adjusted_SRS_M' ".(!($formEntry->formValues) ? "" : " value='".escape_output($formEntry->formValues['photon_output_calibration_adjusted_SRS_M']->value)."'")."/></td>
               </tr>
               <tr>
                 <td>Dw</td>
@@ -334,6 +357,7 @@
                 <td class='control-group'><input type='number' step='0.0000000000000001' name='form_entry[form_values][photon_output_calibration_adjusted_18MV_Dw]' class='span12' id='form_entry_form_values_photon_output_calibration_adjusted_18MV_Dw' ".(!($formEntry->formValues) ? "" : " value='".escape_output($formEntry->formValues['photon_output_calibration_adjusted_18MV_Dw']->value)."'")."/></td>
                 <td class='control-group'><input type='number' step='0.0000000000000001' name='form_entry[form_values][photon_output_calibration_adjusted_6XFFF_Dw]' class='span12' id='form_entry_form_values_photon_output_calibration_adjusted_6XFFF_Dw' ".(!($formEntry->formValues) ? "" : " value='".escape_output($formEntry->formValues['photon_output_calibration_adjusted_6XFFF_Dw']->value)."'")."/></td>
                 <td class='control-group'><input type='number' step='0.0000000000000001' name='form_entry[form_values][photon_output_calibration_adjusted_10XFFF_Dw]' class='span12' id='form_entry_form_values_photon_output_calibration_adjusted_10XFFF_Dw' ".(!($formEntry->formValues) ? "" : " value='".escape_output($formEntry->formValues['photon_output_calibration_adjusted_10XFFF_Dw']->value)."'")."/></td>
+                <td class='control-group'><input type='number' step='0.0000000000000001' name='form_entry[form_values][photon_output_calibration_adjusted_SRS_Dw]' class='span12' id='form_entry_form_values_photon_output_calibration_adjusted_SRS_Dw' ".(!($formEntry->formValues) ? "" : " value='".escape_output($formEntry->formValues['photon_output_calibration_adjusted_SRS_Dw']->value)."'")."/></td>
               </tr>
               <tr>
                 <td>Dw(abs)</td>
@@ -343,6 +367,7 @@
                 <td class='control-group'><input type='number' step='0.0000000000000001' name='form_entry[form_constants][photon_output_calibration_adjusted_18MV_Dw_abs]' class='span12' id='form_entry_form_values_photon_output_calibration_adjusted_18MV_Dw_abs' ".(!($formEntry->formValues) ? "" : " value='".escape_output($formEntry->formValues['photon_output_calibration_adjusted_18MV_Dw_abs']->value)."'")."/></td>
                 <td class='control-group'><input type='number' step='0.0000000000000001' name='form_entry[form_constants][photon_output_calibration_adjusted_6XFFF_Dw_abs]' class='span12' id='form_entry_form_values_photon_output_calibration_adjusted_6XFFF_Dw_abs' ".(!($formEntry->formValues) ? "" : " value='".escape_output($formEntry->formValues['photon_output_calibration_adjusted_6XFFF_Dw_abs']->value)."'")."/></td>
                 <td class='control-group'><input type='number' step='0.0000000000000001' name='form_entry[form_constants][photon_output_calibration_adjusted_10XFFF_Dw_abs]' class='span12' id='form_entry_form_values_photon_output_calibration_adjusted_10XFFF_Dw_abs' ".(!($formEntry->formValues) ? "" : " value='".escape_output($formEntry->formValues['photon_output_calibration_adjusted_10XFFF_Dw_abs']->value)."'")."/></td>
+                <td class='control-group'><input type='number' step='0.0000000000000001' name='form_entry[form_constants][photon_output_calibration_adjusted_SRS_Dw_abs]' class='span12' id='form_entry_form_values_photon_output_calibration_adjusted_SRS_Dw_abs' ".(!($formEntry->formValues) ? "" : " value='".escape_output($formEntry->formValues['photon_output_calibration_adjusted_SRS_Dw_abs']->value)."'")."/></td>
               </tr>
               <tr>
                 <td>%diff</td>
@@ -352,6 +377,7 @@
                 <td class='control-group'><input type='number' step='0.0000000000000001' name='form_entry[form_values][photon_output_calibration_adjusted_18MV_diff]' class='span12' id='form_entry_form_values_photon_output_calibration_adjusted_18MV_diff' ".(!($formEntry->formValues) ? "" : " value='".escape_output($formEntry->formValues['photon_output_calibration_adjusted_18MV_diff']->value)."'")."/></td>
                 <td class='control-group'><input type='number' step='0.0000000000000001' name='form_entry[form_values][photon_output_calibration_adjusted_6XFFF_diff]' class='span12' id='form_entry_form_values_photon_output_calibration_adjusted_6XFFF_diff' ".(!($formEntry->formValues) ? "" : " value='".escape_output($formEntry->formValues['photon_output_calibration_adjusted_6XFFF_diff']->value)."'")."/></td>
                 <td class='control-group'><input type='number' step='0.0000000000000001' name='form_entry[form_values][photon_output_calibration_adjusted_10XFFF_diff]' class='span12' id='form_entry_form_values_photon_output_calibration_adjusted_10XFFF_diff' ".(!($formEntry->formValues) ? "" : " value='".escape_output($formEntry->formValues['photon_output_calibration_adjusted_10XFFF_diff']->value)."'")."/></td>
+                <td class='control-group'><input type='number' step='0.0000000000000001' name='form_entry[form_values][photon_output_calibration_adjusted_SRS_diff]' class='span12' id='form_entry_form_values_photon_output_calibration_adjusted_SRS_diff' ".(!($formEntry->formValues) ? "" : " value='".escape_output($formEntry->formValues['photon_output_calibration_adjusted_SRS_diff']->value)."'")."/></td>
               </tr>
             </tbody>
           </table>
@@ -1024,9 +1050,7 @@
               </tr>
               <tr>
                 <td>Contrast (disks)</td>
-                <td class='control-group'>\n";
-  display_dropdown('form_entry[form_values][contrast_disks_status]', 'form_entry[form_values][contrast_disks_status]', array('E' => 'E', 'D' => 'D'), ($id != false) ? $formEntry->formValues['contrast_disks']->value : '');
-  echo "               </td>
+                <td class='control-group'><input type='text' name='form_entry[form_values][contrast_disks_measurement]' class='span12' id='form_entry_form_values_contrast_disks_measurement' ".(!($formEntry->formValues) ? " placeholder='18'" : " value='".escape_output($formEntry->formValues['contrast_disks_measurement']->value)."'")."/></td>
                 <td class='control-group'><input type='number' step='0.1' name='form_entry[form_values][contrast_disks_measurement]' class='span12' id='form_entry_form_values_contrast_disks_measurement' ".(!($formEntry->formValues) ? " placeholder='18'" : " value='".escape_output($formEntry->formValues['contrast_disks_measurement']->value)."'")."/></td>
                 <td class='control-group'><input name='form_entry[form_values][contrast_disks_row]' class='span12' id='form_entry_form_values_contrast_disks_row' ".(!($formEntry->formValues) ? " placeholder='8mm disk'" : " value='".escape_output($formEntry->formValues['contrast_disks_row']->value)."'")."/></td>
               </tr>
@@ -1044,27 +1068,27 @@
               </tr>
               <tr>
                 <td>#1/Top</td>
-                <td class='control-group'><input type='number' step='1' name='form_entry[form_values][uniformity_mv_top]' class='span12' id='form_entry_form_values_uniformity_mv_top' ".(!($formEntry->formValues) ? "" : " value='".escape_output($formEntry->formValues['uniformity_mv_top']->value)."'")."/></td>
-                <td class='control-group'><input type='number' step='1' name='form_entry[form_values][uniformity_kv_top]' class='span12' id='form_entry_form_values_uniformity_kv_top' ".(!($formEntry->formValues) ? "" : " value='".escape_output($formEntry->formValues['uniformity_kv_top']->value)."'")."/></td>
-                <td class='control-group'><input type='number' step='1' name='form_entry[form_values][uniformity_cbct_top]' class='span12' id='form_entry_form_values_uniformity_cbct_top' ".(!($formEntry->formValues) ? " placeholder='<&plusmn;40HU'" : " value='".escape_output($formEntry->formValues['uniformity_cbct_top']->value)."'")."/></td>
+                <td class='control-group'><input type='number' step='0.01' name='form_entry[form_values][uniformity_mv_top]' class='span12' id='form_entry_form_values_uniformity_mv_top' ".(!($formEntry->formValues) ? "" : " value='".escape_output($formEntry->formValues['uniformity_mv_top']->value)."'")."/></td>
+                <td class='control-group'><input type='number' step='0.01' name='form_entry[form_values][uniformity_kv_top]' class='span12' id='form_entry_form_values_uniformity_kv_top' ".(!($formEntry->formValues) ? "" : " value='".escape_output($formEntry->formValues['uniformity_kv_top']->value)."'")."/></td>
+                <td class='control-group'><input type='number' step='0.01' name='form_entry[form_values][uniformity_cbct_top]' class='span12' id='form_entry_form_values_uniformity_cbct_top' ".(!($formEntry->formValues) ? " placeholder='<&plusmn;40HU'" : " value='".escape_output($formEntry->formValues['uniformity_cbct_top']->value)."'")."/></td>
               </tr>
               <tr>
                 <td>#2/Right</td>
-                <td class='control-group'><input type='number' step='1' name='form_entry[form_values][uniformity_mv_right]' class='span12' id='form_entry_form_values_uniformity_mv_right' ".(!($formEntry->formValues) ? "" : " value='".escape_output($formEntry->formValues['uniformity_mv_right']->value)."'")."/></td>
-                <td class='control-group'><input type='number' step='1' name='form_entry[form_values][uniformity_kv_right]' class='span12' id='form_entry_form_values_uniformity_kv_right' ".(!($formEntry->formValues) ? "" : " value='".escape_output($formEntry->formValues['uniformity_kv_right']->value)."'")."/></td>
-                <td class='control-group'><input type='number' step='1' name='form_entry[form_values][uniformity_cbct_right]' class='span12' id='form_entry_form_values_uniformity_cbct_right' ".(!($formEntry->formValues) ? " placeholder='<&plusmn;40HU'" : " value='".escape_output($formEntry->formValues['uniformity_cbct_right']->value)."'")."/></td>
+                <td class='control-group'><input type='number' step='0.01' name='form_entry[form_values][uniformity_mv_right]' class='span12' id='form_entry_form_values_uniformity_mv_right' ".(!($formEntry->formValues) ? "" : " value='".escape_output($formEntry->formValues['uniformity_mv_right']->value)."'")."/></td>
+                <td class='control-group'><input type='number' step='0.01' name='form_entry[form_values][uniformity_kv_right]' class='span12' id='form_entry_form_values_uniformity_kv_right' ".(!($formEntry->formValues) ? "" : " value='".escape_output($formEntry->formValues['uniformity_kv_right']->value)."'")."/></td>
+                <td class='control-group'><input type='number' step='0.01' name='form_entry[form_values][uniformity_cbct_right]' class='span12' id='form_entry_form_values_uniformity_cbct_right' ".(!($formEntry->formValues) ? " placeholder='<&plusmn;40HU'" : " value='".escape_output($formEntry->formValues['uniformity_cbct_right']->value)."'")."/></td>
               </tr>
               <tr>
                 <td>#3/Bottom</td>
-                <td class='control-group'><input type='number' step='1' name='form_entry[form_values][uniformity_mv_bottom]' class='span12' id='form_entry_form_values_uniformity_mv_bottom' ".(!($formEntry->formValues) ? "" : " value='".escape_output($formEntry->formValues['uniformity_mv_bottom']->value)."'")."/></td>
-                <td class='control-group'><input type='number' step='1' name='form_entry[form_values][uniformity_kv_bottom]' class='span12' id='form_entry_form_values_uniformity_kv_bottom' ".(!($formEntry->formValues) ? "" : " value='".escape_output($formEntry->formValues['uniformity_kv_bottom']->value)."'")."/></td>
-                <td class='control-group'><input type='number' step='1' name='form_entry[form_values][uniformity_cbct_bottom]' class='span12' id='form_entry_form_values_uniformity_cbct_bottom' ".(!($formEntry->formValues) ? " placeholder='<&plusmn;40HU'" : " value='".escape_output($formEntry->formValues['uniformity_cbct_bottom']->value)."'")."/></td>
+                <td class='control-group'><input type='number' step='0.01' name='form_entry[form_values][uniformity_mv_bottom]' class='span12' id='form_entry_form_values_uniformity_mv_bottom' ".(!($formEntry->formValues) ? "" : " value='".escape_output($formEntry->formValues['uniformity_mv_bottom']->value)."'")."/></td>
+                <td class='control-group'><input type='number' step='0.01' name='form_entry[form_values][uniformity_kv_bottom]' class='span12' id='form_entry_form_values_uniformity_kv_bottom' ".(!($formEntry->formValues) ? "" : " value='".escape_output($formEntry->formValues['uniformity_kv_bottom']->value)."'")."/></td>
+                <td class='control-group'><input type='number' step='0.01' name='form_entry[form_values][uniformity_cbct_bottom]' class='span12' id='form_entry_form_values_uniformity_cbct_bottom' ".(!($formEntry->formValues) ? " placeholder='<&plusmn;40HU'" : " value='".escape_output($formEntry->formValues['uniformity_cbct_bottom']->value)."'")."/></td>
               </tr>
               <tr>
                 <td>#4/Left</td>
-                <td class='control-group'><input type='number' step='1' name='form_entry[form_values][uniformity_mv_left]' class='span12' id='form_entry_form_values_uniformity_mv_left' ".(!($formEntry->formValues) ? "" : " value='".escape_output($formEntry->formValues['uniformity_mv_left']->value)."'")."/></td>
-                <td class='control-group'><input type='number' step='1' name='form_entry[form_values][uniformity_kv_left]' class='span12' id='form_entry_form_values_uniformity_kv_left' ".(!($formEntry->formValues) ? "" : " value='".escape_output($formEntry->formValues['uniformity_kv_left']->value)."'")."/></td>
-                <td class='control-group'><input type='number' step='1' name='form_entry[form_values][uniformity_cbct_left]' class='span12' id='form_entry_form_values_uniformity_cbct_left' ".(!($formEntry->formValues) ? " placeholder='<&plusmn;40HU'" : " value='".escape_output($formEntry->formValues['uniformity_cbct_left']->value)."'")."/></td>
+                <td class='control-group'><input type='number' step='0.01' name='form_entry[form_values][uniformity_mv_left]' class='span12' id='form_entry_form_values_uniformity_mv_left' ".(!($formEntry->formValues) ? "" : " value='".escape_output($formEntry->formValues['uniformity_mv_left']->value)."'")."/></td>
+                <td class='control-group'><input type='number' step='0.01' name='form_entry[form_values][uniformity_kv_left]' class='span12' id='form_entry_form_values_uniformity_kv_left' ".(!($formEntry->formValues) ? "" : " value='".escape_output($formEntry->formValues['uniformity_kv_left']->value)."'")."/></td>
+                <td class='control-group'><input type='number' step='0.01' name='form_entry[form_values][uniformity_cbct_left]' class='span12' id='form_entry_form_values_uniformity_cbct_left' ".(!($formEntry->formValues) ? " placeholder='<&plusmn;40HU'" : " value='".escape_output($formEntry->formValues['uniformity_cbct_left']->value)."'")."/></td>
               </tr>
               <tr>
                 <td>Max Diff %</td>
@@ -1102,47 +1126,40 @@
                 <td class='control-group'><input type='number' step='0.01' name='form_entry[form_values][noise_kv_left]' class='span12' id='form_entry_form_values_noise_kv_left' ".(!($formEntry->formValues) ? " placeholder='250&plusmn;30'" : " value='".escape_output($formEntry->formValues['noise_kv_left']->value)."'")."/></td>
                 <td class='control-group'><input type='number' step='0.01' name='form_entry[form_values][noise_cbct_left]' class='span12' id='form_entry_form_values_noise_cbct_left' ".(!($formEntry->formValues) ? " placeholder=''" : " value='".escape_output($formEntry->formValues['noise_cbct_left']->value)."'")."/></td>
               </tr>
-            </tbody>
-          </table>
-        </div>
-        <div class='span6'>
-          <h3 class='center-horizontal'>HU Linearity</h3>
-          <table class='table table-bordered table-striped'>
-            <thead>
               <tr>
-                <th></th>
-                <th></th>
+                <td><strong>HU Linearity</strong></td>
+                <td></td>
+                <td></td>
+                <td></td>
               </tr>
-            </thead>
-            <tbody>
               <tr>
                 <td>Air</td>
-                <td><input type='number' step='1' name='form_entry[form_values][hu_linearity_air]' class='span12' id='form_entry_form_values_hu_linearity_air' ".(!($formEntry->formValues) ? " placeholder='-1000&plusmn;40'" : " value='".escape_output($formEntry->formValues['hu_linearity_air']->value)."'")."/></td>
+                <td></td>
+                <td></td>
+                <td><input type='number' step='0.01' name='form_entry[form_values][hu_linearity_air]' class='span12' id='form_entry_form_values_hu_linearity_air' ".(!($formEntry->formValues) ? " placeholder='-1000&plusmn;40'" : " value='".escape_output($formEntry->formValues['hu_linearity_air']->value)."'")."/></td>
               </tr>
               <tr>
                 <td>Acrylic</td>
-                <td><input type='number' step='1' name='form_entry[form_values][hu_linearity_acrylic]' class='span12' id='form_entry_form_values_hu_linearity_acrylic' ".(!($formEntry->formValues) ? " placeholder='120&plusmn;40'" : " value='".escape_output($formEntry->formValues['hu_linearity_acrylic']->value)."'")."/></td>
+                <td></td>
+                <td></td>
+                <td><input type='number' step='0.01' name='form_entry[form_values][hu_linearity_acrylic]' class='span12' id='form_entry_form_values_hu_linearity_acrylic' ".(!($formEntry->formValues) ? " placeholder='120&plusmn;40'" : " value='".escape_output($formEntry->formValues['hu_linearity_acrylic']->value)."'")."/></td>
               </tr>
               <tr>
                 <td>LDPE</td>
-                <td><input type='number' step='1' name='form_entry[form_values][hu_linearity_ldpe]' class='span12' id='form_entry_form_values_hu_linearity_ldpe' ".(!($formEntry->formValues) ? " placeholder='-100&plusmn;40'" : " value='".escape_output($formEntry->formValues['hu_linearity_ldpe']->value)."'")."/></td>
+                <td></td>
+                <td></td>
+                <td><input type='number' step='0.01' name='form_entry[form_values][hu_linearity_ldpe]' class='span12' id='form_entry_form_values_hu_linearity_ldpe' ".(!($formEntry->formValues) ? " placeholder='-100&plusmn;40'" : " value='".escape_output($formEntry->formValues['hu_linearity_ldpe']->value)."'")."/></td>
               </tr>
-            </tbody>
-          </table>
-          <table class='table table-bordered table-striped'>
-            <thead>
               <tr>
-                <th></th>
-                <th></th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>Scan Slice Thickness</td>
+                <td><strong>Scan Slice Thickness</strong></td>
+                <td></td>
+                <td></td>
                 <td><input type='number' step='0.01' name='form_entry[form_values][scan_slice_thickness]' class='span12' id='form_entry_form_values_scan_slice_thickness' ".(!($formEntry->formValues) ? " placeholder='2.5&plusmn;0.125'" : " value='".escape_output($formEntry->formValues['scan_slice_thickness']->value)."'")."/></td>
               </tr>
             </tbody>
           </table>
+        </div>
+        <div class='span6'>
           <h3 class='center-horizontal'>MLC</h3>
           <table class='table table-bordered table-striped'>
             <thead>
@@ -1171,7 +1188,7 @@
     if ($id != false && $formEntry->imagePath != '') {
       echo "
       <div class='center-horizontal'>
-        <img src='".escape_output($formEntry->imagePath)."' class='image-fluid'/>
+        <img src='".joinPaths(ROOT_URL, escape_output($formEntry->imagePath))."' class='image-fluid'/>
       </div>\n";
     }
     echo "    <div id='image_preview' class='row-fluid'></div>

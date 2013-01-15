@@ -127,13 +127,11 @@ function calculateOutputCalibrationStats(type, id_prefix) {
 function calculateTPRStats(id_prefix, outputCalibration_prefix) {
   if ($('#' + id_prefix + '_q1').val() != '' || $('#' + id_prefix + '_q2').val() != '' || $('#' + id_prefix + '_q3').val() != '') {
     var qAvg = getMeasurementAverage(id_prefix);
-    console.log("qAvg: " + qAvg);
     $('#' + id_prefix + '_avg').val(qAvg);
     if ($('#' + outputCalibration_prefix + '_q1').val() == '' && outputCalibration_prefix.indexOf('_adjusted') > 0) {
       outputCalibration_prefix = outputCalibration_prefix.replace(/\_adjusted/gi, "");
     }
     var qAvg_outputCalibration = getMeasurementAverage(outputCalibration_prefix);
-    console.log("outputCal: " + outputCalibration_prefix + " | " + qAvg_outputCalibration);
 
     idPrefixParts = id_prefix.split("_");
     idPrefixLastPart = idPrefixParts[idPrefixParts.length-1];
@@ -226,6 +224,7 @@ function calculateAllOutputCalibrationStats() {
   calculateOutputCalibrationStats('photon', 'form_entry_form_values_photon_output_calibration_18MV');
   calculateOutputCalibrationStats('photon', 'form_entry_form_values_photon_output_calibration_6XFFF');
   calculateOutputCalibrationStats('photon', 'form_entry_form_values_photon_output_calibration_10XFFF');
+  calculateOutputCalibrationStats('photon', 'form_entry_form_values_photon_output_calibration_SRS');
   calculateOutputCalibrationStats('electron', 'form_entry_form_values_electron_output_calibration_6MeV'); 
   calculateOutputCalibrationStats('electron', 'form_entry_form_values_electron_output_calibration_9MeV'); 
   calculateOutputCalibrationStats('electron', 'form_entry_form_values_electron_output_calibration_12MeV'); 
@@ -237,6 +236,7 @@ function calculateAllOutputCalibrationStats() {
   calculateOutputCalibrationStats('photon', 'form_entry_form_values_photon_output_calibration_adjusted_18MV');
   calculateOutputCalibrationStats('photon', 'form_entry_form_values_photon_output_calibration_adjusted_6XFFF');
   calculateOutputCalibrationStats('photon', 'form_entry_form_values_photon_output_calibration_adjusted_10XFFF');
+  calculateOutputCalibrationStats('photon', 'form_entry_form_values_photon_output_calibration_adjusted_SRS');
   calculateOutputCalibrationStats('electron', 'form_entry_form_values_electron_output_calibration_adjusted_6MeV'); 
   calculateOutputCalibrationStats('electron', 'form_entry_form_values_electron_output_calibration_adjusted_9MeV'); 
   calculateOutputCalibrationStats('electron', 'form_entry_form_values_electron_output_calibration_adjusted_12MeV'); 
@@ -251,6 +251,7 @@ function calculateAllTPRStats() {
   calculateTPRStats('form_entry_form_values_tpr_18MV', 'form_entry_form_values_photon_output_calibration_adjusted_18MV');
   calculateTPRStats('form_entry_form_values_tpr_6XFFF', 'form_entry_form_values_photon_output_calibration_adjusted_6XFFF');
   calculateTPRStats('form_entry_form_values_tpr_10XFFF', 'form_entry_form_values_photon_output_calibration_adjusted_10XFFF');
+  calculateTPRStats('form_entry_form_values_tpr_SRS', 'form_entry_form_values_photon_output_calibration_adjusted_SRS');
 }
 
 function calculateAllGatingStats() {
@@ -301,6 +302,7 @@ function bindAllOutputCalibrationStats() {
     {'name': '18MV', 'type': 'photon'},
     {'name': '6XFFF', 'type': 'photon'},
     {'name': '10XFFF', 'type': 'photon'},
+    {'name': 'SRS', 'type': 'photon'},
     {'name': '6MeV', 'type': 'electron'},
     {'name': '9MeV', 'type': 'electron'},
     {'name': '12MeV', 'type': 'electron'},
@@ -344,7 +346,8 @@ function bindAllTPREvents() {
     {'name': '15MV', 'type': 'photon'},
     {'name': '18MV', 'type': 'photon'},
     {'name': '6XFFF', 'type': 'photon'},
-    {'name': '10XFFF', 'type': 'photon'}
+    {'name': '10XFFF', 'type': 'photon'},
+    {'name': 'SRS', 'type': 'photon'}
   ];
   $('#form_entry_form_values_photon_output_calibration_6MV_Dw').change(function() {
     calculateTPRStats('form_entry_form_values_tpr_6MV', 'form_entry_form_values_photon_output_calibration_adjusted_6MV');
@@ -465,4 +468,15 @@ $(document).ready(function() {
   bindAllOutputCalibrationStats();
   bindAllTPREvents();
   bindAllEDWEvents();
+  $('#linac-monthly').autosave({
+      callbacks: {
+        save: {
+          method: 'ajax',
+          options: {
+            url: $(location).attr('href') + '&autosave',
+            type: 'POST'
+          }
+        }
+      }
+  });
 });

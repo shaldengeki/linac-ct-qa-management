@@ -1,6 +1,6 @@
 <?php
   // displays a form to edit form parameters.
-  echo "<form action='".$_SERVER['SCRIPT_NAME']."?".$_SERVER['QUERY_STRING']."' method='POST' class='form-horizontal' enctype='multipart/form-data'>
+  echo "<form name='ct-monthly' id='ct-monthly' action='".$_SERVER['SCRIPT_NAME']."?".$_SERVER['QUERY_STRING']."' method='POST' class='form-horizontal' enctype='multipart/form-data'>
   <fieldset>
 ".(($id === false) ? "" : "<input type='hidden' name='form_entry[id]' value='".intval($id)."' />");
   if (isset($_REQUEST['form_id'])) {
@@ -319,7 +319,7 @@
     <h3>Image</h3>
 ";
     if ($id != false && $formEntry->imagePath != '') {
-      echo "<img src='".escape_output($formEntry->imagePath)."' /><br />
+      echo "<img src='".joinPaths(ROOT_URL, escape_output($formEntry->imagePath))."' /><br />
 ";
     }
     echo "    <div id='image_preview' class='row-fluid'></div>

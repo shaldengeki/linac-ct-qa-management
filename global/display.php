@@ -52,28 +52,28 @@ function start_html($user, $title="UC Medicine QA", $subtitle="", $status="", $s
   	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
   	<title>'.escape_output($title).($subtitle != "" ? " - ".escape_output($subtitle) : "").'</title>
-  	<link rel="shortcut icon" href="/favicon.ico" />
-  	<link rel="stylesheet" href="css/bootstrap.min.css" type="text/css" />
-  	<link rel="stylesheet" href="css/bootstrap-responsive.min.css" type="text/css" media="screen" />
+  	<link rel="shortcut icon" href="http://ucmcqa.dyndns.org/favicon.ico" />
+  	<link rel="stylesheet" href="'.joinPaths(ROOT_URL, "css/bootstrap.min.css").'" type="text/css" />
+  	<link rel="stylesheet" href="'.joinPaths(ROOT_URL, "css/bootstrap-responsive.min.css").'" type="text/css" media="all" />
   	<link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" type="text/css" />
-  	<link rel="stylesheet" href="css/jquery.dataTables.css" type="text/css" />
-    <link rel="stylesheet" href="css/linac-qa.css" type="text/css" />
-    <link rel="stylesheet" href="css/print.css" type="text/css" media="print" />
+  	<link rel="stylesheet" href="'.joinPaths(ROOT_URL, "css/jquery.dataTables.css").'" type="text/css" />
+    <link rel="stylesheet" href="'.joinPaths(ROOT_URL, "css/linac-qa.css").'" type="text/css" />
+    <link rel="stylesheet" href="'.joinPaths(ROOT_URL, "css/print.css").'" type="text/css" media="print" />
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.18/jquery-ui.min.js"></script>
-    <script type="text/javascript" src="js/jquery-ui-timepicker-addon.js"></script>
-  	<script type="text/javascript" language="javascript" src="js/jquery.dropdownPlain.js"></script>
-    <script type="text/javascript" language="javascript" src="js/jquery.dataTables.min.js"></script>
-    <script type="text/javascript" language="javascript" src="js/jquery.autosave.js"></script>
-    <script type="text/javascript" src="js/d3.v2.min.js"></script>
-    <script type="text/javascript" src="js/d3-helpers.js"></script>
-    <script type="text/javascript" src="js/highcharts.js"></script>
-    <script type="text/javascript" src="js/exporting.js"></script>
-  	<script type="text/javascript" language="javascript" src="js/calcFunctions.js"></script>
-  	<script type="text/javascript" language="javascript" src="js/renderHighCharts.js"></script>
-  	<script type="text/javascript" language="javascript" src="js/bootstrap.min.js"></script>
-  	<script type="text/javascript" language="javascript" src="js/bootstrap-dropdown.js"></script>
-  	<script type="text/javascript" language="javascript" src="js/loadInterface.js"></script>
+    <script type="text/javascript" src="'.joinPaths(ROOT_URL, "js/jquery-ui-timepicker-addon.js").'"></script>
+  	<script type="text/javascript" language="javascript" src="'.joinPaths(ROOT_URL, "js/jquery.dropdownPlain.js").'"></script>
+    <script type="text/javascript" language="javascript" src="'.joinPaths(ROOT_URL, "js/jquery.dataTables.min.js").'"></script>
+    <script type="text/javascript" language="javascript" src="'.joinPaths(ROOT_URL, "js/jquery.autosave.js").'"></script>
+    <script type="text/javascript" src="'.joinPaths(ROOT_URL, "js/d3.v2.min.js").'"></script>
+    <script type="text/javascript" src="'.joinPaths(ROOT_URL, "js/d3-helpers.js").'"></script>
+    <script type="text/javascript" src="'.joinPaths(ROOT_URL, "js/highcharts.js").'"></script>
+    <script type="text/javascript" src="'.joinPaths(ROOT_URL, "js/exporting.js").'"></script>
+  	<script type="text/javascript" language="javascript" src="'.joinPaths(ROOT_URL, "js/calcFunctions.js").'"></script>
+  	<script type="text/javascript" language="javascript" src="'.joinPaths(ROOT_URL, "js/renderHighCharts.js").'"></script>
+  	<script type="text/javascript" language="javascript" src="'.joinPaths(ROOT_URL, "js/bootstrap.min.js").'"></script>
+  	<script type="text/javascript" language="javascript" src="'.joinPaths(ROOT_URL, "js/bootstrap-dropdown.js").'"></script>
+  	<script type="text/javascript" language="javascript" src="'.joinPaths(ROOT_URL, "js/loadInterface.js").'"></script>
   </head>
   <body>
     <div class="navbar navbar-inverse navbar-fixed-top">
@@ -723,17 +723,7 @@ function display_form_entry_edit_form($user, $id=False, $form_id=False) {
     foreach ($jsParameters as $name => $value) {
       echo "var ".$name." = ".$value.";\n";
     }
-    echo $form->js."\n$('form').autosave({
-    callbacks: {
-      save: {
-        method: 'ajax',
-        options: {
-          url: $(location).attr('href') + '&autosave',
-          type: 'POST'
-        }
-      }
-    }
-    });</script>\n";
+    echo $form->js."\n</script>\n";
   }
 }
 

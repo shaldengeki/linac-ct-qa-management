@@ -48,7 +48,7 @@ class FormEntry {
       $this->form = $this->getForm();
       $this->machine = $this->getMachine();
       $this->user = $this->getUser();
-      $this->equipment = $this->getEquipment();
+      //$this->equipment = $this->getEquipment();
       $this->approvedUser = $this->getApprovedUser();
       $this->formValues = $this->getFormValues();
     }
@@ -63,7 +63,7 @@ class FormEntry {
   }
   public function getEquipment() {
     // retrieves an id,name,parameters array corresponding to the equipment with which this entry is submitted.
-    return $this->dbConn->queryAssoc("SELECT `equipment`.`id`, `equipment`.`name`, `equipment`.`parameters` FROM `form_entries_equipment` LEFT OUTER JOIN `equipment` ON `equipment`.`id` = `form_entries_equipment`.`equipment_id` WHERE `form_entries_equipment`.`form_entry_id` = ".intval($this->id));
+    return $this->dbConn->queryAssoc("SELECT `equipment`.`id`, `equipment`.`name`, `equipment_values`.`form_entry_id`,  FROM `form_entries_equipment` LEFT OUTER JOIN `equipment_values` ON `equipment_values`.`id` = `form_entries_equipment`.`equipment_value_id` LEFT OUTER JOIN `equipment` ON `equipment`.`id` = `equpiment_values`.`equipment_id` WHERE `form_entries_equipment_values`.`form_entry_id` = ".intval($this->id));
   }
   public function getUser() {
     // retrieves an id,name array corresponding to the user who submitted this form entry.

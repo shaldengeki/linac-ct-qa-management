@@ -38,7 +38,7 @@ start_html($user, "UC Medicine QA", "", $_REQUEST['status'], $_REQUEST['class'])
       <li><s>QA submission autosave</s></li>
       <li><s>QA submission deletion</s></li>
       <li>Equipment profiles</li>
-      <li>Print to PDF</li>
+      <li><s>Print to PDF</s></li>
       <li>Form entry pass/fail</li>
       <li>Make forms more user-friendly</li>
       <li>Python image analysis</li>

@@ -29,4 +29,15 @@ function displayImagePreview(files) {
 
 $(document).ready(function() {
   $('#form_entry_created_at').datetimepicker();
+  $('#ct-monthly').autosave({
+      callbacks: {
+        save: {
+          method: 'ajax',
+          options: {
+            url: $(location).attr('href') + '&autosave',
+            type: 'POST'
+          }
+        }
+      }
+  });
 });
